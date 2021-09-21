@@ -26,10 +26,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-  DateTime now = DateTime.now();
-  DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -37,12 +35,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<Record> records = <Record>[];
+  List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしているアタイ
   List<String> days = <String>[];
-
-  // var frameworks = {
-  //
-  // }
+  final String day =
+      DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
 
   void _incrementCounter() {
     setState(() {
@@ -52,8 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final now = widget.now;
-    String day = widget.outputFormat.format(now);
+    // final now = widget.now;                  //ビルドするたびに変わるもの。SetState
+    // String day = widget.outputFormat.format(widget.now);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,8 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: WebView(
         initialUrl: 'https://www.google.com/',
         onPageFinished: (url) {
-          final record = Record(url: url, day: day);
-          // record.copyWith(url:'https://aaa.com');//インスタンス化したクラスに対して値を差し替えたい時に使う
+          final record = Record(url: url, day: day); //コンストラクタを呼び出している
+          final record2 = record.copyWith(
+              url: 'https://aaa.com'); //インスタンス化したクラスに対して値を差し替えたい時に使う
 
           records.add(record);
           // days.add('${date}');
