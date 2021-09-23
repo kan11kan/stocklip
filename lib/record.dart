@@ -4,14 +4,15 @@ class Record {
   final String url;
   final String day;
 
-  Record copyWith({  //Recordクラスのメソッド copyWithっていう名前のついたメソッド
+  Record copyWith({
+    //Recordクラスのメソッド copyWithっていう名前のついたメソッド
     String? url,
     String? day,
   }) {
     return Record(
-        url: url ?? this.url, //？？の意味→左辺がnullだったら右辺を代入する
-        day: day ?? this.day,
-      );
+      url: url ?? this.url, //？？の意味→左辺がnullだったら右辺を代入する
+      day: day ?? this.day,
+    );
   }
 
 // メソッド
@@ -23,14 +24,3 @@ class Record {
 //   this.day = day;
 // }
 }
-
-const aa = class{
-  constructor(obj){
-    this.aa = obj.aa
-}
-bb(){
-
-}
-}
-
-

@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしているアタイ
+  List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
   List<String> days = <String>[];
   final String day =
       DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final now = widget.now;                  //ビルドするたびに変わるもの。SetState
+    // String now = DateTime.now();       //ビルドするたびに代入される値。setstateでは変えることができない。
     // String day = widget.outputFormat.format(widget.now);
 
     return Scaffold(
