@@ -16,8 +16,8 @@ class MemoPage extends StatefulWidget {
 }
 
 class MemoPageState extends State<MemoPage> {
-  List<String> url = <String>[];
-  List<String> days = <String>[];
+  // List<String> todayUrls = <String>[];
+  // List<String> day = <String>[];
 
   List<int> _items = List<int>.generate(100, (int index) => index);
 
@@ -26,10 +26,12 @@ class MemoPageState extends State<MemoPage> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
     final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
-    final url = widget.passedValue.map((element) => (element.url)).toList();
+    // final urls = widget.passedValue.map((element) => (element.url)).toList();
+    final days = widget.passedValue.map((element) => (element.day)).toList();
     final now = widget.now;
     String date = widget.outputFormat.format(now);
-
+    final todayData = widget.passedValue.where((el) => el.day == date).toList();
+    final todayUrls = todayData.map((element) => (element.url)).toList();
     // return Text('aaaa');
 
     return Scaffold(
@@ -40,11 +42,11 @@ class MemoPageState extends State<MemoPage> {
         child: ReorderableListView(
           padding: const EdgeInsets.symmetric(horizontal: 0),
           children: <Widget>[
-            for (int index = 0; index < url.length; index++)
+            for (int index = 0; index < todayUrls.length; index++)
               ListTile(
                 key: Key('$index'),
                 title: SimpleUrlPreview(
-                  url: url[_items[index]],
+                  url: todayUrls[_items[index]],
                   bgColor: Colors.white,
                   isClosable: true,
                   titleLines: 2,
@@ -52,7 +54,7 @@ class MemoPageState extends State<MemoPage> {
                   imageLoaderColor: Colors.white,
                   previewHeight: 150,
                   previewContainerPadding: EdgeInsets.all(5),
-                  onTap: () => print(url),
+                  onTap: () => print(todayUrls),
                   titleStyle: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -99,7 +101,7 @@ class MemoPageState extends State<MemoPage> {
               final int item = _items.removeAt(oldIndex);
               _items.insert(newIndex, item);
 
-              // print(newIndex);
+              print(todayUrls);
             });
           },
         ),
@@ -107,7 +109,9 @@ class MemoPageState extends State<MemoPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => RecordPage()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecordPage(widget.passedValue)));
         },
         tooltip: 'Increment',
         child: const Icon(Icons.article_outlined),
@@ -136,7 +140,7 @@ class MemoFieldPageState extends State<MemoFieldPage> {
           ),
           ElevatedButton(
               onPressed: () {
-                print(myController.text);
+                // print(myController.text);
                 setState(
                   () {
                     items.add(myController.text);

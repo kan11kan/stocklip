@@ -36,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
-  List<String> days = <String>[];
+  // List<String> days = <String>[];
   final String day =
       DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
 
@@ -51,9 +51,86 @@ class _MyHomePageState extends State<MyHomePage> {
     // String now = DateTime.now();       //ビルドするたびに代入される値。setstateでは変えることができない。
     // String day = widget.outputFormat.format(widget.now);
 
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: Text(widget.title),
+    //   ),
+    //   body: WebView(
+    //     initialUrl: 'https://www.google.com/',
+    //     onPageFinished: (url) {
+    //       final record = Record(url: url, day: day); //コンストラクタを呼び出している
+    //       final record2 = record.copyWith(
+    //           url: 'https://aaa.com'); //インスタンス化したクラスに対して値を差し替えたい時に使う
+    //
+    //       records.add(record);
+    //       // days.add('${date}');
+    //       // print(records[0].url);
+    //       // print(records[1].day);
+    //       // records.forEach((element) => print(element.url));
+    //       print(records.map((element) => (element.url)).toList());
+    //       print(records.map((element) => (element.day)).toList());
+    //     },
+    //   ),
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: () {
+    //       Navigator.push(context,
+    //           MaterialPageRoute(builder: (context) => MemoPage(records)));
+    //       // print('item is List: ${items is List}');
+    //     },
+    //     child: const Icon(Icons.article_outlined),
+    //   ), // This trailing comma makes auto-formatting nicer for build methods.
+    // );
+
+    //ここから修正
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      body: Column(
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => WebPage()));
+              },
+              child: Text('Google')),
+          ElevatedButton(onPressed: () {}, child: Text('Bloomberg')),
+          ElevatedButton(onPressed: () {}, child: Text('CME')),
+          ElevatedButton(onPressed: () {}, child: Text('Yahoo Finance'))
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MemoPage(records)));
+          // print('item is List: ${items is List}');
+        },
+        child: const Icon(Icons.article_outlined),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    ); // This trailing comma makes auto-formatting nicer for build methods.
+  }
+}
+
+class WebPage extends StatefulWidget {
+  const WebPage({Key? key}) : super(key: key);
+
+  @override
+  State<WebPage> createState() => WebPageState();
+}
+
+class WebPageState extends State<WebPage> {
+  List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
+  // final String day = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  @override
+  Widget build(BuildContext context) {
+    DateTime now = DateTime.now(); //ビルドするたびに代入される値。setstateでは変えることができない。
+    DateFormat outputFormat = DateFormat('yyyy-MM-dd');
+    String day = outputFormat.format(now);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(day),
       ),
       body: WebView(
         initialUrl: 'https://www.google.com/',
@@ -67,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // print(records[0].url);
           // print(records[1].day);
           // records.forEach((element) => print(element.url));
-          print([records.map((element) => (element.url))]);
+          print(records.map((element) => (element.url)).toList());
+          print(records.map((element) => (element.day)).toList());
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -81,11 +159,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// class ViewAToBArguments extends _MyHomePageState {
-//   final int hogeId;
-//   final String fuga;
-//   // List<String> hogeId = widget.items;
-//   // List<String> fuga = widget.days;
-//   ViewAToBArguments(this.hogeId, this.fuga);
-// }
