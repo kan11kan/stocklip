@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/record.dart';
-import 'package:one_app_everyday921/record_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 class MemoPage extends StatefulWidget {
@@ -30,9 +29,10 @@ class MemoPageState extends State<MemoPage> {
     final days = widget.passedValue.map((element) => (element.day)).toList();
     final now = widget.now;
     String date = widget.outputFormat.format(now);
-    final todayData = widget.passedValue.where((el) => el.day == date).toList();
-    final todayUrls = todayData.map((element) => (element.url)).toList();
-    // return Text('aaaa');
+    var todayData = widget.passedValue
+        .where((el) => el.day == date && el.hide == false)
+        .toList();
+    var todayUrls = todayData.map((element) => (element.url)).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -43,54 +43,69 @@ class MemoPageState extends State<MemoPage> {
           padding: const EdgeInsets.symmetric(horizontal: 0),
           children: <Widget>[
             for (int index = 0; index < todayUrls.length; index++)
-              ListTile(
+              Container(
+                height: 200,
+                width: double.infinity,
                 key: Key('$index'),
-                title: SimpleUrlPreview(
-                  url: todayUrls[_items[index]],
-                  bgColor: Colors.white,
-                  isClosable: true,
-                  titleLines: 2,
-                  descriptionLines: 2,
-                  imageLoaderColor: Colors.white,
-                  previewHeight: 150,
-                  previewContainerPadding: EdgeInsets.all(5),
-                  onTap: () => print(todayUrls),
-                  titleStyle: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  descriptionStyle: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                  siteNameStyle: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  ),
-                ),
-                onTap: () {},
-                trailing: Column(
+                child: Row(
                   children: [
-                    ReorderableDragStartListener(
-                      index: index,
-                      child: const Icon(Icons.drag_handle),
+                    Container(
+                      width: 350,
+                      child: SimpleUrlPreview(
+                        url: todayUrls[_items[index]],
+                        bgColor: Colors.white,
+                        // isClosable: true,
+                        titleLines: 2,
+                        descriptionLines: 2,
+                        imageLoaderColor: Colors.white,
+                        previewHeight: 150,
+                        previewContainerPadding: EdgeInsets.all(5),
+                        onTap: () => print(todayUrls),
+                        titleStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        descriptionStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                        siteNameStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return MemoFieldPage();
-                                },
-                                fullscreenDialog: true));
-                      },
-                      child: Icon(Icons.add),
-                    )
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            todayData[index].hide = true;
+                          });
+                        },
+                        child: Text('delete'))
                   ],
                 ),
+                // trailing: Column(
+                //   children: [
+                //     ReorderableDragStartListener(
+                //       index: index,
+                //       child: const Icon(Icons.drag_handle),
+                //     ),
+                //     GestureDetector(
+                //       behavior: HitTestBehavior.translucent,
+                //       onTap: () {
+                //         Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //                 builder: (BuildContext context) {
+                //                   return MemoFieldPage();
+                //                 },
+                //                 fullscreenDialog: true));
+                //       },
+                //       child: Icon(Icons.add),
+                //     )
+                //   ],
+                // ),
               ),
           ],
           onReorder: (int oldIndex, int newIndex) {
@@ -108,10 +123,11 @@ class MemoPageState extends State<MemoPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RecordPage(widget.passedValue)));
+          print(todayData[0].hide);
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => RecordPage(widget.passedValue)));
         },
         tooltip: 'Increment',
         child: const Icon(Icons.article_outlined),

@@ -35,7 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
+  final List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
   // List<String> days = <String>[];
   final String day =
       DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
@@ -90,13 +90,40 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => WebPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebPage('https://www.google.com/')));
               },
               child: Text('Google')),
-          ElevatedButton(onPressed: () {}, child: Text('Bloomberg')),
-          ElevatedButton(onPressed: () {}, child: Text('CME')),
-          ElevatedButton(onPressed: () {}, child: Text('Yahoo Finance'))
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebPage('https://www.bloomberg.co.jp/')));
+              },
+              child: Text('Bloomberg')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebPage('https://nikkei225jp.com/cme/')));
+              },
+              child: Text('CME')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebPage('https://finance.yahoo.co.jp/')));
+              },
+              child: Text('Yahoo Finance'))
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -112,12 +139,14 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class WebPage extends StatefulWidget {
-  const WebPage({Key? key}) : super(key: key);
+  WebPage(this.firstUrl);
+  final String firstUrl;
 
   @override
   State<WebPage> createState() => WebPageState();
 }
 
+//ここから遷移後（ニュースサイト選択後）のページ
 class WebPageState extends State<WebPage> {
   List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
   // final String day = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -133,11 +162,11 @@ class WebPageState extends State<WebPage> {
         title: Text(day),
       ),
       body: WebView(
-        initialUrl: 'https://www.google.com/',
+        initialUrl: widget.firstUrl,
         onPageFinished: (url) {
           final record = Record(url: url, day: day); //コンストラクタを呼び出している
-          final record2 = record.copyWith(
-              url: 'https://aaa.com'); //インスタンス化したクラスに対して値を差し替えたい時に使う
+          // final record2 = record.copyWith(
+          //     url: 'https://aaa.com'); //インスタンス化したクラスに対して値を差し替えたい時に使う
 
           records.add(record);
           // days.add('${date}');
@@ -145,7 +174,7 @@ class WebPageState extends State<WebPage> {
           // print(records[1].day);
           // records.forEach((element) => print(element.url));
           print(records.map((element) => (element.url)).toList());
-          print(records.map((element) => (element.day)).toList());
+          // print(records.map((element) => (element.day)).toList());
         },
       ),
       floatingActionButton: FloatingActionButton(

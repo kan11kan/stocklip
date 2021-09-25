@@ -1,8 +1,9 @@
 class Record {
-  const Record({this.url = '', this.day = ''});
+  Record({this.url = '', this.day = '', this.hide = false});
   // フィールド
   final String url;
   final String day;
+  bool hide;
 
   Record copyWith({
     //Recordクラスのメソッド copyWithっていう名前のついたメソッド
