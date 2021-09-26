@@ -76,13 +76,15 @@ class MemoPageState extends State<MemoPage> {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            todayData[index].hide = true;
-                          });
-                        },
-                        child: Text('delete'))
+                    Container(
+                        width: 10,
+                        child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                todayData[index].hide = true;
+                              });
+                            },
+                            child: Icon(Icons.delete)))
                   ],
                 ),
                 // trailing: Column(
