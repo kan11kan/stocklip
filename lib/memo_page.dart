@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/record.dart';
+import 'package:one_app_everyday921/record_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 import 'main.dart';
@@ -212,10 +213,10 @@ class MemoPageState extends State<MemoPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print(todayData[0].hide);
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => RecordPage(widget.passedValue)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RecordPage(widget.passedValue)));
         },
         tooltip: 'Increment',
         child: const Icon(Icons.article_outlined),

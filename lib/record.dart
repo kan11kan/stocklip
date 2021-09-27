@@ -3,6 +3,7 @@ class Record {
   // フィールド
   final String url;
   final String day;
+  // DateTime time;
   bool hide;
 
   Record copyWith({

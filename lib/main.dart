@@ -42,25 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -77,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined), title: Text('')),
+              icon: Icon(Icons.article_outlined), title: Text('archives')),
           BottomNavigationBarItem(
               icon: Icon(Icons.text_format), title: Text('Daily record'))
         ],
@@ -301,8 +282,13 @@ class WebPageState extends State<WebPage> {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now(); //ビルドするたびに代入される値。setstateでは変えることができない。
+    // DateFormat outputFormat = DateFormat('yyyy/MM/dd(E) HH:mm:ss');
     DateFormat outputFormat = DateFormat('yyyy-MM-dd');
     String day = outputFormat.format(now);
+
+    // DateTime now2 = DateTime.now();
+    // String day2 = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
+    // DateTime day2 = DateTime.parse(day);
 
     return Scaffold(
       appBar: AppBar(
@@ -311,16 +297,17 @@ class WebPageState extends State<WebPage> {
       body: WebView(
         initialUrl: widget.firstUrl,
         onPageFinished: (url) {
-          final record = Record(url: url, day: day); //コンストラクタを呼び出している
-          // final record2 = record.copyWith(
-          //     url: 'https://aaa.com'); //インスタンス化したクラスに対して値を差し替えたい時に使う
+          final record = Record(url: url, day: day);
 
           records.add(record);
+
           // days.add('${date}');
           // print(records[0].url);
           // print(records[1].day);
           // records.forEach((element) => print(element.url));
-          print(records.map((element) => (element.url)).toList());
+          // print(records.map((element) => (element.day)).toList());
+          // print(now);
+          // print(day2);
           // print(records.map((element) => (element.day)).toList());
         },
       ),
