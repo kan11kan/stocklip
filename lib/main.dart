@@ -71,13 +71,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: buildText(),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined), title: Text('Record')),
+              icon: Icon(Icons.article_outlined), title: Text('')),
           BottomNavigationBarItem(
               icon: Icon(Icons.text_format), title: Text('Daily record'))
         ],
@@ -279,8 +279,10 @@ class _MyHomePageState extends State<MyHomePage> {
       //   },
       //   child: const Icon(Icons.article_outlined),
       // ),
-    ); // This trailing comma makes auto-formatting nicer for build methods.
+    );
   }
+
+  Text buildText() => Text(widget.title);
 }
 
 //ここからボタン押下後の遷移先ページ
