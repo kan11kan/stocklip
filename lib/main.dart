@@ -88,7 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 return CupertinoPageScaffold(
                   navigationBar: const CupertinoNavigationBar(
                     backgroundColor: Colors.blue,
-                    middle: Text('Home'), //ここがタイトル
+                    middle: Text(
+                      'Home',
+                      style: TextStyle(color: Colors.white),
+                    ), //ここがタイトル
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -99,26 +102,126 @@ class _MyHomePageState extends State<MyHomePage> {
                           Container(
                             padding: const EdgeInsets.only(bottom: 30),
                             child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebPage(
+                                            'https://www.google.com/')));
+                              },
+                              child: Column(
+                                children: const [
+                                  Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/google_logo.png'),
+                                  ),
+                                  Material(
+                                    child: Text('google.com'),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => WebPage(
-                                              'https://www.google.com/')));
+                                              'https://www.bloomberg.co.jp/')));
                                 },
                                 child: Column(
                                   children: const [
                                     Image(
                                       width: 80,
                                       height: 80,
-                                      image:
-                                          AssetImage('images/google_logo.png'),
+                                      image: AssetImage('images/bloomberg.png'),
                                     ),
-                                    Material(
-                                      child: Text('google.com'),
-                                    )
+                                    Material(child: Text('Bloomberg')),
                                   ],
                                 )),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => WebPage(
+                                              'https://finance.yahoo.co.jp/')));
+                                },
+                                child: Column(
+                                  children: const [
+                                    Image(
+                                      width: 80,
+                                      height: 80,
+                                      image: AssetImage(
+                                          'images/yahoofinance_logo.jpeg'),
+                                    ),
+                                    Material(
+                                      child: Text('Yahoo Finance!'),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => WebPage(
+                                            'https://nikkei225jp.com/cme/'),
+                                      ),
+                                    );
+                                  },
+                                  child: const Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/cme_logo.jpeg'),
+                                  ),
+                                ),
+                                const Material(
+                                  child: Text('CME日経平均'),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 30),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebPage(
+                                            'https://www.google.com/')));
+                              },
+                              child: Column(
+                                children: const [
+                                  Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/google_logo.png'),
+                                  ),
+                                  Material(
+                                    child: Text('google.com'),
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
@@ -259,13 +362,16 @@ class WebPageState extends State<WebPage> {
           records.add(record);
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => MemoPage(records)));
-          // print('item is List: ${items is List}');
-        },
-        child: const Icon(Icons.article_outlined),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(bottom: 50.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MemoPage(records)));
+            // print('item is List: ${items is List}');
+          },
+          child: const Icon(Icons.article_outlined),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

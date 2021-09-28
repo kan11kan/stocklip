@@ -37,16 +37,64 @@ class MemoPageState extends State<MemoPage> {
         .where((el) => el.day == date && el.hide == false)
         .toList();
     var todayUrls = todayData.map((element) => (element.url)).toList();
+    const String nikkei = '30,100';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${date}'),
+        title: const Text('Daily Record'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TextField(
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('$dateの履歴', style: const TextStyle(fontSize: 24)),
+                  const Text('日経平均：$nikkei円'),
+                  // Text('今日のタグ：トヨタ　金利　'),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.blue),
+                              color: Colors.lightBlue),
+                          child: const Text("日経平均"),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.blue),
+                            color: Colors.lightBlue),
+                        child: Text("金利"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(8, 12, 54, 12),
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 40.0),
+                  hintText: ('　ここにメモを入力します'),
+                  filled: true,
+                  fillColor: Colors.grey[300],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  )),
+            ),
           ),
           GestureDetector(
             onLongPress: () {},
@@ -146,16 +194,16 @@ class MemoPageState extends State<MemoPage> {
                                           builder: (context) => WebPage(
                                               '${todayUrls[_items[index]]}')));
                                 },
-                                titleStyle: TextStyle(
+                                titleStyle: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
-                                descriptionStyle: TextStyle(
+                                descriptionStyle: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
                                 ),
-                                siteNameStyle: TextStyle(
+                                siteNameStyle: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
                                 ),
@@ -167,16 +215,6 @@ class MemoPageState extends State<MemoPage> {
                                 child: const Icon(Icons.drag_handle),
                               ),
                             ),
-
-                            // Container(
-                            //     width: 10,
-                            //     child: GestureDetector(
-                            //         onTap: () {
-                            //           setState(() {
-                            //             todayData[index].hide = true;
-                            //           });
-                            //         },
-                            //         child: Icon(Icons.delete)))
                           ],
                         ),
                       ),
@@ -210,16 +248,19 @@ class MemoPageState extends State<MemoPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print(todayData[0].hide);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => RecordPage(widget.passedValue)));
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.article_outlined),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(bottom: 50.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            print(todayData[0].hide);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecordPage(widget.passedValue)));
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.article_outlined),
+        ),
       ),
     );
   }
