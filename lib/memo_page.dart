@@ -19,17 +19,11 @@ class MemoPage extends StatefulWidget {
 }
 
 class MemoPageState extends State<MemoPage> {
-  // List<String> todayUrls = <String>[];
-  // List<String> day = <String>[];
-
   List<int> _items = List<int>.generate(100, (int index) => index);
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
-    final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
-    // final urls = widget.passedValue.map((element) => (element.url)).toList();
     final days = widget.passedValue.map((element) => (element.day)).toList();
     final now = widget.now;
     String date = widget.outputFormat.format(now);
@@ -54,7 +48,6 @@ class MemoPageState extends State<MemoPage> {
                 children: [
                   Text('$dateの履歴', style: const TextStyle(fontSize: 24)),
                   const Text('日経平均：$nikkei円'),
-                  // Text('今日のタグ：トヨタ　金利　'),
                   Row(
                     children: [
                       Padding(
@@ -162,7 +155,7 @@ class MemoPageState extends State<MemoPage> {
                                         child: Text('Close BottomSheet'),
                                         onPressed: () => Navigator.pop(context),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -180,19 +173,19 @@ class MemoPageState extends State<MemoPage> {
                               child: SimpleUrlPreview(
                                 url: todayUrls[_items[index]],
                                 bgColor: Colors.white,
-                                // isClosable: true,
                                 titleLines: 1,
                                 descriptionLines: 2,
                                 imageLoaderColor: Colors.white,
                                 previewHeight: 150,
                                 previewContainerPadding: EdgeInsets.all(5),
                                 onTap: () {
-                                  // print('ccc');
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WebPage(
-                                              '${todayUrls[_items[index]]}')));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WebPage(
+                                          '${todayUrls[_items[index]]}'),
+                                    ),
+                                  );
                                 },
                                 titleStyle: const TextStyle(
                                   fontSize: 16,
@@ -225,24 +218,28 @@ class MemoPageState extends State<MemoPage> {
                         color: Colors.red,
                         icon: Icons.delete,
                         onTap: () {
-                          setState(() {
-                            todayData[index].hide = true;
-                          });
+                          setState(
+                            () {
+                              todayData[index].hide = true;
+                            },
+                          );
                         },
                       ),
                     ],
                   ),
               ],
               onReorder: (int oldIndex, int newIndex) {
-                setState(() {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final int item = _items.removeAt(oldIndex);
-                  _items.insert(newIndex, item);
+                setState(
+                  () {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    final int item = _items.removeAt(oldIndex);
+                    _items.insert(newIndex, item);
 
-                  print(todayUrls);
-                });
+                    print(todayUrls);
+                  },
+                );
               },
             ),
           ),
@@ -286,7 +283,6 @@ class MemoFieldPageState extends State<MemoFieldPage> {
           ),
           ElevatedButton(
               onPressed: () {
-                // print(myController.text);
                 setState(
                   () {
                     items.add(myController.text);

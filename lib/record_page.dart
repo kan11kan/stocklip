@@ -23,83 +23,38 @@ class RecordPageState extends State<RecordPage> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text('アーカイブ'),
           ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Colors.black12,
-                          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black12,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                            color: Colors.black12,
-                          ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(
+                          color: Colors.black12,
                         ),
                       ),
                     ),
                   ),
-                  Icon(Icons.calendar_today_rounded)
-                ],
-              ),
+                ),
+                const Icon(Icons.calendar_today_rounded)
+              ],
             ),
           ),
         ],
       ),
     );
-
-    //   CupertinoTabScaffold(
-    //   tabBar: CupertinoTabBar(
-    //     items: const <BottomNavigationBarItem>[
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.home),
-    //         title: Text('home'),
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.format_color_text),
-    //         title: Text('daily archives'),
-    //       )
-    //     ],
-    //     // onTap: ,
-    //     // currentIndex: ,
-    //   ),
-    //   tabBuilder: (BuildContext context, int index) {
-    //     return CupertinoTabView(
-    //       builder: (BuildContext context) {
-    //         return CupertinoPageScaffold(
-    //           navigationBar: CupertinoNavigationBar(
-    //             middle: Text('Page 1 of tab $index'), //ここがタイトル
-    //           ),
-    //           child: Center(
-    //             // child: MemoPage(records),
-    //             child: Text('履歴一覧'),
-    //             // child: CupertinoButton(
-    //             //   child: const Text('Next page'),
-    //             //   onPressed: () {
-    //             //     Navigator.push(
-    //             //         context,
-    //             //         MaterialPageRoute(
-    //             //             builder: (context) => MyHomePage(
-    //             //                   title: 'Home',
-    //             //                 )));
-    //             //   },
-    //             // ),
-    //           ),
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
   }
 }

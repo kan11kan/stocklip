@@ -23,34 +23,6 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Stock Clip'), //ここのtitleは変数？
     );
-
-    //ここから変更
-    // return CupertinoTabScaffold(
-    //   tabBar: CupertinoTabBar(
-    //     items: const <BottomNavigationBarItem>[
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.home),
-    //         title: Text('home'),
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(Icons.format_color_text),
-    //         title: Text('daily archives'),
-    //       )
-    //     ],
-    //   ),
-    //   tabBuilder: (BuildContext context, int index) {
-    //     return CupertinoTabView(
-    //       builder: (BuildContext context) {
-    //         return CupertinoPageScaffold(
-    //           navigationBar: CupertinoNavigationBar(
-    //             middle: Text('Page 1 of tab $index'), //ここがタイトル
-    //           ),
-    //           child:
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
   }
 }
 
@@ -71,9 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(
+      () {
+        _selectedIndex = index;
+      },
+    );
   }
 // @override dispose()//super.disposeと定義すると一回通る→datetime.nowで取れる。
 
@@ -104,10 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => WebPage(
-                                            'https://www.google.com/')));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        WebPage('https://www.google.com/'),
+                                  ),
+                                );
                               },
                               child: Column(
                                 children: const [
@@ -126,47 +102,53 @@ class _MyHomePageState extends State<MyHomePage> {
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WebPage(
-                                              'https://www.bloomberg.co.jp/')));
-                                },
-                                child: Column(
-                                  children: const [
-                                    Image(
-                                      width: 80,
-                                      height: 80,
-                                      image: AssetImage('images/bloomberg.png'),
-                                    ),
-                                    Material(child: Text('Bloomberg')),
-                                  ],
-                                )),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        WebPage('https://www.bloomberg.co.jp/'),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                children: const [
+                                  Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/bloomberg.png'),
+                                  ),
+                                  Material(
+                                    child: Text('Bloomberg'),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WebPage(
-                                              'https://finance.yahoo.co.jp/')));
-                                },
-                                child: Column(
-                                  children: const [
-                                    Image(
-                                      width: 80,
-                                      height: 80,
-                                      image: AssetImage(
-                                          'images/yahoofinance_logo.jpeg'),
-                                    ),
-                                    Material(
-                                      child: Text('Yahoo Finance!'),
-                                    ),
-                                  ],
-                                )),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebPage(
+                                            'https://finance.yahoo.co.jp/')));
+                              },
+                              child: Column(
+                                children: const [
+                                  Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage(
+                                        'images/yahoofinance_logo.jpeg'),
+                                  ),
+                                  Material(
+                                    child: Text('Yahoo Finance!'),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
@@ -204,10 +186,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => WebPage(
-                                            'https://www.google.com/')));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        WebPage('https://www.google.com/'),
+                                  ),
+                                );
                               },
                               child: Column(
                                 children: const [
@@ -226,33 +210,38 @@ class _MyHomePageState extends State<MyHomePage> {
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WebPage(
-                                              'https://www.bloomberg.co.jp/')));
-                                },
-                                child: Column(
-                                  children: const [
-                                    Image(
-                                      width: 80,
-                                      height: 80,
-                                      image: AssetImage('images/bloomberg.png'),
-                                    ),
-                                    Material(child: Text('Bloomberg')),
-                                  ],
-                                )),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        WebPage('https://www.bloomberg.co.jp/'),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                children: const [
+                                  Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/bloomberg.png'),
+                                  ),
+                                  Material(child: Text('Bloomberg')),
+                                ],
+                              ),
+                            ),
                           ),
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
                             child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WebPage(
-                                              'https://finance.yahoo.co.jp/')));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WebPage(
+                                          'https://finance.yahoo.co.jp/'),
+                                    ),
+                                  );
                                 },
                                 child: Column(
                                   children: const [
@@ -322,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.format_color_text),
-            title: Text('daily archives'),
+            title: Text('daily news'),
           )
         ],
       ),
@@ -366,8 +355,12 @@ class WebPageState extends State<WebPage> {
         margin: EdgeInsets.only(bottom: 50.0),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MemoPage(records)));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemoPage(records),
+              ),
+            );
             // print('item is List: ${items is List}');
           },
           child: const Icon(Icons.article_outlined),
