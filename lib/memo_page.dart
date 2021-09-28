@@ -44,7 +44,7 @@ class MemoPageState extends State<MemoPage> {
       ),
       body: Column(
         children: [
-          TextField(
+          const TextField(
             keyboardType: TextInputType.multiline,
             maxLines: null,
           ),

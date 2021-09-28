@@ -17,7 +17,48 @@ class RecordPageState extends State<RecordPage> {
     List<Record> records = <Record>[];
     final days = widget.passedValue.map((element) => (element.day)).toList();
     final url = widget.passedValue.map((element) => (element.url)).toList();
-    return Text('aaaaa');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('archives'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('アーカイブ'),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: const BorderSide(
+                            color: Colors.black12,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: const BorderSide(
+                            color: Colors.black12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Icon(Icons.calendar_today_rounded)
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
     //   CupertinoTabScaffold(
     //   tabBar: CupertinoTabBar(
     //     items: const <BottomNavigationBarItem>[

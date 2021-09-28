@@ -79,36 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text(widget.title),
-    //   ),
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     items: [
-    //       BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
-    //       BottomNavigationBarItem(
-    //           icon: Icon(Icons.article_outlined), title: Text('archives')),
-    //       BottomNavigationBarItem(
-    //           icon: Icon(Icons.text_format), title: Text('Daily record'))
-    //     ],
-    //     currentIndex: _selectedIndex,
-    //     selectedItemColor: Colors.amber[800],
-    //     onTap: _onItemTapped,
-    //   ),
-    //   body: _selectedIndex == 0
-    //       ? Text('aaa')
-
     return CupertinoTabScaffold(
       tabBuilder: (BuildContext context, int index) {
-        //ここからcaseで場合わけしてみる
         switch (index) {
           case 0:
             return CupertinoTabView(
               builder: (BuildContext context) {
                 return CupertinoPageScaffold(
-                  // navigationBar: CupertinoNavigationBar(
-                  //   middle: Text('Page 1 of tab $index'), //ここがタイトル
-                  // ),
+                  navigationBar: const CupertinoNavigationBar(
+                    backgroundColor: Colors.blue,
+                    middle: Text('Home'), //ここがタイトル
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -116,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(bottom: 30),
+                            padding: const EdgeInsets.only(bottom: 30),
                             child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -139,6 +120,77 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ],
                                 )),
                           ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => WebPage(
+                                              'https://www.bloomberg.co.jp/')));
+                                },
+                                child: Column(
+                                  children: const [
+                                    Image(
+                                      width: 80,
+                                      height: 80,
+                                      image: AssetImage('images/bloomberg.png'),
+                                    ),
+                                    Material(child: Text('Bloomberg')),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => WebPage(
+                                              'https://finance.yahoo.co.jp/')));
+                                },
+                                child: Column(
+                                  children: const [
+                                    Image(
+                                      width: 80,
+                                      height: 80,
+                                      image: AssetImage(
+                                          'images/yahoofinance_logo.jpeg'),
+                                    ),
+                                    Material(
+                                      child: Text('Yahoo Finance!'),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => WebPage(
+                                            'https://nikkei225jp.com/cme/'),
+                                      ),
+                                    );
+                                  },
+                                  child: const Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/cme_logo.jpeg'),
+                                  ),
+                                ),
+                                const Material(
+                                  child: Text('CME日経平均'),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ],
