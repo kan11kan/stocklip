@@ -4,8 +4,8 @@ import 'package:one_app_everyday921/record.dart';
 
 class RecordPage extends StatefulWidget {
   //ここでイニシャライズする
-  RecordPage(this.passedValue);
-  final List<Record> passedValue;
+  // RecordPage(this.passedValue);
+  // final List<Record> passedValue;
 
   @override
   State<RecordPage> createState() => RecordPageState();
@@ -15,8 +15,8 @@ class RecordPageState extends State<RecordPage> {
   @override
   Widget build(BuildContext context) {
     List<Record> records = <Record>[];
-    final days = widget.passedValue.map((element) => (element.day)).toList();
-    final url = widget.passedValue.map((element) => (element.url)).toList();
+    // final days = widget.passedValue.map((element) => (element.day)).toList();
+    // final url = widget.passedValue.map((element) => (element.url)).toList();
     return Scaffold(
       appBar: AppBar(
         title: Text('archives'),

@@ -28,16 +28,17 @@ class MyApp extends StatelessWidget {
 }
 
 class GlobalController extends GetxController {
-  final List<Record> records = <Record>[].obs;
-  final day = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
-  RxString lastUrl = ''.obs;
+  final List<Record> recordsArray = <Record>[].obs;
+  final today = DateFormat('yyyy-MM-dd').format(DateTime.now()).obs;
+  final records = Record().obs;
+  // final pageIndex = 0.obs;
 }
 
 class MyHomePage extends StatelessWidget {
   final gc = Get.put(GlobalController());
   @override
   Widget build(context) => CupertinoTabScaffold(
-        tabBuilder: (BuildContext context, int index) {
+        tabBuilder: (BuildContext context, index) {
           switch (index) {
             case 0:
               return CupertinoTabView(
@@ -60,6 +61,7 @@ class MyHomePage extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 30),
                               child: GestureDetector(
                                 onTap: () {
+                                  index = 3;
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -87,6 +89,7 @@ class MyHomePage extends StatelessWidget {
                               padding: EdgeInsets.only(bottom: 30),
                               child: GestureDetector(
                                 onTap: () {
+                                  index = 3;
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -113,6 +116,7 @@ class MyHomePage extends StatelessWidget {
                               padding: EdgeInsets.only(bottom: 30),
                               child: GestureDetector(
                                 onTap: () {
+                                  index = 3;
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -140,7 +144,7 @@ class MyHomePage extends StatelessWidget {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      //url = 'https://'
+                                      index = 3;
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -170,11 +174,11 @@ class MyHomePage extends StatelessWidget {
                 }, //builder(BuildContext Context)
               );
             case 1:
-              return RecordPage(gc.records);
+              return RecordPage();
             case 2:
-              return MemoPage(gc.records);
+              return MemoPage();
             case 3:
-              return Obx(() => WebPage(gc.lastUrl.value));
+              return Obx(() => WebPage((gc.recordsArray.last.url)));
             default:
               return Text('');
           }
@@ -218,9 +222,8 @@ class WebPage extends StatelessWidget {
         child: WebView(
           initialUrl: firstUrl,
           onPageFinished: (url) {
-            final record = Record(url: url, day: gc.day.value);
-            gc.records.add(record);
-            gc.lastUrl = record.url as RxString;
+            final record = Record(url: url, day: gc.today.value);
+            gc.recordsArray.add(record);
           },
         ),
       );
