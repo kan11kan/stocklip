@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:one_app_everyday921/record.dart';
+import 'package:one_app_everyday921/domain/record.dart';
 
 class RecordPage extends StatefulWidget {
   //ここでイニシャライズする

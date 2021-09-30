@@ -2,11 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:one_app_everyday921/record.dart';
+import 'package:one_app_everyday921/domain/record.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'memo_page.dart';
-import 'record_page.dart';
+import 'presentation/memo_page/memo_page.dart';
+import 'presentation/record_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -388,7 +388,7 @@ class WebPageState extends State<WebPage> {
   List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
   // final String day = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
