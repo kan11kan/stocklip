@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record.dart';
-import 'package:one_app_everyday921/presentation/record_page.dart';
+import 'package:one_app_everyday921/presentation/record_page/record_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 import '../../main.dart';
@@ -178,7 +178,8 @@ class MemoPageState extends State<MemoPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => WebPage(
-                                              '${todayUrls[_items[index]]}')));
+                                              // '${todayUrls[_items[index]]}'
+                                              )));
                                 },
                                 titleStyle: TextStyle(
                                   fontSize: 16,
