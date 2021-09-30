@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/record.dart';
@@ -5,7 +6,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'memo_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -69,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
       body: _selectedIndex == 0
-          ? Text('aaa')
+          ? Text('bbb')
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
