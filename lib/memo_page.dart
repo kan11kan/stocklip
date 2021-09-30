@@ -24,6 +24,16 @@ class MemoPageState extends State<MemoPage> {
 
   List<int> _items = List<int>.generate(100, (int index) => index);
 
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -41,6 +51,30 @@ class MemoPageState extends State<MemoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${date}'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.article_outlined),
+            title: Text('archives'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.text_format),
+            title: Text('Daily record'),
+          ),
+          BottomNavigationBarItem(
+            title: Text('Web Page'),
+            icon: Icon(Icons.add_box_rounded),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
       body: Column(
         children: [

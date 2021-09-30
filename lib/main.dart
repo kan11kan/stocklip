@@ -60,20 +60,31 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+        type: BottomNavigationBarType.fixed,
+        items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined), title: Text('archives')),
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.text_format), title: Text('Daily record'))
+            icon: Icon(Icons.article_outlined),
+            title: Text('archives'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.text_format),
+            title: Text('Daily record'),
+          ),
+          BottomNavigationBarItem(
+            title: Text('Web Page'),
+            icon: Icon(Icons.add_box_rounded),
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),
       body: _selectedIndex == 0
-          ? Text('bbb')
-          : Column(
+          ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
@@ -264,7 +275,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 )
               ],
-            ),
+            )
+          : Text('bbb'),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
       //     Navigator.push(context,
@@ -291,6 +303,16 @@ class WebPageState extends State<WebPage> {
   List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
   // final String day = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
+  int _selectedIndex = 1;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now(); //ビルドするたびに代入される値。setstateでは変えることができない。
@@ -305,6 +327,30 @@ class WebPageState extends State<WebPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(day),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.article_outlined),
+            title: Text('Archives'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.text_format),
+            title: Text('Daily News'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box_rounded),
+            title: Text('Web Page'),
+          )
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
       body: WebView(
         initialUrl: widget.firstUrl,
