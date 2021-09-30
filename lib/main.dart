@@ -47,14 +47,28 @@ class MyApp extends StatelessWidget {
 //   }
 // }
 
+//     int _selectedIndex = 0;
+//         void _onItemTapped(int index) {
+//       setState(() {
+//         _selectedIndex = index;
+//       });
+//     }
+//         currentIndex: _selectedIndex,
+//         onTap: _onItemTapped,
+//       ),
+
+class TabViewController extends GetxController {
+  var selectedIndex1 = 0.obs;
+  void onItemTapped1(int index) {
+    selectedIndex1.value = index;
+    // update();
+  }
+}
+
 //クラスわけで分割していく（ステートレスウィジェットにしながら）
 class MyHomePage extends StatelessWidget {
   final List<Widget> childList = [WebPage('aaa'), RecordPage([])];
-  // final GC = Get.put(TabViewController());
-  var selectedIndex1 = Rx<int>(0);
-  void onItemTapped1(int index) {
-    selectedIndex1 = index as Rx<int>;
-  }
+  final tvc = Get.put(TabViewController());
 
   @override
   Widget build(BuildContext context) {
@@ -80,13 +94,13 @@ class MyHomePage extends StatelessWidget {
             icon: Icon(Icons.add_box_rounded),
           ),
         ],
-        // currentIndex: GC.selectedIndex.value,
+        currentIndex: tvc.selectedIndex1.toInt(),
         selectedItemColor: Colors.amber[800],
         // onTap: GC.onItemTapped,
-        onTap: onItemTapped1,
+        onTap: tvc.onItemTapped1,
       ),
       // body: childList[GC.selectedIndex.value],
-      body: childList[selectedIndex1.toInt()],
+      body: Obx(() => childList[tvc.selectedIndex1.value]),
     );
   }
 }
