@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/record.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'memo_page.dart';
+import 'record_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,48 +19,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'nanannanana',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Stock Clip'),
+      home: MyHomePage(),
     );
   }
 }
 
-//ここからステートフルウィジェットについて
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+//ここからステートフルウィジェットについて（念の為残している。）
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({Key? key, required this.title}) : super(key: key);
+//   final String title;
+//
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//ここからgetXでタブビューをタップした時のコントローラーを記載
+// class TabViewController extends GetxController {
+//   // final onItemTapped = 0.obs;
+//   var selectedIndex = 1.obs;
+//   void onItemTapped(int index) {
+//     selectedIndex = index as RxInt;
+//   }
+// }
 
-//ここからステートについての記述
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
-  final String day =
-      DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
-
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+//クラスわけで分割していく（ステートレスウィジェットにしながら）
+class MyHomePage extends StatelessWidget {
+  final List<Widget> childList = [WebPage('aaa'), RecordPage([])];
+  // final GC = Get.put(TabViewController());
+  var selectedIndex1 = Rx<int>(0);
+  void onItemTapped1(int index) {
+    selectedIndex1 = index as Rx<int>;
   }
-// @override dispose()//super.disposeと定義すると一回通る→datetime.nowで取れる。
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const [
@@ -79,216 +80,286 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.add_box_rounded),
           ),
         ],
-        currentIndex: _selectedIndex,
+        // currentIndex: GC.selectedIndex.value,
         selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+        // onTap: GC.onItemTapped,
+        onTap: onItemTapped1,
       ),
-      body: _selectedIndex == 0
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        WebPage('https://www.google.com/')));
-                          },
-                          child: Column(
-                            children: const [
-                              Image(
-                                width: 80,
-                                height: 80,
-                                image: AssetImage('images/google_logo.png'),
-                              ),
-                              Text('google.com'),
-                            ],
-                          )),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WebPage(
-                                        'https://www.bloomberg.co.jp/')));
-                          },
-                          child: Column(
-                            children: [
-                              Image(
-                                width: 80,
-                                height: 80,
-                                image: AssetImage('images/bloomberg.png'),
-                              ),
-                              Text('Bloomberg')
-                            ],
-                          )),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WebPage(
-                                        'https://finance.yahoo.co.jp/')));
-                          },
-                          child: Column(
-                            children: [
-                              Image(
-                                width: 80,
-                                height: 80,
-                                image:
-                                    AssetImage('images/yahoofinance_logo.jpeg'),
-                              ),
-                              Text('Yahoo Finance!')
-                            ],
-                          )),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebPage('https://nikkei225jp.com/cme/'),
-                                ),
-                              );
-                            },
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              image: AssetImage('images/cme_logo.jpeg'),
-                            ),
-                          ),
-                          Text('CME日経平均')
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebPage('https://www.google.com/')));
-                        },
-                        child: Column(
-                          children: [
-                            Image(
-                              width: 80,
-                              height: 80,
-                              image: AssetImage('images/google_logo.png'),
-                            ),
-                            Text('google.com'),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebPage('https://www.bloomberg.co.jp/')));
-                        },
-                        child: Column(
-                          children: [
-                            Image(
-                              width: 80,
-                              height: 80,
-                              image: AssetImage('images/bloomberg.png'),
-                            ),
-                            Text('Bloomberg')
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebPage('https://finance.yahoo.co.jp/')));
-                        },
-                        child: Column(
-                          children: [
-                            Image(
-                              width: 80,
-                              height: 80,
-                              image:
-                                  AssetImage('images/yahoofinance_logo.jpeg'),
-                            ),
-                            Text('Yahoo Finance!')
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WebPage(
-                                          'https://nikkei225jp.com/cme/')));
-                            },
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              image: AssetImage('images/cme_logo.jpeg'),
-                            ),
-                          ),
-                          Text('CME日経平均')
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            )
-          : Text('bbb'),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(context,
-      //         MaterialPageRoute(builder: (context) => MemoPage(records)));
-      //   },
-      //   child: const Icon(Icons.article_outlined),
-      // ),
+      // body: childList[GC.selectedIndex.value],
+      body: childList[selectedIndex1.toInt()],
     );
   }
-
-  // Text buildText() => Text(widget.title);
 }
+
+//ここからボディの中身（MyHomePageContent）を記載していく
+class MyHomePageContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text('aaa');
+  }
+}
+
+//ここからステートについての記述
+// class _MyHomePageState extends State<MyHomePage> {
+//   final List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
+//   final String day =
+//       DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
+//
+//   int _selectedIndex = 0;
+//   static const TextStyle optionStyle =
+//       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+//
+//   void _onItemTapped(int index) {
+//     setState(() {
+//       _selectedIndex = index;
+//     });
+//   }
+//
+//   final List<Widget> chiledList = [WebPage('aaa'), RecordPage([])];
+// // @override dispose()//super.disposeと定義すると一回通る→datetime.nowで取れる。
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: Text(widget.title),
+//         ),
+//         bottomNavigationBar: BottomNavigationBar(
+//           type: BottomNavigationBarType.fixed,
+//           items: const [
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.home),
+//               title: Text('Home'),
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.article_outlined),
+//               title: Text('archives'),
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.text_format),
+//               title: Text('Daily record'),
+//             ),
+//             BottomNavigationBarItem(
+//               title: Text('Web Page'),
+//               icon: Icon(Icons.add_box_rounded),
+//             ),
+//           ],
+//           currentIndex: _selectedIndex,
+//           selectedItemColor: Colors.amber[800],
+//           onTap: _onItemTapped,
+//         ),
+//         body: chiledList[_selectedIndex]
+//         // void changeTab(context, _selectedIndex) {
+//         //   switch (_selectedIndex) {
+//         //     case 0:Text('aaaa');
+//         //   }
+//         // }
+//         // _selectedIndex == 0
+//         //     ? Column(
+//         //         mainAxisAlignment: MainAxisAlignment.center,
+//         //         children: [
+//         //           Row(
+//         //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//         //             children: [
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: GestureDetector(
+//         //                     onTap: () {
+//         //                       Navigator.push(
+//         //                           context,
+//         //                           MaterialPageRoute(
+//         //                               builder: (context) =>
+//         //                                   WebPage('https://www.google.com/')));
+//         //                     },
+//         //                     child: Column(
+//         //                       children: const [
+//         //                         Image(
+//         //                           width: 80,
+//         //                           height: 80,
+//         //                           image: AssetImage('images/google_logo.png'),
+//         //                         ),
+//         //                         Text('google.com'),
+//         //                       ],
+//         //                     )),
+//         //               ),
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: GestureDetector(
+//         //                     onTap: () {
+//         //                       Navigator.push(
+//         //                           context,
+//         //                           MaterialPageRoute(
+//         //                               builder: (context) => WebPage(
+//         //                                   'https://www.bloomberg.co.jp/')));
+//         //                     },
+//         //                     child: Column(
+//         //                       children: [
+//         //                         Image(
+//         //                           width: 80,
+//         //                           height: 80,
+//         //                           image: AssetImage('images/bloomberg.png'),
+//         //                         ),
+//         //                         Text('Bloomberg')
+//         //                       ],
+//         //                     )),
+//         //               ),
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: GestureDetector(
+//         //                     onTap: () {
+//         //                       Navigator.push(
+//         //                           context,
+//         //                           MaterialPageRoute(
+//         //                               builder: (context) => WebPage(
+//         //                                   'https://finance.yahoo.co.jp/')));
+//         //                     },
+//         //                     child: Column(
+//         //                       children: [
+//         //                         Image(
+//         //                           width: 80,
+//         //                           height: 80,
+//         //                           image:
+//         //                               AssetImage('images/yahoofinance_logo.jpeg'),
+//         //                         ),
+//         //                         Text('Yahoo Finance!')
+//         //                       ],
+//         //                     )),
+//         //               ),
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: Column(
+//         //                   children: [
+//         //                     GestureDetector(
+//         //                       onTap: () {
+//         //                         Navigator.push(
+//         //                           context,
+//         //                           MaterialPageRoute(
+//         //                             builder: (context) =>
+//         //                                 WebPage('https://nikkei225jp.com/cme/'),
+//         //                           ),
+//         //                         );
+//         //                       },
+//         //                       child: Image(
+//         //                         width: 80,
+//         //                         height: 80,
+//         //                         image: AssetImage('images/cme_logo.jpeg'),
+//         //                       ),
+//         //                     ),
+//         //                     Text('CME日経平均')
+//         //                   ],
+//         //                 ),
+//         //               ),
+//         //             ],
+//         //           ),
+//         //           Row(
+//         //             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//         //             children: [
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: GestureDetector(
+//         //                   onTap: () {
+//         //                     Navigator.push(
+//         //                         context,
+//         //                         MaterialPageRoute(
+//         //                             builder: (context) =>
+//         //                                 WebPage('https://www.google.com/')));
+//         //                   },
+//         //                   child: Column(
+//         //                     children: [
+//         //                       Image(
+//         //                         width: 80,
+//         //                         height: 80,
+//         //                         image: AssetImage('images/google_logo.png'),
+//         //                       ),
+//         //                       Text('google.com'),
+//         //                     ],
+//         //                   ),
+//         //                 ),
+//         //               ),
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: GestureDetector(
+//         //                   onTap: () {
+//         //                     Navigator.push(
+//         //                         context,
+//         //                         MaterialPageRoute(
+//         //                             builder: (context) =>
+//         //                                 WebPage('https://www.bloomberg.co.jp/')));
+//         //                   },
+//         //                   child: Column(
+//         //                     children: [
+//         //                       Image(
+//         //                         width: 80,
+//         //                         height: 80,
+//         //                         image: AssetImage('images/bloomberg.png'),
+//         //                       ),
+//         //                       Text('Bloomberg')
+//         //                     ],
+//         //                   ),
+//         //                 ),
+//         //               ),
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: GestureDetector(
+//         //                   onTap: () {
+//         //                     Navigator.push(
+//         //                         context,
+//         //                         MaterialPageRoute(
+//         //                             builder: (context) =>
+//         //                                 WebPage('https://finance.yahoo.co.jp/')));
+//         //                   },
+//         //                   child: Column(
+//         //                     children: [
+//         //                       Image(
+//         //                         width: 80,
+//         //                         height: 80,
+//         //                         image:
+//         //                             AssetImage('images/yahoofinance_logo.jpeg'),
+//         //                       ),
+//         //                       Text('Yahoo Finance!')
+//         //                     ],
+//         //                   ),
+//         //                 ),
+//         //               ),
+//         //               Container(
+//         //                 padding: EdgeInsets.only(bottom: 30),
+//         //                 child: Column(
+//         //                   children: [
+//         //                     GestureDetector(
+//         //                       onTap: () {
+//         //                         Navigator.push(
+//         //                             context,
+//         //                             MaterialPageRoute(
+//         //                                 builder: (context) => WebPage(
+//         //                                     'https://nikkei225jp.com/cme/')));
+//         //                       },
+//         //                       child: Image(
+//         //                         width: 80,
+//         //                         height: 80,
+//         //                         image: AssetImage('images/cme_logo.jpeg'),
+//         //                       ),
+//         //                     ),
+//         //                     Text('CME日経平均')
+//         //                   ],
+//         //                 ),
+//         //               ),
+//         //             ],
+//         //           )
+//         //         ],
+//         //       )
+//         //     : Text('bbb'),
+//         // floatingActionButton: FloatingActionButton(
+//         //   onPressed: () {
+//         //     Navigator.push(context,
+//         //         MaterialPageRoute(builder: (context) => MemoPage(records)));
+//         //   },
+//         //   child: const Icon(Icons.article_outlined),
+//         // ),
+//         );
+//   }
+//
+//   // Text buildText() => Text(widget.title);
+// }
 
 //ここからボタン押下後の遷移先ページ
 class WebPage extends StatefulWidget {

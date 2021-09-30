@@ -31,30 +31,30 @@ class RecordPageState extends State<RecordPage> {
         appBar: AppBar(
           title: Text('aaaaa'),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined),
-              title: Text('archives'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.text_format),
-              title: Text('Daily record'),
-            ),
-            BottomNavigationBarItem(
-              title: Text('Web Page'),
-              icon: Icon(Icons.add_box_rounded),
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   type: BottomNavigationBarType.fixed,
+        //   items: const [
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.home),
+        //       title: Text('Home'),
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.article_outlined),
+        //       title: Text('archives'),
+        //     ),
+        //     BottomNavigationBarItem(
+        //       icon: Icon(Icons.text_format),
+        //       title: Text('Daily record'),
+        //     ),
+        //     BottomNavigationBarItem(
+        //       title: Text('Web Page'),
+        //       icon: Icon(Icons.add_box_rounded),
+        //     ),
+        //   ],
+        //   currentIndex: _selectedIndex,
+        //   selectedItemColor: Colors.amber[800],
+        //   onTap: _onItemTapped,
+        // ),
         body: _selectedIndex == 0 ? Text('aaa') : Text('bbb'));
     // return CupertinoTabScaffold(
     //   tabBar: CupertinoTabBar(
