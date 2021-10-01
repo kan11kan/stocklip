@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:one_app_everyday921/presentation/archives_page/archives_page.dart';
+import 'package:one_app_everyday921/presentation/daily_page/daily_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'domain/record.dart';
-import 'presentation/memo_page/memo_page.dart';
-import 'presentation/record_page/record_page.dart';
+import 'presentation/memo_page/daily_page.dart';
+import 'presentation/record_page/archives_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class TabViewController extends GetxController {
-  var selectedUrl = ''.obs;
+  var selectedUrl = ''.obs; //試しに書いているだけ
   var selectedIndex1 = 0.obs;
   void onItemTapped1(int index) {
     selectedIndex1.value = index;
@@ -40,8 +42,8 @@ class TabViewController extends GetxController {
 class MyHomePage extends StatelessWidget {
   final List<Widget> childList = [
     MyHomePageContent(),
-    MemoPage([]),
-    RecordPage([]),
+    ArchivesPage(),
+    DailyPage(),
     WebContentPage(),
   ];
   final tvc = Get.put(TabViewController());
@@ -74,7 +76,6 @@ class MyHomePage extends StatelessWidget {
         selectedItemColor: Colors.amber[800],
         onTap: tvc.onItemTapped1,
       ),
-      // body: childList[GC.selectedIndex.value],
       body: Obx(() => childList[tvc.selectedIndex1.value]),
     );
   }
@@ -85,90 +86,93 @@ class MyHomePageContent extends StatelessWidget {
   final tvc = Get.put(TabViewController());
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            padding: EdgeInsets.only(bottom: 30),
-            child: GestureDetector(
-                onTap: () {
-                  tvc.selectedIndex1.value = 3;
-                  tvc.selectedUrl.value = 'https://www.google.com/';
-                  Get.to(WebPage());
-                },
-                child: Column(
-                  children: const [
-                    Image(
-                      width: 80,
-                      height: 80,
-                      image: AssetImage('images/google_logo.png'),
-                    ),
-                    Text('google.com'),
-                  ],
-                )),
-          ),
-          Container(
-            padding: EdgeInsets.only(bottom: 30),
-            child: GestureDetector(
-                onTap: () {
-                  tvc.selectedIndex1.value = 3;
-                  tvc.selectedUrl.value = 'https://www.bloomberg.co.jp/';
-                  Get.to(WebPage());
-                },
-                child: Column(
-                  children: [
-                    Image(
-                      width: 80,
-                      height: 80,
-                      image: AssetImage('images/bloomberg.png'),
-                    ),
-                    Text('Bloomberg')
-                  ],
-                )),
-          ),
-          Container(
-            padding: EdgeInsets.only(bottom: 30),
-            child: GestureDetector(
-                onTap: () {
-                  tvc.selectedIndex1.value = 3;
-                  tvc.selectedUrl.value = 'https://finance.yahoo.co.jp/';
-                  Get.to(WebPage());
-                },
-                child: Column(
-                  children: [
-                    Image(
-                      width: 80,
-                      height: 80,
-                      image: AssetImage('images/yahoofinance_logo.jpeg'),
-                    ),
-                    Text('Yahoo Finance!')
-                  ],
-                )),
-          ),
-          Container(
-            padding: EdgeInsets.only(bottom: 30),
-            child: Column(
-              children: [
-                GestureDetector(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
                   onTap: () {
                     tvc.selectedIndex1.value = 3;
-                    tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
+                    tvc.selectedUrl.value = 'https://www.google.com/';
                     Get.to(WebPage());
                   },
-                  child: Image(
-                    width: 80,
-                    height: 80,
-                    image: AssetImage('images/cme_logo.jpeg'),
-                  ),
-                ),
-                Text('CME日経平均')
-              ],
+                  child: Column(
+                    children: const [
+                      Image(
+                        width: 80,
+                        height: 80,
+                        image: AssetImage('images/google_logo.png'),
+                      ),
+                      Text('google.com'),
+                    ],
+                  )),
             ),
-          ),
-        ],
-      ),
-    ]);
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                  onTap: () {
+                    tvc.selectedIndex1.value = 3;
+                    tvc.selectedUrl.value = 'https://www.bloomberg.co.jp/';
+                    Get.to(WebPage());
+                  },
+                  child: Column(
+                    children: [
+                      Image(
+                        width: 80,
+                        height: 80,
+                        image: AssetImage('images/bloomberg.png'),
+                      ),
+                      Text('Bloomberg')
+                    ],
+                  )),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                  onTap: () {
+                    tvc.selectedIndex1.value = 3;
+                    tvc.selectedUrl.value = 'https://finance.yahoo.co.jp/';
+                    Get.to(WebPage());
+                  },
+                  child: Column(
+                    children: [
+                      Image(
+                        width: 80,
+                        height: 80,
+                        image: AssetImage('images/yahoofinance_logo.jpeg'),
+                      ),
+                      Text('Yahoo Finance!')
+                    ],
+                  )),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      tvc.selectedIndex1.value = 3;
+                      tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
+                      Get.to(WebPage());
+                    },
+                    child: Image(
+                      width: 80,
+                      height: 80,
+                      image: AssetImage('images/cme_logo.jpeg'),
+                    ),
+                  ),
+                  Text('CME日経平均')
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
 
@@ -176,8 +180,8 @@ class MyHomePageContent extends StatelessWidget {
 class WebPage extends StatelessWidget {
   final List<Widget> childList = [
     MyHomePageContent(),
-    MemoPage([]),
-    RecordPage([]),
+    ArchivesPage(),
+    DailyPage(),
     WebContentPage(),
   ];
   final tvc = Get.put(TabViewController());
@@ -217,17 +221,26 @@ class WebPage extends StatelessWidget {
   }
 }
 
+//ここからWebPageのURLを保存するモデル（コントローラーを記載）
+class WebController extends GetxController {
+  final List<Record> records = <Record>[].obs;
+  List<String> todayUrls = <String>[];
+}
+
+//Webの中身だけ表示するページ
 class WebContentPage extends StatelessWidget {
   final tvc = Get.put(TabViewController());
+  final wc = Get.put(WebController());
   final day = ''; //仮で作成
-  List<Record> records = <Record>[]; //仮で作成
+
   @override
   Widget build(BuildContext context) {
     return WebView(
       initialUrl: tvc.selectedUrl.value.toString(),
       onPageFinished: (url) {
-        final record = Record(url: url, day: day);
-        records.add(record);
+        final record =
+            Record(url: url, day: day, urlIndex: wc.records.length + 1);
+        wc.records.add(record);
       },
     );
   }
