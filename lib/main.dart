@@ -1,23 +1,40 @@
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:one_app_everyday921/presentation/archives_page/archives_page.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'domain/record.dart';
-import 'presentation/memo_page/daily_page.dart';
-import 'presentation/record_page/archives_page.dart';
+import 'model/transaction.dart';
 
 void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MyApp());
+  await Hive.initFlutter();
+  Hive.registerAdapter(TransactionAdapter());
+  await Hive.openBox('settings');
+  final box = await Hive.openBox('settings');
+  box.put('settings', 'kan');
+  box.put('key', 'kankan');
+  box.put('1', 'kankankan');
+  // print('${box.get('settings')}');
+  var x = box.get('settings');
+  var y = box.get('key');
+  var z = box.get('1');
+  print(x);
+  print(y);
+  print(z);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -31,6 +48,13 @@ class MyApp extends StatelessWidget {
 }
 
 class TabViewController extends GetxController {
+  final bbb = ''.obs;
+  void aaa() async {
+    await Hive.openBox('settings');
+    final box = await Hive.openBox('settings');
+    bbb.value = box.get('key');
+  }
+
   var selectedUrl = ''.obs; //試しに書いているだけ
   var selectedIndex1 = 0.obs;
   void onItemTapped1(int index) {
@@ -77,6 +101,22 @@ class MyHomePage extends StatelessWidget {
         onTap: tvc.onItemTapped1,
       ),
       body: Obx(() => childList[tvc.selectedIndex1.value]),
+      // ValueListenableBuilder(
+      // Openされたbox('settings')をReadしている
+      // valueListenable: Hive.box('settings').listenable(keys: ['key', '1']),
+      // builder: (context, box, widget) {
+      //   return Center(
+      //     child:
+      //         // child: Text('aaaa'),
+      //         Obx(() => Text('${tvc.bbb.value}')),
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     tvc.aaa();
+      //   },
+      //   child: const Icon(Icons.navigation),
+      //   backgroundColor: Colors.green,
+      // ),
     );
   }
 }
@@ -133,21 +173,22 @@ class MyHomePageContent extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(bottom: 30),
               child: GestureDetector(
-                  onTap: () {
-                    tvc.selectedIndex1.value = 3;
-                    tvc.selectedUrl.value = 'https://finance.yahoo.co.jp/';
-                    Get.to(WebPage());
-                  },
-                  child: Column(
-                    children: [
-                      Image(
-                        width: 80,
-                        height: 80,
-                        image: AssetImage('images/yahoofinance_logo.jpeg'),
-                      ),
-                      Text('Yahoo Finance!')
-                    ],
-                  )),
+                onTap: () {
+                  tvc.selectedIndex1.value = 3;
+                  tvc.selectedUrl.value = 'https://finance.yahoo.co.jp/';
+                  Get.to(WebPage());
+                },
+                child: Column(
+                  children: [
+                    Image(
+                      width: 80,
+                      height: 80,
+                      image: AssetImage('images/yahoofinance_logo.jpeg'),
+                    ),
+                    Text('Yahoo Finance!')
+                  ],
+                ),
+              ),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 30),
@@ -184,6 +225,7 @@ class WebPage extends StatelessWidget {
     DailyPage(),
     WebContentPage(),
   ];
+
   final tvc = Get.put(TabViewController());
   @override
   Widget build(BuildContext context) {
@@ -217,6 +259,11 @@ class WebPage extends StatelessWidget {
       ),
       // body: WebContentPage(),
       body: Obx(() => childList[tvc.selectedIndex1.value]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.navigation),
+        backgroundColor: Colors.green,
+      ),
     );
   }
 }
@@ -238,13 +285,35 @@ class WebContentPage extends StatelessWidget {
     return WebView(
       initialUrl: tvc.selectedUrl.value.toString(),
       onPageFinished: (url) {
-        final record =
-            Record(url: url, day: day, urlIndex: wc.records.length + 1);
+        final record = Record(url: url, day: day);
         wc.records.add(record);
+        void saveUrl() async {
+          await Hive.openBox('url');
+          final box = await Hive.openBox('url');
+          box.put('records', jsonEncode(wc.records));
+          // print('${box.get('records')}');
+        }
+
+        saveUrl();
       },
     );
   }
 }
+
+//ここからfirestoreを試す（追加）
+// class FirestoreController extends GetxController {
+// FirebaseFirestore firestore = FirebaseFirestore.instance;
+// addToFirestore(coll, docId, newData) {
+//   final docRef = firestore.collection(coll).doc(docId);
+//   return docRef.set(newData);
+// }
+
+//   getFromFirestore(coll, docID) {
+//     //collにコレクションID、docIDにドキュメントIDを渡す
+//     final docRef = firestore.collection(coll).doc(docID);
+//     return docRef.get();
+//   }
+// }
 
 //dateの書き方について念の為残す
 //   final List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値

@@ -1,25 +1,51 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:one_app_everyday921/domain/record.dart';
 import 'package:one_app_everyday921/main.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 class DailyPage extends StatelessWidget {
+  List<Record> urls = <Record>[].obs;
+  void aaa() async {
+    await Hive.openBox('url');
+    final box = await Hive.openBox('url');
+    urls = jsonDecode(box.get('records'))
+        .map((el) => Record.fromJson(el))
+        .toList();
+    print('ccc');
+    // final list = [];
+    // persons.forEach((k,v)=>list.add(persons(k,v)));
+  }
+
   final wc = Get.put(WebController());
 
   @override
   Widget build(BuildContext context) {
+    aaa();
+    print('vvv');
     //変数定義＋使える形に変換（本来はutilityで行う？）
     var todayData = wc.records.toList().obs;
-    var todayUrls = todayData.map((el) => (el.url)).toList().obs;
-    List<int> items =
-        List<int>.generate(todayUrls.length, (int index) => index).obs;
+    // var todayUrls = todayData.map((el) => (el.url)).toList().obs;
+    // var todayUrls = urls;
+    List<int> items = List<int>.generate(urls.length, (int index) => index).obs;
     return Column(
       children: [
         TextField(
           keyboardType: TextInputType.multiline,
           maxLines: null,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            aaa();
+            // print(urls);
+            // print(urls);
+          },
+          child: Text('aaa'),
         ),
         GestureDetector(
           onLongPress: () {},
@@ -28,7 +54,7 @@ class DailyPage extends StatelessWidget {
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
-              for (int index = 0; index < todayUrls.length; index++)
+              for (int index = 0; index < urls.length; index++)
                 Slidable(
                   key: Key('$index'),
                   actionPane: SlidableDrawerActionPane(),
@@ -102,29 +128,31 @@ class DailyPage extends StatelessWidget {
                         children: [
                           Container(
                             width: 380,
-                            child: SimpleUrlPreview(
-                              url: todayUrls[index],
-                              bgColor: Colors.white,
-                              titleLines: 1,
-                              descriptionLines: 2,
-                              imageLoaderColor: Colors.white,
-                              previewHeight: 150,
-                              previewContainerPadding: EdgeInsets.all(5),
-                              onTap: () {
-                                Get.to(WebPage());
-                              },
-                              titleStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                              descriptionStyle: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                              siteNameStyle: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
+                            child: Obx(
+                              () => SimpleUrlPreview(
+                                url: urls[index].url,
+                                bgColor: Colors.white,
+                                titleLines: 1,
+                                descriptionLines: 2,
+                                imageLoaderColor: Colors.white,
+                                previewHeight: 150,
+                                previewContainerPadding: EdgeInsets.all(5),
+                                onTap: () {
+                                  Get.to(WebPage());
+                                },
+                                titleStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                descriptionStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                siteNameStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
