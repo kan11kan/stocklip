@@ -10,14 +10,18 @@ import 'package:one_app_everyday921/main.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 class DailyPage extends StatelessWidget {
-  List<Record> urls = <Record>[].obs;
+  RxList<Record> urls = <Record>[].obs;
   void aaa() async {
     await Hive.openBox('url');
     final box = await Hive.openBox('url');
-    urls = jsonDecode(box.get('records'))
+    urls.value = jsonDecode(box.get('records'))
         .map((el) => Record.fromJson(el))
-        .toList();
-    print('ccc');
+        .toList().cast<Record>() as List<Record>;
+    // print(urls.value[0].url);
+    // print(urls.value[1].url);
+    // print(urls.value[2].url);
+    // print(urls.value[3].url);
+    // print(urls.value.length);
     // final list = [];
     // persons.forEach((k,v)=>list.add(persons(k,v)));
   }
@@ -27,7 +31,7 @@ class DailyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     aaa();
-    print('vvv');
+    // print('vvv');
     //変数定義＋使える形に変換（本来はutilityで行う？）
     var todayData = wc.records.toList().obs;
     // var todayUrls = todayData.map((el) => (el.url)).toList().obs;
@@ -52,7 +56,7 @@ class DailyPage extends StatelessWidget {
           child: ReorderableListView(
             padding: const EdgeInsets.symmetric(horizontal: 0),
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
               for (int index = 0; index < urls.length; index++)
                 Slidable(
@@ -121,15 +125,14 @@ class DailyPage extends StatelessWidget {
                         },
                       );
                     },
-                    child: Container(
+                    child: Obx(() => Container(
                       height: 150,
                       width: double.infinity,
                       child: Row(
                         children: [
                           Container(
                             width: 380,
-                            child: Obx(
-                              () => SimpleUrlPreview(
+                            child:SimpleUrlPreview(
                                 url: urls[index].url,
                                 bgColor: Colors.white,
                                 titleLines: 1,
@@ -154,7 +157,7 @@ class DailyPage extends StatelessWidget {
                                   color: Colors.black,
                                 ),
                               ),
-                            ),
+                            
                           ),
                           ReorderableDragStartListener(
                             index: index,
@@ -162,7 +165,7 @@ class DailyPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
+                    )),
                   ),
                   secondaryActions: <Widget>[
                     IconSlideAction(

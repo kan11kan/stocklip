@@ -81,19 +81,19 @@ class MyHomePage extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.article_outlined),
-            title: Text('archives'),
+            label: 'archives',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.text_format),
-            title: Text('Daily record'),
+            label: 'Daily record',
           ),
           BottomNavigationBarItem(
-            title: Text('Web Page'),
             icon: Icon(Icons.add_box_rounded),
+            label:'Web Page',
           ),
         ],
         currentIndex: tvc.selectedIndex1.toInt(),
@@ -270,7 +270,7 @@ class WebPage extends StatelessWidget {
 
 //ここからWebPageのURLを保存するモデル（コントローラーを記載）
 class WebController extends GetxController {
-  final List<Record> records = <Record>[].obs;
+  final RxList<Record> records = <Record>[].obs;
   List<String> todayUrls = <String>[];
 }
 
