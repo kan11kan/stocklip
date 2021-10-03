@@ -16,7 +16,8 @@ class DailyPage extends StatelessWidget {
     final box = await Hive.openBox('url');
     urls.value = jsonDecode(box.get('records'))
         .map((el) => Record.fromJson(el))
-        .toList().cast<Record>() as List<Record>;
+        .toList()
+        .cast<Record>() as List<Record>;
     // print(urls.value[0].url);
     // print(urls.value[1].url);
     // print(urls.value[2].url);
@@ -43,154 +44,156 @@ class DailyPage extends StatelessWidget {
           keyboardType: TextInputType.multiline,
           maxLines: null,
         ),
-        ElevatedButton(
-          onPressed: () {
-            aaa();
-            // print(urls);
-            // print(urls);
-          },
-          child: Text('aaa'),
-        ),
-        GestureDetector(
-          onLongPress: () {},
-          child: ReorderableListView(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            shrinkWrap: true,
-            // physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              for (int index = 0; index < urls.length; index++)
-                Slidable(
-                  key: Key('$index'),
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.25,
-                  child: GestureDetector(
-                    onLongPress: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            height: 320,
-                            color: Colors.white,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.only(bottom: 30),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        ElevatedButton(
-                                          child: const Text('金利'),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.white,
-                                            onPrimary: Colors.black,
-                                            shape: const StadiumBorder(),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     aaa();
+        //     // print(urls);
+        //     // print(urls);
+        //   },
+        //   child: Text('aaa'),
+        // ),
+        SizedBox(
+          height: 600,
+          child: GestureDetector(
+            onLongPress: () {},
+            child: ReorderableListView(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              shrinkWrap: true,
+              // physics: NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                for (int index = 0; index < urls.length; index++)
+                  Slidable(
+                    key: Key('$index'),
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.25,
+                    child: GestureDetector(
+                      onLongPress: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 320,
+                              color: Colors.white,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 30),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            child: const Text('金利'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.white,
+                                              onPrimary: Colors.black,
+                                              shape: const StadiumBorder(),
+                                            ),
+                                            onPressed: () {},
                                           ),
-                                          onPressed: () {},
-                                        ),
-                                        ElevatedButton(
-                                          child: const Text('日経平均'),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.white,
-                                            onPrimary: Colors.black,
-                                            shape: const StadiumBorder(),
+                                          ElevatedButton(
+                                            child: const Text('日経平均'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.white,
+                                              onPrimary: Colors.black,
+                                              shape: const StadiumBorder(),
+                                            ),
+                                            onPressed: () {},
                                           ),
-                                          onPressed: () {},
-                                        ),
-                                        ElevatedButton(
-                                          child: const Text('米国株'),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Colors.white,
-                                            onPrimary: Colors.black,
-                                            shape: const StadiumBorder(),
+                                          ElevatedButton(
+                                            child: const Text('米国株'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.white,
+                                              onPrimary: Colors.black,
+                                              shape: const StadiumBorder(),
+                                            ),
+                                            onPressed: () {},
                                           ),
-                                          onPressed: () {},
-                                        ),
-                                      ],
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      child: ElevatedButton(
+                                        child: Text('Close BottomSheet'),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Obx(() => Container(
+                            height: 150,
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 380,
+                                  child: SimpleUrlPreview(
+                                    url: urls[index].url,
+                                    bgColor: Colors.white,
+                                    titleLines: 1,
+                                    descriptionLines: 2,
+                                    imageLoaderColor: Colors.white,
+                                    previewHeight: 150,
+                                    previewContainerPadding: EdgeInsets.all(5),
+                                    onTap: () {
+                                      Get.to(WebPage());
+                                    },
+                                    titleStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    descriptionStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    siteNameStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
                                     ),
                                   ),
-                                  Container(
-                                    child: ElevatedButton(
-                                      child: Text('Close BottomSheet'),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                                ReorderableDragStartListener(
+                                  index: index,
+                                  child: const Icon(Icons.drag_handle),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      );
-                    },
-                    child: Obx(() => Container(
-                      height: 150,
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 380,
-                            child:SimpleUrlPreview(
-                                url: urls[index].url,
-                                bgColor: Colors.white,
-                                titleLines: 1,
-                                descriptionLines: 2,
-                                imageLoaderColor: Colors.white,
-                                previewHeight: 150,
-                                previewContainerPadding: EdgeInsets.all(5),
-                                onTap: () {
-                                  Get.to(WebPage());
-                                },
-                                titleStyle: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                descriptionStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                                siteNameStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            
-                          ),
-                          ReorderableDragStartListener(
-                            index: index,
-                            child: const Icon(Icons.drag_handle),
-                          ),
-                        ],
-                      ),
-                    )),
-                  ),
-                  secondaryActions: <Widget>[
-                    IconSlideAction(
-                      caption: 'Delete',
-                      color: Colors.red,
-                      icon: Icons.delete,
-                      onTap: () {
-                        // wc.records[index].hide = true;
-                        // setState(() {
-                        //   todayData[index].hide = true;
-                        // },
-                        // );
-                      },
+                          )),
                     ),
-                  ],
-                ),
-            ],
-            onReorder: (int oldIndex, int newIndex) {
-              if (oldIndex < newIndex) {
-                newIndex -= 1;
-              }
-              final int item = items.removeAt(oldIndex);
-              items.insert(newIndex, item);
-              //ここがリストが入れ替わらないエラーの原因かも
-            },
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                        caption: 'Delete',
+                        color: Colors.red,
+                        icon: Icons.delete,
+                        onTap: () {
+                          // wc.records[index].hide = true;
+                          // setState(() {
+                          //   todayData[index].hide = true;
+                          // },
+                          // );
+                        },
+                      ),
+                    ],
+                  ),
+              ],
+              onReorder: (int oldIndex, int newIndex) {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                final int item = items.removeAt(oldIndex);
+                items.insert(newIndex, item);
+                //ここがリストが入れ替わらないエラーの原因かも
+              },
+            ),
           ),
         ),
       ],

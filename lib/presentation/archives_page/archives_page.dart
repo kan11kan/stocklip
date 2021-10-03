@@ -1,108 +1,108 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import 'button_widget.dart';
 
 //StatelessWidgetで描き直し
 class ArchivesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text('aaa');
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+          child: Container(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'キーワード検索',
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                    )),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(child: DateRangePickerWidget())
+      ],
+    );
   }
 }
 
-// class RecordPage extends StatefulWidget {
-//   //ここでイニシャライズする
-//   RecordPage(this.passedValue);
-//   final List<Record> passedValue;
-//
-//   @override
-//   State<RecordPage> createState() => RecordPageState();
-// }
-//
-// class RecordPageState extends State<RecordPage> {
-//   int _selectedIndex = 0;
-//   void _onItemTapped(int index) {
-//     setState(
-//       () {
-//         _selectedIndex = index;
-//       },
-//     );
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     List<Record> records = <Record>[];
-//     final days = widget.passedValue.map((element) => (element.day)).toList();
-//     final url = widget.passedValue.map((element) => (element.url)).toList();
-//
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('aaaaa'),
-//         ),
-//         // bottomNavigationBar: BottomNavigationBar(
-//         //   type: BottomNavigationBarType.fixed,
-//         //   items: const [
-//         //     BottomNavigationBarItem(
-//         //       icon: Icon(Icons.home),
-//         //       title: Text('Home'),
-//         //     ),
-//         //     BottomNavigationBarItem(
-//         //       icon: Icon(Icons.article_outlined),
-//         //       title: Text('archives'),
-//         //     ),
-//         //     BottomNavigationBarItem(
-//         //       icon: Icon(Icons.text_format),
-//         //       title: Text('Daily record'),
-//         //     ),
-//         //     BottomNavigationBarItem(
-//         //       title: Text('Web Page'),
-//         //       icon: Icon(Icons.add_box_rounded),
-//         //     ),
-//         //   ],
-//         //   currentIndex: _selectedIndex,
-//         //   selectedItemColor: Colors.amber[800],
-//         //   onTap: _onItemTapped,
-//         // ),
-//         body: _selectedIndex == 0 ? Text('aaa') : Text('bbb'));
-//     // return CupertinoTabScaffold(
-//     //   tabBar: CupertinoTabBar(
-//     //     items: const <BottomNavigationBarItem>[
-//     //       BottomNavigationBarItem(
-//     //         icon: Icon(Icons.home),
-//     //         title: Text('home'),
-//     //       ),
-//     //       BottomNavigationBarItem(
-//     //         icon: Icon(Icons.format_color_text),
-//     //         title: Text('daily archives'),
-//     //       )
-//     //     ],
-//     //     // onTap: ,
-//     //     // currentIndex: ,
-//     //   ),
-//     //   tabBuilder: (BuildContext context, int index) {
-//     //     return CupertinoTabView(
-//     //       builder: (BuildContext context) {
-//     //         return CupertinoPageScaffold(
-//     //           navigationBar: CupertinoNavigationBar(
-//     //             middle: Text('Page 1 of tab $index'), //ここがタイトル
-//     //           ),
-//     //           child: Center(
-//     //             child: MemoPage(records),
-//     //             // child: CupertinoButton(
-//     //             //   child: const Text('Next page'),
-//     //             //   onPressed: () {
-//     //             //     Navigator.push(
-//     //             //         context,
-//     //             //         MaterialPageRoute(
-//     //             //             builder: (context) => MyHomePage(
-//     //             //                   title: 'Home',
-//     //             //                 )));
-//     //             //   },
-//     //             // ),
-//     //           ),
-//     //         );
-//     //       },
-//     //     );
-//     //   },
-//     // );
-//   }
-// }
+class DateRangePickerWidget extends StatefulWidget {
+  @override
+  _DateRangePickerWidgetState createState() => _DateRangePickerWidgetState();
+}
+
+class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
+  DateTimeRange dateRange = DateTimeRange(
+      start: DateTime.now(), end: DateTime.now().add(Duration(hours: 24 * 3)));
+
+  String getFrom() {
+    if (dateRange == null) {
+      return 'From';
+    } else {
+      return DateFormat('MM/dd/yyyy').format(dateRange.start);
+    }
+  }
+
+  String getUntil() {
+    if (dateRange == null) {
+      return 'Until';
+    } else {
+      return DateFormat('MM/dd/yyyy').format(dateRange.end);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => HeaderWidget(
+        title: 'Date',
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 150,
+              child: ButtonWidget(
+                text: getFrom(),
+                onClicked: () => pickDateRange(context),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.arrow_forward, color: Colors.blueGrey),
+            const SizedBox(width: 8),
+            SizedBox(
+              width: 150,
+              child: ButtonWidget(
+                text: getUntil(),
+                onClicked: () => pickDateRange(context),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Future pickDateRange(BuildContext context) async {
+    final initialDateRange = DateTimeRange(
+      start: DateTime.now(),
+      end: DateTime.now().add(Duration(hours: 24 * 3)),
+    );
+    final newDateRange = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(DateTime.now().year - 15),
+      lastDate: DateTime(DateTime.now().year + 5),
+      initialDateRange: initialDateRange,
+    );
+
+    if (newDateRange == null) return;
+
+    setState(() => dateRange = newDateRange);
+  }
+}
