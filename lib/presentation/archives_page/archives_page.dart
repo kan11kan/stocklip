@@ -13,38 +13,47 @@ class ArchivesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-          child: Container(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'キーワード検索',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(
-                    color: Colors.grey,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: BorderSide(
-                    color: Colors.grey,
+        Card(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Container(
+                  child: SizedBox(
+                    height: 40,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'キーワード検索',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: BorderSide(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              Container(
+                child: DateRangePickerWidget(),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
+                  //Get.to()で記載
+                  Get.to(SearchResult());
+                },
+                child: Text('検索'),
+              ),
+            ],
           ),
-        ),
-        Container(
-          child: DateRangePickerWidget(),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
-            //Get.to()で記載
-            Get.to(SearchResult());
-          },
-          child: Text('検索'),
         ),
         ShowCards(),
       ],

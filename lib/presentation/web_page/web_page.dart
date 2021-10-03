@@ -22,23 +22,23 @@ class WebContentPage extends StatelessWidget {
   final day = ''; //仮で作成
   final tags = [];
 
-  void getUrls() async {
-    await Hive.openBox('url');
-    final box = await Hive.openBox('url');
-    wc.records.value = jsonDecode(box.get('records'))
-        .map((el) => Record.fromJson(el))
-        .toList()
-        .cast<Record>() as List<Record>;
-  }
+  // void getUrls() async {
+  //   await Hive.openBox('url');
+  //   final box = await Hive.openBox('url');
+  //   wc.records.value = jsonDecode(box.get('records'))
+  //       .map((el) => Record.fromJson(el))
+  //       .toList()
+  //       .cast<Record>() as List<Record>;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    getUrls();
+    // getUrls();
 
     return WebView(
       initialUrl: tvc.selectedUrl.value.toString(),
-      onPageFinished: (url) {
-        final record = Record(url: url, day: day, tags: tags);
+      onPageStarted: (url) {
+        final record = Record(url: url, day: day);
         wc.records.add(record);
         void saveUrl() async {
           await Hive.openBox('url');
@@ -52,3 +52,6 @@ class WebContentPage extends StatelessWidget {
     );
   }
 }
+
+//DailyDataのインスタンスの有無を確認→なければURLを取得したタイミングでDailyDataを作成
+//メモを書く時にDailyDataのインスタンスがなければ作成する。

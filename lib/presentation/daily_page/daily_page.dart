@@ -9,6 +9,21 @@ import 'package:one_app_everyday921/domain/record.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
+// class YellowBird extends StatefulWidget {
+//   const YellowBird({ Key? key }) : super(key: key);
+//
+//   @override
+//   State<YellowBird> createState() => _YellowBirdState();
+// }
+//
+// class _YellowBirdState extends State<YellowBird> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(color: const Color(0xFFFFE306));
+//   }
+// }
+String memoContent = '';
+
 class DailyPage extends StatelessWidget {
   //DailyDataを保存してみる
   // RxList<DailyData> memo = <DailyData>[].obs;
@@ -38,15 +53,6 @@ class DailyPage extends StatelessWidget {
     // final list = [];
   }
 
-  //Futureを試してみる
-  // Future getUrls1() async {
-  //   await Hive.openBox('url');
-  //   final box = await Hive.openBox('url');
-  //   urls.value = jsonDecode(box.get('records'))
-  //       .map((el) => Record.fromJson(el))
-  //       .toList()
-  //       .cast<Record>() as List<Record>;
-  //   return urls.value;
   //   // print(urls.value[0].url);
   //   // print(urls.value[1].url);
   //   // print(urls.value[2].url);
@@ -56,7 +62,6 @@ class DailyPage extends StatelessWidget {
   // }
 
   final wc = Get.put(WebController());
-
   @override
   Widget build(BuildContext context) {
     getUrls();
@@ -77,6 +82,10 @@ class DailyPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: TextField(
+                      onChanged: (string) {
+                        memoContent = string;
+                        // print(name);
+                      },
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         border: OutlineInputBorder(
@@ -93,8 +102,14 @@ class DailyPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     //ここにデータの保存について記載
-                    // getUrls();
-                    print(urls);
+                    void saveDailyData() async {
+                      await Hive.openBox('dailydata');
+                      final box = await Hive.openBox('dailydata');
+                      box.put('data', memoContent);
+                      print('${box.get('data').toString()}');
+                    }
+
+                    saveDailyData();
                   },
                   child: Text('保\n' + '存'),
                   style: ElevatedButton.styleFrom(
@@ -144,7 +159,9 @@ class DailyPage extends StatelessWidget {
                                                 onPrimary: Colors.black,
                                                 shape: const StadiumBorder(),
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                //ここにタグの表示非表示切り替え処理を書く
+                                              },
                                             ),
                                             ElevatedButton(
                                               child: const Text('日経平均'),
