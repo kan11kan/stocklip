@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:intl/intl.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
-import '../../main.dart';
 import 'button_widget.dart';
 
 //StatelessWidgetで描き直し
@@ -40,7 +39,11 @@ class ArchivesPage extends StatelessWidget {
           child: DateRangePickerWidget(),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
+            //Get.to()で記載
+            Get.to(SearchResult());
+          },
           child: Text('検索'),
         ),
         ShowCards(),
@@ -211,7 +214,7 @@ class ImportantContent extends StatelessWidget {
           previewHeight: 150,
           previewContainerPadding: EdgeInsets.all(5),
           onTap: () {
-            Get.to(WebPage());
+            Get.to(WebContentPage());
           },
           titleStyle: TextStyle(
             fontSize: 16,
@@ -251,6 +254,16 @@ class ImportantContent2 extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SearchResult extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Search')),
+      body: Text('test'),
     );
   }
 }

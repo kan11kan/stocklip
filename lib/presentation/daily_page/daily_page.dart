@@ -6,12 +6,24 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:one_app_everyday921/domain/record.dart';
-import 'package:one_app_everyday921/main.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 class DailyPage extends StatelessWidget {
+  //DailyDataを保存してみる
+  // RxList<DailyData> memo = <DailyData>[].obs;
+  // void getDailyData() async {
+  //   await Hive.openBox('dailydata');
+  //   final box2 = await Hive.openBox('dailydata');
+  //   memo.value = jsonDecode(box2.get('memo'))
+  //       .map((el) => DailyData.fromJson(el))
+  //       .toList()
+  //       .cast<DailyData>() as List<DailyData>;
+  // }
+
+  //しんじさんのコード
   RxList<Record> urls = <Record>[].obs;
-  void aaa() async {
+  void getUrls() async {
     await Hive.openBox('url');
     final box = await Hive.openBox('url');
     urls.value = jsonDecode(box.get('records'))
@@ -26,135 +38,158 @@ class DailyPage extends StatelessWidget {
     // final list = [];
   }
 
+  //Futureを試してみる
+  // Future getUrls1() async {
+  //   await Hive.openBox('url');
+  //   final box = await Hive.openBox('url');
+  //   urls.value = jsonDecode(box.get('records'))
+  //       .map((el) => Record.fromJson(el))
+  //       .toList()
+  //       .cast<Record>() as List<Record>;
+  //   return urls.value;
+  //   // print(urls.value[0].url);
+  //   // print(urls.value[1].url);
+  //   // print(urls.value[2].url);
+  //   // print(urls.value[3].url);
+  //   // print(urls.value.length);
+  //   // final list = [];
+  // }
+
   final wc = Get.put(WebController());
 
   @override
   Widget build(BuildContext context) {
-    aaa();
+    getUrls();
+    print(urls);
     // var todayData = wc.records.toList().obs;
     // var todayUrls = todayData.map((el) => (el.url)).toList().obs;
     // var todayUrls = urls;
     List<int> items = List<int>.generate(urls.length, (int index) => index).obs;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 360,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 360,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white60,
                       ),
-                      filled: true,
-                      fillColor: Colors.white60,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 3,
                     ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
                   ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  //ここにデータの保存について記載
-                },
-                child: Text('保\n' + '存'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(10, 95),
-                ),
-              )
-            ],
+                ElevatedButton(
+                  onPressed: () {
+                    //ここにデータの保存について記載
+                    // getUrls();
+                    print(urls);
+                  },
+                  child: Text('保\n' + '存'),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(10, 95),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 530,
-          child: GestureDetector(
-            onLongPress: () {},
-            child: ReorderableListView(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              shrinkWrap: true,
-              // physics: NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                for (int index = 0; index < urls.length; index++)
-                  Slidable(
-                    key: Key('$index'),
-                    actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.25,
-                    child: GestureDetector(
-                      onLongPress: () {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: 320,
-                              color: Colors.white,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 30),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ElevatedButton(
-                                            child: const Text('金利'),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.white,
-                                              onPrimary: Colors.black,
-                                              shape: const StadiumBorder(),
+          SizedBox(
+            height: 530,
+            child: GestureDetector(
+              onLongPress: () {},
+              child: ReorderableListView(
+                padding: const EdgeInsets.symmetric(horizontal: 0),
+                shrinkWrap: true,
+                // physics: NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  for (int index = 0; index < urls.length; index++)
+                    Slidable(
+                      key: Key('$index'),
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      child: GestureDetector(
+                        onLongPress: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: 320,
+                                color: Colors.white,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                        padding: EdgeInsets.only(bottom: 30),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            ElevatedButton(
+                                              child: const Text('金利'),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.white,
+                                                onPrimary: Colors.black,
+                                                shape: const StadiumBorder(),
+                                              ),
+                                              onPressed: () {},
                                             ),
-                                            onPressed: () {},
-                                          ),
-                                          ElevatedButton(
-                                            child: const Text('日経平均'),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.white,
-                                              onPrimary: Colors.black,
-                                              shape: const StadiumBorder(),
+                                            ElevatedButton(
+                                              child: const Text('日経平均'),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.white,
+                                                onPrimary: Colors.black,
+                                                shape: const StadiumBorder(),
+                                              ),
+                                              onPressed: () {},
                                             ),
-                                            onPressed: () {},
-                                          ),
-                                          ElevatedButton(
-                                            child: const Text('米国株'),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.white,
-                                              onPrimary: Colors.black,
-                                              shape: const StadiumBorder(),
+                                            ElevatedButton(
+                                              child: const Text('米国株'),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Colors.white,
+                                                onPrimary: Colors.black,
+                                                shape: const StadiumBorder(),
+                                              ),
+                                              onPressed: () {},
                                             ),
-                                            onPressed: () {},
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      child: ElevatedButton(
-                                        child: Text('Close BottomSheet'),
-                                        onPressed: () => Navigator.pop(context),
-                                      ),
-                                    )
-                                  ],
+                                      Container(
+                                        child: ElevatedButton(
+                                          child: Text('Close BottomSheet'),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Obx(() => Container(
-                            height: 150,
-                            width: double.infinity,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 380,
-                                  child: SimpleUrlPreview(
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          height: 150,
+                          width: double.infinity,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 380,
+                                child: Obx(
+                                  () => SimpleUrlPreview(
                                     url: urls[index].url,
                                     bgColor: Colors.white,
                                     titleLines: 1,
@@ -163,7 +198,7 @@ class DailyPage extends StatelessWidget {
                                     previewHeight: 150,
                                     previewContainerPadding: EdgeInsets.all(5),
                                     onTap: () {
-                                      Get.to(WebPage());
+                                      // Get.to(WebContentPage());
                                     },
                                     titleStyle: TextStyle(
                                       fontSize: 16,
@@ -180,42 +215,44 @@ class DailyPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                ReorderableDragStartListener(
-                                  index: index,
-                                  child: const Icon(Icons.drag_handle),
-                                ),
-                              ],
-                            ),
-                          )),
-                    ),
-                    secondaryActions: <Widget>[
-                      IconSlideAction(
-                        caption: 'Delete',
-                        color: Colors.red,
-                        icon: Icons.delete,
-                        onTap: () {
-                          // wc.records[index].hide = true;
-                          // setState(() {
-                          //   todayData[index].hide = true;
-                          // },
-                          // );
-                        },
+                              ),
+                              ReorderableDragStartListener(
+                                index: index,
+                                child: const Icon(Icons.drag_handle),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-              ],
-              onReorder: (int oldIndex, int newIndex) {
-                if (oldIndex < newIndex) {
-                  newIndex -= 1;
-                }
-                final int item = items.removeAt(oldIndex);
-                items.insert(newIndex, item);
-                //ここがリストが入れ替わらないエラーの原因かも
-              },
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: 'Delete',
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          onTap: () {
+                            // wc.records[index].hide = true;
+                            // setState(() {
+                            //   todayData[index].hide = true;
+                            // },
+                            // );
+                          },
+                        ),
+                      ],
+                    ),
+                ],
+                onReorder: (int oldIndex, int newIndex) {
+                  if (oldIndex < newIndex) {
+                    newIndex -= 1;
+                  }
+                  final int item = items.removeAt(oldIndex);
+                  items.insert(newIndex, item);
+                  //ここがリストが入れ替わらないエラーの原因かも
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

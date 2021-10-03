@@ -1,18 +1,21 @@
 class Record {
-  Record({this.url = '', this.day = '', this.hide = false});
+  Record({this.url = '', this.day = '', this.hide = false, required this.tags});
   // フィールド
   String url;
   String day;
-  // DateTime time;
   bool hide;
+  List tags = [];
 
   Record.fromJson(Map<String, dynamic> json)
       : url = json["url"],
         day = json["day"],
         hide = json["hide"];
+  //Map<String , dynamic>の型を<Record>型にしている
 
   Map<String, dynamic> toJson() {
     return {'url': url, 'day': day, 'hide': hide};
+    //レコード型のものがMap<String ,dynamic>になる。
+    // JsonをDecodeしたものがMap<String,dynamic>になる
   }
 
   //firestoreテスト
