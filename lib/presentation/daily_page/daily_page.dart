@@ -24,7 +24,6 @@ class DailyPage extends StatelessWidget {
     // print(urls.value[3].url);
     // print(urls.value.length);
     // final list = [];
-    // persons.forEach((k,v)=>list.add(persons(k,v)));
   }
 
   final wc = Get.put(WebController());
@@ -32,28 +31,48 @@ class DailyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     aaa();
-    // print('vvv');
-    //変数定義＋使える形に変換（本来はutilityで行う？）
-    var todayData = wc.records.toList().obs;
+    // var todayData = wc.records.toList().obs;
     // var todayUrls = todayData.map((el) => (el.url)).toList().obs;
     // var todayUrls = urls;
     List<int> items = List<int>.generate(urls.length, (int index) => index).obs;
     return Column(
       children: [
-        TextField(
-          keyboardType: TextInputType.multiline,
-          maxLines: null,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 360,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white60,
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  //ここにデータの保存について記載
+                },
+                child: Text('保\n' + '存'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(10, 95),
+                ),
+              )
+            ],
+          ),
         ),
-        // ElevatedButton(
-        //   onPressed: () {
-        //     aaa();
-        //     // print(urls);
-        //     // print(urls);
-        //   },
-        //   child: Text('aaa'),
-        // ),
         SizedBox(
-          height: 600,
+          height: 530,
           child: GestureDetector(
             onLongPress: () {},
             child: ReorderableListView(
