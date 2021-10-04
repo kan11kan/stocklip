@@ -70,10 +70,16 @@ class MyHomePage extends StatelessWidget {
     WebContentPage(),
   ];
   final List<Widget> navBarNameList = [
-    const Text('home'),
+    const Text('Home'),
     const Text('Archives'),
     const Text('Daily news'),
     const Text('Web page')
+  ];
+  final List<bool> floatingButtonList = [
+    false,
+    false,
+    false,
+    true,
   ];
   final tvc = Get.put(TabViewController());
 
@@ -84,6 +90,8 @@ class MyHomePage extends StatelessWidget {
         title: Obx(
           () => navBarNameList[tvc.selectedTabIndex.value],
         ),
+        leading: Icon(Icons.arrow_back_ios),
+        actions: <Widget>[IconButton(onPressed: () {}, icon: Icon(Icons.menu))],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -110,12 +118,76 @@ class MyHomePage extends StatelessWidget {
         onTap: tvc.onItemTapped,
       ),
       body: Obx(() => contentsList[tvc.selectedTabIndex.value]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print(tvc.selectedTabIndex);
-        },
-        child: const Icon(Icons.navigation),
-        backgroundColor: Colors.green,
+      floatingActionButton: Obx(
+        () => Visibility(
+          child: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: 400,
+                    color: Colors.white,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  child: const Text('金利'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: Colors.black,
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () {
+                                    //ここにタグの表示非表示切り替え処理を書く
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: const Text('日経平均'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: Colors.black,
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                                ElevatedButton(
+                                  child: const Text('米国株'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: Colors.black,
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: ElevatedButton(
+                              child: Text('Close BottomSheet'),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: const Icon(Icons.star_purple500_outlined),
+            backgroundColor: Colors.blue,
+          ),
+          visible: floatingButtonList[tvc.selectedTabIndex.value],
+        ),
       ),
     );
   }

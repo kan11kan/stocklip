@@ -14,45 +14,58 @@ class ArchivesPage extends StatelessWidget {
     return Column(
       children: [
         Card(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-                child: Container(
-                  child: SizedBox(
-                    height: 40,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'キーワード検索',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(
-                            color: Colors.grey,
+          shadowColor: Colors.black54,
+          child: Container(
+            // decoration: BoxDecoration(
+            //   boxShadow: [
+            //     BoxShadow(
+            //       color: Colors.black26,
+            //       spreadRadius: 1.0,
+            //       blurRadius: 10.0,
+            //       offset: Offset(10, 10),
+            //     ),
+            //   ],
+            // ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                  child: Container(
+                    child: SizedBox(
+                      height: 45,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'キーワード検索',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide(
-                            color: Colors.grey,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                child: DateRangePickerWidget(),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
-                  //Get.to()で記載
-                  Get.to(SearchResult());
-                },
-                child: Text('検索'),
-              ),
-            ],
+                Container(
+                  child: DateRangePickerWidget(),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
+                    //Get.to()で記載
+                    Get.to(SearchResult());
+                  },
+                  child: Text('検索'),
+                ),
+              ],
+            ),
           ),
         ),
         ShowCards(),

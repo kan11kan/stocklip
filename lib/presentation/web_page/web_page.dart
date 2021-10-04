@@ -36,20 +36,19 @@ class WebContentPage extends StatelessWidget {
     // getUrls();
 
     return WebView(
-      initialUrl: tvc.selectedUrl.value.toString(),
-      onPageStarted: (url) {
-        final record = Record(url: url, day: day);
-        wc.records.add(record);
-        void saveUrl() async {
-          await Hive.openBox('url');
-          final box = await Hive.openBox('url');
-          box.put('records', jsonEncode(wc.records));
-          // print('${box.get('records')}');
-        }
+        initialUrl: tvc.selectedUrl.value.toString(),
+        onPageStarted: (url) {
+          final record = Record(url: url, day: day);
+          wc.records.add(record);
+          void saveUrl() async {
+            await Hive.openBox('url');
+            final box = await Hive.openBox('url');
+            box.put('records', jsonEncode(wc.records));
+            // print('${box.get('records')}');
+          }
 
-        saveUrl();
-      },
-    );
+          saveUrl();
+        });
   }
 }
 
