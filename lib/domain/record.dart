@@ -26,11 +26,15 @@ class Record {
 
   //Map<String , dynamic>の型を<Record>型にしている
 
-  // Map<String, dynamic> toJson() {
-  //   return {'url': url, 'day': day, 'hide': hide,};
-  //   //レコード型のものがMap<String ,dynamic>になる。
-  //   // JsonをDecodeしたものがMap<String,dynamic>になる
-  // }
+  Map<String, dynamic> toJson() {
+    return {
+      'url': url,
+      'day': day,
+      'hide': hide,
+    };
+    //レコード型のものがMap<String ,dynamic>になる。
+    // JsonをDecodeしたものがMap<String,dynamic>になる
+  }
 
   //firestoreテスト
   // Record.fromDocumentSnapshot(
