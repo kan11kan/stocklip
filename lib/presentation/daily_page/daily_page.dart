@@ -121,7 +121,7 @@ class DailyPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 530,
+            height: 570,
             child: GestureDetector(
               onLongPress: () {},
               child: Obx(
@@ -141,7 +141,7 @@ class DailyPage extends StatelessWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return Container(
-                                  height: 320,
+                                  height: 400,
                                   color: Colors.white,
                                   child: Center(
                                     child: Column(
