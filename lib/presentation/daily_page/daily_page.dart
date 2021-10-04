@@ -45,6 +45,7 @@ class DailyPage extends StatelessWidget {
         .map((el) => Record.fromJson(el))
         .toList()
         .cast<Record>() as List<Record>;
+
     // print(urls.value[0].url);
     // print(urls.value[1].url);
     // print(urls.value[2].url);
@@ -65,11 +66,11 @@ class DailyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     getUrls();
-    print(urls);
+    // print(urls.value);
     // var todayData = wc.records.toList().obs;
     // var todayUrls = todayData.map((el) => (el.url)).toList().obs;
     // var todayUrls = urls;
-    List<int> items = List<int>.generate(urls.length, (int index) => index).obs;
+    RxList items = List<int>.generate(urls.length, (int index) => index).obs;
     return Container(
       child: Column(
         children: [
@@ -123,90 +124,91 @@ class DailyPage extends StatelessWidget {
             height: 530,
             child: GestureDetector(
               onLongPress: () {},
-              child: ReorderableListView(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                shrinkWrap: true,
-                // physics: NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  for (int index = 0; index < urls.length; index++)
-                    Slidable(
-                      key: Key('$index'),
-                      actionPane: SlidableDrawerActionPane(),
-                      actionExtentRatio: 0.25,
-                      child: GestureDetector(
-                        onLongPress: () {
-                          showModalBottomSheet<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height: 320,
-                                color: Colors.white,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        padding: EdgeInsets.only(bottom: 30),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            ElevatedButton(
-                                              child: const Text('金利'),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Colors.white,
-                                                onPrimary: Colors.black,
-                                                shape: const StadiumBorder(),
+              child: Obx(
+                () => ReorderableListView(
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    for (int index = 0; index < urls.length; index++)
+                      Slidable(
+                        key: Key('$index'),
+                        actionPane: SlidableDrawerActionPane(),
+                        actionExtentRatio: 0.25,
+                        child: GestureDetector(
+                          onLongPress: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 320,
+                                  color: Colors.white,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          padding: EdgeInsets.only(bottom: 30),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ElevatedButton(
+                                                child: const Text('金利'),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.white,
+                                                  onPrimary: Colors.black,
+                                                  shape: const StadiumBorder(),
+                                                ),
+                                                onPressed: () {
+                                                  //ここにタグの表示非表示切り替え処理を書く
+                                                },
                                               ),
-                                              onPressed: () {
-                                                //ここにタグの表示非表示切り替え処理を書く
-                                              },
-                                            ),
-                                            ElevatedButton(
-                                              child: const Text('日経平均'),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Colors.white,
-                                                onPrimary: Colors.black,
-                                                shape: const StadiumBorder(),
+                                              ElevatedButton(
+                                                child: const Text('日経平均'),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.white,
+                                                  onPrimary: Colors.black,
+                                                  shape: const StadiumBorder(),
+                                                ),
+                                                onPressed: () {},
                                               ),
-                                              onPressed: () {},
-                                            ),
-                                            ElevatedButton(
-                                              child: const Text('米国株'),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Colors.white,
-                                                onPrimary: Colors.black,
-                                                shape: const StadiumBorder(),
+                                              ElevatedButton(
+                                                child: const Text('米国株'),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Colors.white,
+                                                  onPrimary: Colors.black,
+                                                  shape: const StadiumBorder(),
+                                                ),
+                                                onPressed: () {},
                                               ),
-                                              onPressed: () {},
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        child: ElevatedButton(
-                                          child: Text('Close BottomSheet'),
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                        ),
-                                      )
-                                    ],
+                                        Container(
+                                          child: ElevatedButton(
+                                            child: Text('Close BottomSheet'),
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          height: 150,
-                          width: double.infinity,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 380,
-                                child: Obx(
-                                  () => SimpleUrlPreview(
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            height: 150,
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 380,
+                                  child: SimpleUrlPreview(
                                     url: urls[index].url,
                                     bgColor: Colors.white,
                                     titleLines: 1,
@@ -232,39 +234,46 @@ class DailyPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              ),
-                              ReorderableDragStartListener(
-                                index: index,
-                                child: const Icon(Icons.drag_handle),
-                              ),
-                            ],
+                                ReorderableDragStartListener(
+                                  index: index,
+                                  child: const Icon(Icons.drag_handle),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                        secondaryActions: <Widget>[
+                          IconSlideAction(
+                            caption: 'Delete',
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            onTap: () {
+                              // wc.records[index].hide = true;
+                              // setState(() {
+                              //   todayData[index].hide = true;
+                              // },
+                              // );
+                            },
+                          ),
+                        ],
                       ),
-                      secondaryActions: <Widget>[
-                        IconSlideAction(
-                          caption: 'Delete',
-                          color: Colors.red,
-                          icon: Icons.delete,
-                          onTap: () {
-                            // wc.records[index].hide = true;
-                            // setState(() {
-                            //   todayData[index].hide = true;
-                            // },
-                            // );
-                          },
-                        ),
-                      ],
-                    ),
-                ],
-                onReorder: (int oldIndex, int newIndex) {
-                  if (oldIndex < newIndex) {
-                    newIndex -= 1;
-                  }
-                  final int item = items.removeAt(oldIndex);
-                  items.insert(newIndex, item);
-                  //ここがリストが入れ替わらないエラーの原因かも
-                },
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    // final int item = items.removeAt(oldIndex);//元のコード
+                    // urls.value = urls..removeAt(oldIndex); //山村さんのコード
+                    final int item = items.removeAt(oldIndex); //試してみる
+
+                    // items.value = items..insert(newIndex, item);//元のコード
+                    // urls.value = urls
+                    //   ..insert(newIndex, urls[oldIndex]); //山村さんのコード
+                    items.insert(newIndex, item); //自分のコード
+
+                    //ここがリストが入れ替わらないエラーの原因かも
+                  },
+                ),
               ),
             ),
           ),

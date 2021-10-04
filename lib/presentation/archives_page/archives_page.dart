@@ -17,7 +17,7 @@ class ArchivesPage extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
                 child: Container(
                   child: SizedBox(
                     height: 40,
