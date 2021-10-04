@@ -93,29 +93,31 @@ class MyHomePage extends StatelessWidget {
         leading: Icon(Icons.arrow_back_ios),
         actions: <Widget>[IconButton(onPressed: () {}, icon: Icon(Icons.menu))],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'archives',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.text_format),
-            label: 'Daily news',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_rounded),
-            label: 'Web Page',
-          ),
-        ],
-        currentIndex: tvc.selectedTabIndex.value,
-        selectedItemColor: Colors.blueAccent,
-        onTap: tvc.onItemTapped,
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.article_outlined),
+              label: 'archives',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.text_format),
+              label: 'Daily news',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_box_rounded),
+              label: 'Web Page',
+            ),
+          ],
+          currentIndex: tvc.selectedTabIndex.value,
+          selectedItemColor: Colors.blueAccent,
+          onTap: tvc.onItemTapped,
+        ),
       ),
       body: Obx(() => contentsList[tvc.selectedTabIndex.value]),
       floatingActionButton: Obx(
