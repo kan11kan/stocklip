@@ -20,12 +20,6 @@ void main() async {
   // print(urls.value[3].url);
   // print(urls.value.length);
   // final list = [];
-
-  // final box = await Hive.openBox('settings');
-  // box.put('settings', 'kan');
-  // print('${box.get('settings')}');
-  // var x = box.get('settings');
-  // print(x);
   runApp(MyApp());
 }
 

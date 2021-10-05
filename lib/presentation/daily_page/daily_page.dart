@@ -5,23 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
-// class YellowBird extends StatefulWidget {
-//   const YellowBird({ Key? key }) : super(key: key);
-//
-//   @override
-//   State<YellowBird> createState() => _YellowBirdState();
-// }
-//
-// class _YellowBirdState extends State<YellowBird> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(color: const Color(0xFFFFE306));
-//   }
-// }
 String memoContent = '';
 
 class DailyPage extends StatelessWidget {
@@ -39,13 +27,12 @@ class DailyPage extends StatelessWidget {
   //しんじさんのコード
   RxList<Record> urls = <Record>[].obs;
   void getUrls() async {
-    await Hive.openBox('url');
-    final box = await Hive.openBox('url');
+    await Hive.openBox('recordsGeneratedByUrl');
+    final box = await Hive.openBox('recordsGeneratedByUrl');
     urls.value = jsonDecode(box.get('records'))
         .map((el) => Record.fromJson(el))
         .toList()
         .cast<Record>() as List<Record>;
-
     // print(urls.value[0].url);
     // print(urls.value[1].url);
     // print(urls.value[2].url);
@@ -54,23 +41,24 @@ class DailyPage extends StatelessWidget {
     // final list = [];
   }
 
-  //   // print(urls.value[0].url);
-  //   // print(urls.value[1].url);
-  //   // print(urls.value[2].url);
-  //   // print(urls.value[3].url);
-  //   // print(urls.value.length);
-  //   // final list = [];
-  // }
-
   final wc = Get.put(WebController());
   @override
   Widget build(BuildContext context) {
+    //ここでboxに格納された全てのrecordsを取得し、url,day,hideを取得しurlsに格納。
     getUrls();
-    // print(urls.value);
-    // var todayData = wc.records.toList().obs;
-    // var todayUrls = todayData.map((el) => (el.url)).toList().obs;
-    // var todayUrls = urls;
-    RxList items = List<int>.generate(urls.length, (int index) => index).obs;
+
+    //urlsの中からdayが本日の日付と一致するものを取得し、一致したものを変数todayDataに格納する
+    final now = DateTime.now();
+    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+    String today = outputFormatDay.format(now);
+
+    //urlsのうち、日付が一致するものをだけを抽出して変数に格納する。
+    var todayUrls = wc.records.where((el) => el.hide == false).toList().obs;
+    //トップに記載しているURLは履歴から除外したい
+    // .toList().filter((e) => e == "https://finance.yahoo.co.jp/")
+
+    RxList items =
+        List<int>.generate(todayUrls.length, (int index) => index).obs;
     return Container(
       child: Column(
         children: [
@@ -79,9 +67,9 @@ class DailyPage extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  width: 360,
+                  width: 320,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding: const EdgeInsets.only(right: 4.0),
                     child: TextField(
                       onChanged: (string) {
                         memoContent = string;
@@ -103,25 +91,29 @@ class DailyPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     //ここにデータの保存について記載
-                    void saveDailyData() async {
-                      await Hive.openBox('dailydata');
-                      final box = await Hive.openBox('dailydata');
-                      box.put('data', memoContent);
-                      print('${box.get('data').toString()}');
-                    }
-
-                    saveDailyData();
+                    // void saveDailyData() async {
+                    //   await Hive.openBox('dailydata');
+                    //   final box = await Hive.openBox('dailydata');
+                    //   box.put('data', memoContent);
+                    //   print('${box.get('data').toString()}');
+                    // }
+                    // saveDailyData();
                   },
-                  child: Text('保\n' + '存'),
+                  child: Text(
+                    '保\n' + '存',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(10, 95),
+                    minimumSize: Size(5, 95),
                   ),
                 )
               ],
             ),
           ),
           SizedBox(
-            height: 570,
+            height: 500,
             child: GestureDetector(
               onLongPress: () {},
               child: Obx(
@@ -130,7 +122,7 @@ class DailyPage extends StatelessWidget {
                   shrinkWrap: true,
                   // physics: NeverScrollableScrollPhysics(),
                   children: <Widget>[
-                    for (int index = 0; index < urls.length; index++)
+                    for (int index = 0; index < todayUrls.length; index++)
                       Slidable(
                         key: Key('$index'),
                         actionPane: SlidableDrawerActionPane(),
@@ -207,9 +199,9 @@ class DailyPage extends StatelessWidget {
                             child: Row(
                               children: [
                                 Container(
-                                  width: 380,
+                                  width: 345,
                                   child: SimpleUrlPreview(
-                                    url: urls[index].url,
+                                    url: todayUrls[index].url,
                                     bgColor: Colors.white,
                                     titleLines: 1,
                                     descriptionLines: 2,
@@ -248,7 +240,7 @@ class DailyPage extends StatelessWidget {
                             color: Colors.red,
                             icon: Icons.delete,
                             onTap: () {
-                              // wc.records[index].hide = true;
+                              wc.records[index].hide = true;
                               // setState(() {
                               //   todayData[index].hide = true;
                               // },
@@ -258,6 +250,8 @@ class DailyPage extends StatelessWidget {
                         ],
                       ),
                   ],
+
+                  //ここのエラーはsetstate()ができていないことが原因かも
                   onReorder: (int oldIndex, int newIndex) {
                     if (oldIndex < newIndex) {
                       newIndex -= 1;
@@ -282,265 +276,3 @@ class DailyPage extends StatelessWidget {
     );
   }
 }
-
-// class MemoPage extends StatefulWidget {
-//   MemoPage(this.passedValue);
-//   final List<Record> passedValue;
-//   DateTime now = DateTime.now();
-//   DateFormat outputFormat = DateFormat('yyyy-MM-dd');
-//
-//   @override
-//   State<MemoPage> createState() => MemoPageState();
-// }
-//
-// class MemoPageState extends State<MemoPage> {
-//   // List<String> todayUrls = <String>[];
-//   // List<String> day = <String>[];
-//
-//   List<int> _items = List<int>.generate(100, (int index) => index);
-//
-//   static const TextStyle optionStyle =
-//       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-//
-//   void _onItemTapped(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//   }
-//
-//   int _selectedIndex = 0;
-//   @override
-//   Widget build(BuildContext context) {
-//     // final urls = widget.passedValue.map((element) => (element.url)).toList();
-//     final days = widget.passedValue.map((element) => (element.day)).toList();
-//     final now = widget.now;
-//     String date = widget.outputFormat.format(now);
-//     var todayData = widget.passedValue
-//         .where((el) => el.day == date && el.hide == false)
-//         .toList();
-//     var todayUrls = todayData.map((element) => (element.url)).toList();
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('${date}'),
-//       ),
-//
-//       body: Column(
-//         children: [
-//           TextField(
-//             keyboardType: TextInputType.multiline,
-//             maxLines: null,
-//           ),
-//           GestureDetector(
-//             onLongPress: () {},
-//             child: ReorderableListView(
-//               padding: const EdgeInsets.symmetric(horizontal: 0),
-//               shrinkWrap: true,
-//               physics: NeverScrollableScrollPhysics(),
-//               children: <Widget>[
-//                 for (int index = 0; index < todayUrls.length; index++)
-//                   Slidable(
-//                     key: Key('$index'),
-//                     actionPane: SlidableDrawerActionPane(),
-//                     actionExtentRatio: 0.25,
-//                     child: GestureDetector(
-//                       onLongPress: () {
-//                         showModalBottomSheet<void>(
-//                           context: context,
-//                           builder: (BuildContext context) {
-//                             return Container(
-//                               height: 320,
-//                               color: Colors.white,
-//                               child: Center(
-//                                 child: Column(
-//                                   mainAxisAlignment: MainAxisAlignment.center,
-//                                   mainAxisSize: MainAxisSize.min,
-//                                   children: <Widget>[
-//                                     Container(
-//                                       padding: EdgeInsets.only(bottom: 30),
-//                                       child: Row(
-//                                         mainAxisAlignment:
-//                                             MainAxisAlignment.spaceEvenly,
-//                                         children: [
-//                                           ElevatedButton(
-//                                             child: const Text('金利'),
-//                                             style: ElevatedButton.styleFrom(
-//                                               primary: Colors.white,
-//                                               onPrimary: Colors.black,
-//                                               shape: const StadiumBorder(),
-//                                             ),
-//                                             onPressed: () {},
-//                                           ),
-//                                           ElevatedButton(
-//                                             child: const Text('日経平均'),
-//                                             style: ElevatedButton.styleFrom(
-//                                               primary: Colors.white,
-//                                               onPrimary: Colors.black,
-//                                               shape: const StadiumBorder(),
-//                                             ),
-//                                             onPressed: () {},
-//                                           ),
-//                                           ElevatedButton(
-//                                             child: const Text('米国株'),
-//                                             style: ElevatedButton.styleFrom(
-//                                               primary: Colors.white,
-//                                               onPrimary: Colors.black,
-//                                               shape: const StadiumBorder(),
-//                                             ),
-//                                             onPressed: () {},
-//                                           ),
-//                                         ],
-//                                       ),
-//                                     ),
-//                                     Container(
-//                                       child: ElevatedButton(
-//                                         child: Text('Close BottomSheet'),
-//                                         onPressed: () => Navigator.pop(context),
-//                                       ),
-//                                     )
-//                                   ],
-//                                 ),
-//                               ),
-//                             );
-//                           },
-//                         );
-//                       },
-//                       child: Container(
-//                         height: 150,
-//                         width: double.infinity,
-//                         child: Row(
-//                           children: [
-//                             Container(
-//                               width: 380,
-//                               child: SimpleUrlPreview(
-//                                 url: todayUrls[_items[index]],
-//                                 bgColor: Colors.white,
-//                                 // isClosable: true,
-//                                 titleLines: 1,
-//                                 descriptionLines: 2,
-//                                 imageLoaderColor: Colors.white,
-//                                 previewHeight: 150,
-//                                 previewContainerPadding: EdgeInsets.all(5),
-//                                 onTap: () {
-//                                   // print('ccc');
-//                                   Navigator.push(
-//                                       context,
-//                                       MaterialPageRoute(
-//                                           builder: (context) => WebPage(
-//                                               // '${todayUrls[_items[index]]}'
-//                                               )));
-//                                 },
-//                                 titleStyle: TextStyle(
-//                                   fontSize: 16,
-//                                   fontWeight: FontWeight.bold,
-//                                   color: Colors.black,
-//                                 ),
-//                                 descriptionStyle: TextStyle(
-//                                   fontSize: 14,
-//                                   color: Colors.black,
-//                                 ),
-//                                 siteNameStyle: TextStyle(
-//                                   fontSize: 14,
-//                                   color: Colors.black,
-//                                 ),
-//                               ),
-//                             ),
-//                             Container(
-//                               child: ReorderableDragStartListener(
-//                                 index: index,
-//                                 child: const Icon(Icons.drag_handle),
-//                               ),
-//                             ),
-//
-//                             // Container(
-//                             //     width: 10,
-//                             //     child: GestureDetector(
-//                             //         onTap: () {
-//                             //           setState(() {
-//                             //             todayData[index].hide = true;
-//                             //           });
-//                             //         },
-//                             //         child: Icon(Icons.delete)))
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                     secondaryActions: <Widget>[
-//                       IconSlideAction(
-//                         caption: 'Delete',
-//                         color: Colors.red,
-//                         icon: Icons.delete,
-//                         onTap: () {
-//                           setState(() {
-//                             todayData[index].hide = true;
-//                           });
-//                         },
-//                       ),
-//                     ],
-//                   ),
-//               ],
-//               onReorder: (int oldIndex, int newIndex) {
-//                 setState(() {
-//                   if (oldIndex < newIndex) {
-//                     newIndex -= 1;
-//                   }
-//                   final int item = _items.removeAt(oldIndex);
-//                   _items.insert(newIndex, item);
-//
-//                   print(todayUrls);
-//                 });
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           print(todayData[0].hide);
-//           Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                   builder: (context) => RecordPage(widget.passedValue)));
-//         },
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.article_outlined),
-//       ),
-//     );
-//   }
-// }
-
-//ここからメモ欄
-// class MemoFieldPage extends StatefulWidget {
-//   @override
-//   State<MemoFieldPage> createState() => MemoFieldPageState();
-// }
-//
-// class MemoFieldPageState extends State<MemoFieldPage> {
-//   final myController = TextEditingController();
-//   List<String> items = <String>['aaa', 'bbb', 'ccc', 'ddd'];
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text("メモ入力欄")),
-//       body: Column(
-//         children: [
-//           Center(
-//             child: TextField(controller: myController),
-//           ),
-//           ElevatedButton(
-//               onPressed: () {
-//                 // print(myController.text);
-//                 setState(
-//                   () {
-//                     items.add(myController.text);
-//                     myController.clear();
-//                     Navigator.pop(context);
-//                   },
-//                 );
-//               },
-//               child: Text('保存'))
-//         ],
-//       ),
-//     );
-//   }
-// }

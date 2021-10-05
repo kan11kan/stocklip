@@ -7,7 +7,6 @@ import 'package:simple_url_preview/simple_url_preview.dart';
 
 import 'button_widget.dart';
 
-//StatelessWidgetで描き直し
 class ArchivesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -156,7 +155,7 @@ class ShowCardsState extends State<ShowCards> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: 500,
+        height: 420,
         child: ListView(
           children: [
             Card(

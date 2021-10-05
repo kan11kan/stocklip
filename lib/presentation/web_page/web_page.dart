@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record.dart';
 //ここからWebPageのURLを保存するモデル（コントローラーを記載）
 
@@ -19,7 +20,6 @@ class WebController extends GetxController {
 class WebContentPage extends StatelessWidget {
   final tvc = Get.put(TabViewController());
   final wc = Get.put(WebController());
-  final day = ''; //仮で作成
   final tags = [];
 
   // void getUrls() async {
@@ -33,7 +33,14 @@ class WebContentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // getUrls();
+    //ここで現在の年月日について取得。
+    final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
+    //DateTime→Stringへの変換方法を記載
+    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+    String day = outputFormatDay.format(now);
+    //同じく時間について変換定義（まだ使ってない）
+    // DateFormat outputFormatTime = DateFormat('yyyy-MM-dd-Hm');
+    // String time = outputFormatTime.format(now);
 
     return WebView(
         initialUrl: tvc.selectedUrl.value.toString(),
@@ -41,8 +48,8 @@ class WebContentPage extends StatelessWidget {
           final record = Record(url: url, day: day);
           wc.records.add(record);
           void saveUrl() async {
-            await Hive.openBox('url');
-            final box = await Hive.openBox('url');
+            await Hive.openBox('recordsGeneratedByUrl');
+            final box = await Hive.openBox('recordsGeneratedByUrl');
             box.put('records', jsonEncode(wc.records));
             // print('${box.get('records')}');
           }
