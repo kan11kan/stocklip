@@ -13,7 +13,8 @@ import '../../main.dart';
 
 class WebController extends GetxController {
   final RxList<Record> records = <Record>[].obs;
-  List<String> todayUrls = <String>[];
+  final todayUrls = <String>[];
+  var record = Record().obs;
 }
 
 //Webの中身だけ表示するページ
@@ -33,29 +34,40 @@ class WebContentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //ここで現在の年月日について取得。
-    final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
-    //DateTime→Stringへの変換方法を記載
-    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
-    String day = outputFormatDay.format(now);
     //同じく時間について変換定義（まだ使ってない）
     // DateFormat outputFormatTime = DateFormat('yyyy-MM-dd-Hm');
     // String time = outputFormatTime.format(now);
 
     return WebView(
-        initialUrl: tvc.selectedUrl.value.toString(),
-        onPageStarted: (url) {
-          final record = Record(url: url, day: day);
-          wc.records.add(record);
-          void saveUrl() async {
-            await Hive.openBox('recordsGeneratedByUrl');
-            final box = await Hive.openBox('recordsGeneratedByUrl');
-            box.put('records', jsonEncode(wc.records));
-            // print('${box.get('records')}');
-          }
-
-          saveUrl();
+      initialUrl: tvc.selectedUrl.value.toString(),
+      onPageStarted: (url) {
+        //ここで現在の年月日について取得。
+        final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
+        //DateTime→Stringへの変換方法を記載
+        DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+        String day = outputFormatDay.format(now);
+        wc.record.update((record) {
+          record!.url = url;
+          record.day = day;
+          record.startTime = now;
         });
+        void saveUrl() async {
+          await Hive.openBox('recordsGeneratedByUrl');
+          final box = await Hive.openBox('recordsGeneratedByUrl');
+          box.put('records', jsonEncode(wc.records));
+          // print('${box.get('records')}');
+        }
+
+        saveUrl();
+      },
+      onPageFinished: (url) {
+        final DateTime now = DateTime.now();
+        wc.record.update((record) {
+          record!.endTime = now;
+        });
+        wc.records.add(wc.record.value);
+      },
+    );
   }
 }
 

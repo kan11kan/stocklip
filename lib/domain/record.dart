@@ -3,6 +3,8 @@ class Record {
     this.url = '',
     this.day = '',
     this.hide = false,
+    this.startTime,
+    this.endTime,
     // required this.tags,
     // this.newstitle = ''
   });
@@ -10,11 +12,32 @@ class Record {
   String url;
   String day;
   bool hide;
+  DateTime? startTime;
+  DateTime? endTime;
+  // int get readTime => endTime?.difference(startTime).inSeconds ?? 0;
+  int get readTime => endTime != null && startTime != null
+      ? endTime!.difference(startTime!).inSeconds
+      : 0;
   // List<String> tags = [];
   // String newstitle;
 
-  //title
-  //date
+  /// 外部から値を代入するメソッド
+ Record copyWith({
+    String? url,
+    String? day,
+    bool? hide,
+    DateTime? startTime,
+    DateTime? endTime,
+  }) {
+    return Record(
+      url: url ?? this.url,
+      day: day ?? this.day,
+      hide: hide ?? this.hide,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+    );
+  }
+
 
   Record.fromJson(Map<String, dynamic> json)
       : url = json["url"],

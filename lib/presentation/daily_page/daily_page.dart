@@ -33,11 +33,12 @@ class DailyPage extends StatelessWidget {
         .map((el) => Record.fromJson(el))
         .toList()
         .cast<Record>() as List<Record>;
+
     // print(urls.value[0].url);
     // print(urls.value[1].url);
     // print(urls.value[2].url);
     // print(urls.value[3].url);
-    // print(urls.value.length);
+    print(urls.value.length);
     // final list = [];
   }
 
@@ -53,10 +54,12 @@ class DailyPage extends StatelessWidget {
     String today = outputFormatDay.format(now);
 
     //urlsのうち、日付が一致するものをだけを抽出して変数に格納する。
-    var todayUrls = wc.records.where((el) => el.hide == false).toList().obs;
+    var todayUrls = RxList(
+        wc.records.where((el) => el.day == today && el.hide == false).toList()
+          ..sort((a, b) => a.readTime.compareTo(b.readTime)));
     //トップに記載しているURLは履歴から除外したい
     // .toList().filter((e) => e == "https://finance.yahoo.co.jp/")
-
+    // list.sort((a,b) => a.id.compareTo(b.id))
     RxList items =
         List<int>.generate(todayUrls.length, (int index) => index).obs;
     return Container(
@@ -209,6 +212,7 @@ class DailyPage extends StatelessWidget {
                                     previewHeight: 150,
                                     previewContainerPadding: EdgeInsets.all(5),
                                     onTap: () {
+                                      final startTime = DateTime.now();
                                       // Get.to(WebContentPage());
                                     },
                                     titleStyle: TextStyle(
