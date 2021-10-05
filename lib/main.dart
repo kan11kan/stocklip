@@ -1,5 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,11 +10,32 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:one_app_everyday921/presentation/archives_page/archives_page.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_page.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
+
+import 'domain/record.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+//wc.recordは常にデータをもっている状態にする。boxからwc.recordsをgetする
+// その後の状態管理はすべてgetxで行う。
+
+  final wc = Get.put(WebController());
+  final box = await Hive.openBox('recordsGeneratedByUrl');
+  wc.records.value = jsonDecode(box.get('records'))
+      .map((el) => Record.fromJson(el))
+      .toList()
+      .cast<Record>() as List<Record>;
+  print('${box.get('records')}');
+
+  // final dc = Get.put(DailyDataController());
+  // final dbox = await Hive.openBox('recordsByDay');
+  // dc.records.value = jsonDecode(dbox.get('recordsByDay'))
+  //     .map((el) => DailyData.fromJson(el));
+  //     .toList()
+  //     .cast<DailyData>() as List<DailyData>;
+  // print('${box.get('records')}');
 
   // print(urls.value[0].url);
   // print(urls.value[1].url);
@@ -122,13 +145,22 @@ class MyHomePage extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return Container(
-                    height: 400,
+                    height: 320,
                     color: Colors.white,
                     child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                child: Icon(Icons.star),
+                              ),
+                            ],
+                          ),
                           Container(
                             padding: EdgeInsets.only(bottom: 30),
                             child: Row(
@@ -167,9 +199,51 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            child: ElevatedButton(
-                              child: Text('Close BottomSheet'),
-                              onPressed: () => Navigator.pop(context),
+                            padding: EdgeInsets.only(bottom: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  child: const Text('個別株'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: Colors.black,
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () {
+                                    //ここにタグの表示非表示切り替え処理を書く
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: const Text('テクニカル指標'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: Colors.black,
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                                ElevatedButton(
+                                  child: const Text('モメンタム指標'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    onPrimary: Colors.black,
+                                    shape: const StadiumBorder(),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  child: Text('close'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                              ],
                             ),
                           )
                         ],
@@ -195,8 +269,31 @@ class MyHomePageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 85, 10, 70),
+          child: SizedBox(
+            height: 45,
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Google検索',
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -206,7 +303,7 @@ class MyHomePageContent extends StatelessWidget {
                 onTap: () {
                   tvc.selectedTabIndex.value = 3;
                   //タップされたらときTabBarIndexの値を変更したいができていない様子。少なくとも監視はできていない
-                  tvc.selectedUrl.value = 'https://www.google.com/';
+                  tvc.selectedUrl.value = 'https://jp.reuters.com/';
                   WebContentPage();
                 },
                 child: Column(
@@ -214,9 +311,95 @@ class MyHomePageContent extends StatelessWidget {
                     Image(
                       width: 80,
                       height: 80,
-                      image: AssetImage('images/google_logo.png'),
+                      image: AssetImage('images/ruiters.jpeg'),
                     ),
-                    Text('google.com'),
+                    Text('ruiters'),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                onTap: () {
+                  tvc.selectedTabIndex.value = 3;
+                  tvc.selectedUrl.value = 'https://www.bloomberg.co.jp/';
+                  WebContentPage();
+                },
+                child: Column(
+                  children: [
+                    Image(
+                      width: 80,
+                      height: 80,
+                      image: AssetImage('images/bloomberg.png'),
+                    ),
+                    Text('Bloomberg')
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                onTap: () {
+                  tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
+                  tvc.selectedUrl.value = 'https://finance.yahoo.co.jp/';
+                  WebContentPage();
+                },
+                child: Column(
+                  children: [
+                    Image(
+                      width: 80,
+                      height: 80,
+                      image: AssetImage('images/yahoofinance_logo.jpeg'),
+                    ),
+                    Text('Yahoo Finance!')
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
+                      tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
+                      WebContentPage();
+                    },
+                    child: Image(
+                      width: 80,
+                      height: 80,
+                      image: AssetImage('images/cme_logo.jpeg'),
+                    ),
+                  ),
+                  Text('CME日経平均')
+                ],
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+              child: GestureDetector(
+                onTap: () {
+                  tvc.selectedTabIndex.value = 3;
+                  //タップされたらときTabBarIndexの値を変更したいができていない様子。少なくとも監視はできていない
+                  tvc.selectedUrl.value = 'https://jp.reuters.com/';
+                  WebContentPage();
+                },
+                child: Column(
+                  children: const [
+                    Image(
+                      width: 80,
+                      height: 80,
+                      image: AssetImage('images/ruiters.jpeg'),
+                    ),
+                    Text('ruiters'),
                   ],
                 ),
               ),

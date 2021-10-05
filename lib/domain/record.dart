@@ -5,6 +5,7 @@ class Record {
     this.hide = false,
     this.startTime,
     this.endTime,
+    // this.tags,
     // required this.tags,
     // this.newstitle = ''
   });
@@ -22,7 +23,7 @@ class Record {
   // String newstitle;
 
   /// 外部から値を代入するメソッド
- Record copyWith({
+  Record copyWith({
     String? url,
     String? day,
     bool? hide,
@@ -37,7 +38,6 @@ class Record {
       endTime: endTime ?? this.endTime,
     );
   }
-
 
   Record.fromJson(Map<String, dynamic> json)
       : url = json["url"],

@@ -7,21 +7,22 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record.dart';
-import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
+import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 String memoContent = '';
 
 class DailyPage extends StatelessWidget {
   //DailyDataを保存してみる
-  // RxList<DailyData> memo = <DailyData>[].obs;
-  // void getDailyData() async {
-  //   await Hive.openBox('dailydata');
-  //   final box2 = await Hive.openBox('dailydata');
+  // RxList<Daily> memo = <Daily>[].obs;
+  // void getDaily() async {
+  //   await Hive.openBox('daily');
+  //   final box2 = await Hive.openBox('daily');
   //   memo.value = jsonDecode(box2.get('memo'))
   //       .map((el) => DailyData.fromJson(el))
   //       .toList()
-  //       .cast<DailyData>() as List<DailyData>;
+  //       .cast<Daily>() as List<Daily>;
   // }
 
   //しんじさんのコード
@@ -43,6 +44,7 @@ class DailyPage extends StatelessWidget {
   }
 
   final wc = Get.put(WebController());
+  final dc = Get.put(DailyDataController());
   @override
   Widget build(BuildContext context) {
     //ここでboxに格納された全てのrecordsを取得し、url,day,hideを取得しurlsに格納。
@@ -76,6 +78,7 @@ class DailyPage extends StatelessWidget {
                     child: TextField(
                       onChanged: (string) {
                         memoContent = string;
+
                         // print(name);
                       },
                       decoration: InputDecoration(
@@ -94,13 +97,16 @@ class DailyPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     //ここにデータの保存について記載
-                    // void saveDailyData() async {
-                    //   await Hive.openBox('dailydata');
-                    //   final box = await Hive.openBox('dailydata');
-                    //   box.put('data', memoContent);
-                    //   print('${box.get('data').toString()}');
-                    // }
-                    // saveDailyData();
+                    void saveDailyData() async {
+                      await Hive.openBox('recordsByDay');
+                      final box = await Hive.openBox('recordsByDay');
+                      final DateTime now = DateTime.now();
+                      dc.records.value.day = now;
+                      dc.records.value.memo = memoContent;
+                      box.put('records', jsonEncode(dc.records));
+                    }
+
+                    saveDailyData();
                   },
                   child: Text(
                     '保\n' + '存',

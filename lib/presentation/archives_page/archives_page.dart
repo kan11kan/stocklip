@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:intl/intl.dart';
-import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 import 'button_widget.dart';
@@ -235,7 +234,7 @@ class ImportantContent extends StatelessWidget {
           previewHeight: 150,
           previewContainerPadding: EdgeInsets.all(5),
           onTap: () {
-            Get.to(WebContentPage());
+            Get.to(SearchResult());
           },
           titleStyle: TextStyle(
             fontSize: 16,
@@ -279,12 +278,40 @@ class ImportantContent2 extends StatelessWidget {
   }
 }
 
-class SearchResult extends StatelessWidget {
+// class SearchResult extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Search')),
+//       body: Text('test'),
+//     );
+//   }
+// }
+
+class SearchResult extends StatefulWidget {
+  const SearchResult({
+    Key? key,
+    // this.color = const Color(0xFFFFE306),
+    // this.child,
+  }) : super(key: key);
+
+  // final Color color;
+  // final Widget? child;
+
+  @override
+  SearchResultState createState() => new SearchResultState();
+}
+
+class SearchResultState extends State<SearchResult> {
+  double _size = 1.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Search')),
-      body: Text('test'),
+      appBar: AppBar(
+        title: const Text('search result'),
+      ),
+      body: Text('〜〜の検索結果'),
     );
   }
 }

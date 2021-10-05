@@ -4,18 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:one_app_everyday921/domain/record.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 //ここからWebPageのURLを保存するモデル（コントローラーを記載）
 
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../main.dart';
-
-class WebController extends GetxController {
-  final RxList<Record> records = <Record>[].obs;
-  final todayUrls = <String>[];
-  var record = Record().obs;
-}
 
 //Webの中身だけ表示するページ
 class WebContentPage extends StatelessWidget {
@@ -54,6 +48,7 @@ class WebContentPage extends StatelessWidget {
         void saveUrl() async {
           await Hive.openBox('recordsGeneratedByUrl');
           final box = await Hive.openBox('recordsGeneratedByUrl');
+
           box.put('records', jsonEncode(wc.records));
           // print('${box.get('records')}');
         }
