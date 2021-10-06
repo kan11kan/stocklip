@@ -46,6 +46,13 @@ class WebContentPage extends StatelessWidget {
         Record tmpRecord = Record(url: url, day: day, startTime: now);
 
         wc.records.add(tmpRecord);
+
+        //wc.recordsの配列の最後のオブジェクトのendTimeにendTimeを代入する処理を書く
+        ever(wc.records, (_) {
+          var endTime = DateTime.now();
+          wc.records.last.endTime = endTime;
+        });
+
         //boxに保存する処理を記載
         void saveUrl() async {
           await Hive.openBox('recordsGeneratedByUrl');
@@ -58,11 +65,6 @@ class WebContentPage extends StatelessWidget {
         //関数を実行して保存する処理
         saveUrl();
       },
-      // onPageFinished: (url) {
-      //   final DateTime now = DateTime.now();
-      //   wc.record.update((record) {
-      //     record!.endTime = now;
-      //   });
 
       // },
     );

@@ -143,17 +143,17 @@ class ShowCards extends StatefulWidget {
 }
 
 class ShowCardsState extends State<ShowCards> {
-  //box('recordsByDay', key = 'dailyRecords')から取得した memo, 日付をオブジェクトにした配列からデータ取得
+  //box('recordsByDay', key = 'dailyRecords')から取得した memo, 日付のオブジェクト配列からデータ取得
   //box('recordsGeneratedByUrl',key='records')の最長履歴のURL(readTimeが最大のもの)を取得
 
   //まずはbox('recordsGeneratedByUrl',key='records')からreadTimeが一番大きなURLを取得する。
-  // 日付順にソート
-  //
-  //それぞれのカードに対して、isMemo ? showMemo() : showUrl();
+  // 日付順にソート取得したURLの日付をとる
+  //メモの有無を確認する
+  //メモがあればメモを表示、なければURLを表示　　isMemo ? showMemo() : showUrl();
 
   @override
   Widget build(BuildContext context) {
-    return Text('〜〜の検索結果');
+    return Text('ここにカードが表示される');
   }
 }
 
