@@ -29,31 +29,27 @@ class WebContentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //同じく時間について変換定義（まだ使ってない）
-    // DateFormat outputFormatTime = DateFormat('yyyy-MM-dd-Hm');
-    // String time = outputFormatTime.format(now);
-
     return WebView(
       initialUrl: tvc.selectedUrl.value.toString(),
       onPageStarted: (url) {
-        //登録するデータ（url,dayを準備）
+        ///登録するデータ（url,dayを準備）
         final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
         DateFormat outputFormatDay =
             DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
         String day = outputFormatDay.format(now);
 
-        //一回一回の履歴に対してインスタンスを作成する
+        ///一回一回の履歴に対してインスタンスを作成する
         Record tmpRecord = Record(url: url, day: day, startTime: now);
-
         wc.records.add(tmpRecord);
 
-        //wc.recordsの配列の最後のオブジェクトのendTimeにendTimeを代入する処理を書く
+        ///wc.recordsを監視し、変更（新しいURLの追加）のタイミングで
+        ///wc.recordsのオブジェクト配列の最後の'endTime'にendTimeを代入する処理を書く
         ever(wc.records, (_) {
           var endTime = DateTime.now();
           wc.records.last.endTime = endTime;
         });
 
-        //boxに保存する処理を記載
+        ///boxに保存する処理を記載
         void saveUrl() async {
           await Hive.openBox('recordsGeneratedByUrl');
           final box = await Hive.openBox('recordsGeneratedByUrl');
@@ -62,7 +58,7 @@ class WebContentPage extends StatelessWidget {
           // print('${box.get('records')}');
         }
 
-        //関数を実行して保存する処理
+        ///関数を実行して保存する処理
         saveUrl();
       },
 

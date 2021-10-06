@@ -3,7 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:intl/intl.dart';
 
-import 'button_widget.dart';
+import 'archives_button_widget.dart';
 
 ///アーカイブページ全体の記述
 class ArchivesPage extends StatelessWidget {
@@ -143,11 +143,15 @@ class ShowCards extends StatefulWidget {
 }
 
 class ShowCardsState extends State<ShowCards> {
-  //box('recordsByDay', key = 'dailyRecords')から取得した memo, 日付のオブジェクト配列からデータ取得
   //box('recordsGeneratedByUrl',key='records')の最長履歴のURL(readTimeが最大のもの)を取得
+  ///、、もしくは、、dailyPageのtodayUrlsを日付と一緒に新しいboxに格納する？？
+  ///新しく作ったboxからプレビュー表示するのが楽かも？？　→　いったんこれでやってみる
+  ///まずはDailyPageにてbox保存を記述
 
+  //box('recordsByDay', key = 'dailyRecords')から取得した memo, 日付のオブジェクト配列から日付を取得
   //まずはbox('recordsGeneratedByUrl',key='records')からreadTimeが一番大きなURLを取得する。
   // 日付順にソート取得したURLの日付をとる
+
   //メモの有無を確認する
   //メモがあればメモを表示、なければURLを表示　　isMemo ? showMemo() : showUrl();
 

@@ -16,12 +16,14 @@ import 'main_button_widget.dart';
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-//wc.recordは常にデータをもっている状態にする。boxからwc.recordsをgetする
-// その後の状態管理はすべてgetxで行う。
+
+  ///wc.recordは常にデータをもっている状態にする。boxからwc.recordsをgetする
+  /// その後の状態管理はすべてgetxで行う。
 
   final wc = Get.put(WebController());
 
-  ///最初にboxを開く処理を書くとエラーで立ち上がらない！！どうする？？nullのとき開けないよ！というエラーが出る！
+  ///最初にboxを開く処理を書くとエラーで立ち上がらない！！
+  ///box.get('record')==null ? :
   // final box = await Hive.openBox('recordsGeneratedByUrl');
   // wc.records.value = jsonDecode(box.get('records'))
   //     .map((el) => Record.fromJson(el))
