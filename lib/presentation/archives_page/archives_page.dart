@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:one_app_everyday921/domain/daily_class.dart';
 
 import 'archives_button_widget.dart';
 
@@ -143,21 +148,101 @@ class ShowCards extends StatefulWidget {
 }
 
 class ShowCardsState extends State<ShowCards> {
-  //box('recordsGeneratedByUrl',key='records')の最長履歴のURL(readTimeが最大のもの)を取得
-  ///、、もしくは、、dailyPageのtodayUrlsを日付と一緒に新しいboxに格納する？？
-  ///新しく作ったboxからプレビュー表示するのが楽かも？？　→　いったんこれでやってみる
-  ///まずはDailyPageにてbox保存を記述
+  ///DailyRecordクラスのオブジェクト配列の変化を監視
+  RxList<Daily> dailyRecords = <Daily>[].obs;
 
-  //box('recordsByDay', key = 'dailyRecords')から取得した memo, 日付のオブジェクト配列から日付を取得
-  //まずはbox('recordsGeneratedByUrl',key='records')からreadTimeが一番大きなURLを取得する。
-  // 日付順にソート取得したURLの日付をとる
+  ///box('importantUrl',key='importantUrl')を開いてdailyRecordに格納、監視
+  void getDailyRecords() async {
+    final box = await Hive.openBox('importantUrl');
+    dailyRecords.value = jsonDecode(box.get('importantUrl'))
+        .map((el) => Daily.fromJson(el))
+        .toList()
+        .cast<Daily>() as List<Daily>;
+  }
 
-  //メモの有無を確認する
-  //メモがあればメモを表示、なければURLを表示　　isMemo ? showMemo() : showUrl();
+  ///memo, 日付のオブジェクト配列から日付を取得（順番は古い順になっている？）
+  ///日経平均終値と日付を({日付:日付,日経:日経})オブジェクト配列に格納（とりあえずマニュアルで）
+  final List nikkei = [];
 
+  ///tagsの配列を作成（タグ　→　◯月◯日のタグNumber[1,2,5,6]など）
+  final List tags = [
+    '金利',
+    '日経',
+    '米国株',
+    '個別株',
+    'テクニカル',
+    'FRB',
+    'REIT',
+    '債券',
+    'その他'
+  ];
+
+  ///オブジェクト配列の長さを取得
+  ///配列の長さ分のカードを作成
+  ///Text（'日付'）を作成
+  ///Text('日経平均終値')を作成
+  ///Text('tags')を作成
+  ///メモの有無を確認する
+  ///メモがあればメモを表示、なければURLを表示　　isMemo ? showMemo() : showUrl();
+
+  ///ここからリストビュー
   @override
   Widget build(BuildContext context) {
-    return Text('ここにカードが表示される');
+    ///box('importantUrl',key='importantUrl')を開く処理
+    getDailyRecords();
+
+    ///リストビュービルダー
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 400,
+            child: ListView.builder(
+              itemCount: dailyRecords.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text('${dailyRecords[index].day}'),
+                        Text('${nikkei[index]}'),
+                        ElevatedButton(
+                          ///例で記載
+                          child: Text('${tags[3]}'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            onPrimary: Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {},
+                        ),
+                        Container(
+                          child: dailyRecords[index].memo == ''
+                              ? Card(
+                                  child: Text('URLが表示されます'),
+                                )
+                              : Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: SizedBox(
+                                      width: 270,
+                                      height: 140,
+                                      child: Text('メモが表示されます'),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
