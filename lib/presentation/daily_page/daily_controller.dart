@@ -3,6 +3,6 @@ import 'package:one_app_everyday921/domain/daily_data.dart';
 
 class DailyDataController extends GetxController {
   final RxList<Daily> dailyRecords = <Daily>[].obs;
-  final todayMemos = <String>[];
+  // final todayMemos = <String>[];
   var dailyRecord = Daily().obs;
 }

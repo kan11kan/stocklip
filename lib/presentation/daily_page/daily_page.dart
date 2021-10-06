@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:one_app_everyday921/domain/daily_data.dart';
 import 'package:one_app_everyday921/domain/record.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
@@ -62,9 +63,13 @@ class DailyPage extends StatelessWidget {
     //トップに記載しているURLは履歴から除外したい
     // .toList().filter((e) => e == "https://finance.yahoo.co.jp/")
     // list.sort((a,b) => a.id.compareTo(b.id))
+
+    //メモの入ったデータについて
+    var memos = RxList(dc.dailyRecords.toList());
+
     RxList items =
         List<int>.generate(todayUrls.length, (int index) => index).obs;
-    return Container(
+    return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
@@ -100,14 +105,18 @@ class DailyPage extends StatelessWidget {
                     void saveDailyData() async {
                       final box = await Hive.openBox('recordsByDay');
                       final DateTime now = DateTime.now();
-                      dc.dailyRecord.value.day = now;
-                      dc.dailyRecord.value.memo = memoContent;
-                      dc.dailyRecords.add(dc.dailyRecord.value);
-                      //ここがうまくいっていない。↑値がはいってこない？
+                      DateFormat outputFormatDay =
+                          DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
+                      String day = outputFormatDay.format(now);
+
+                      //一旦全てのメモ（更新は配列の最後から取得）を保存する記載
+                      Daily dailyTmpRecord = Daily(memo: memoContent, day: day);
+                      dc.dailyRecords.add(dailyTmpRecord);
+
                       // 別のところに書いてもnull配列で返るので代入ができていないもしくは監視ができていない）
                       box.put('dailyRecords', jsonEncode(dc.dailyRecords));
                       // print('${box.get("dailyRecords")}');
-                      // print(dc.dailyRecords.value);
+                      // print(memos);
                     }
 
                     saveDailyData();

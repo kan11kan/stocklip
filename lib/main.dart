@@ -168,7 +168,7 @@ class MyHomePageContent extends StatelessWidget {
   final tvc = Get.put(TabViewController());
   @override
   Widget build(BuildContext context) {
-    return BookmarkWidget();
+    return SingleChildScrollView(child: BookmarkWidget());
   }
 }
 
