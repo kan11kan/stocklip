@@ -1,4 +1,4 @@
-import 'package:one_app_everyday921/domain/record.dart';
+import 'package:one_app_everyday921/domain/record_class.dart';
 
 class Daily {
   Daily({

@@ -46,7 +46,6 @@ class Record {
   // newstitle = json['newstitle'],
   // tags = json["tags"];
   //jsondecodeでjson tagsを囲う（decodeする）→List<String>に変換する。
-
   //Map<String , dynamic>の型を<Record>型にしている
 
   Map<String, dynamic> toJson() {

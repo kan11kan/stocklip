@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:intl/intl.dart';
-import 'package:simple_url_preview/simple_url_preview.dart';
 
 import 'button_widget.dart';
 
+///アーカイブページ全体の記述
 class ArchivesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,16 +14,6 @@ class ArchivesPage extends StatelessWidget {
         Card(
           shadowColor: Colors.black54,
           child: Container(
-            // decoration: BoxDecoration(
-            //   boxShadow: [
-            //     BoxShadow(
-            //       color: Colors.black26,
-            //       spreadRadius: 1.0,
-            //       blurRadius: 10.0,
-            //       offset: Offset(10, 10),
-            //     ),
-            //   ],
-            // ),
             child: Column(
               children: [
                 Padding(
@@ -72,6 +62,7 @@ class ArchivesPage extends StatelessWidget {
   }
 }
 
+///ここから日付の範囲を指定するWidget
 class DateRangePickerWidget extends StatefulWidget {
   @override
   _DateRangePickerWidgetState createState() => _DateRangePickerWidgetState();
@@ -142,152 +133,31 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
   }
 }
 
-//ここからカード形式で表示するテスト
+///ここからStatefullWidgetでリストビュー　＋　カードを試す
 class ShowCards extends StatefulWidget {
+  const ShowCards({
+    Key? key,
+  }) : super(key: key);
   @override
-  ShowCardsState createState() => ShowCardsState();
+  ShowCardsState createState() => new ShowCardsState();
 }
 
 class ShowCardsState extends State<ShowCards> {
+  //box('recordsByDay', key = 'dailyRecords')から取得した memo, 日付をオブジェクトにした配列からデータ取得
+  //box('recordsGeneratedByUrl',key='records')の最長履歴のURL(readTimeが最大のもの)を取得
+
+  //まずはbox('recordsGeneratedByUrl',key='records')からreadTimeが一番大きなURLを取得する。
+  // 日付順にソート
+  //
+  //それぞれのカードに対して、isMemo ? showMemo() : showUrl();
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        height: 420,
-        child: ListView(
-          children: [
-            Card(
-              child: SizedBox(
-                width: 300,
-                height: 200,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text('10月10日　'),
-                        Text('日経平均終値：30,200円'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text('タグ1'),
-                        Text('タグ2'),
-                        Text('タグ3'),
-                      ],
-                    ),
-                    ImportantContent(),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: SizedBox(
-                width: 300,
-                height: 200,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text('10月9日　'),
-                        Text('日経平均終値：30,000円'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text('タグ1'),
-                        Text('タグ2'),
-                        Text('タグ3'),
-                      ],
-                    ),
-                    ImportantContent2(),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Text('〜〜の検索結果');
   }
 }
 
-//リストの作成は、recordの中に本日の日付と一致するものがあれば作成する？
-//ImportantContentはメモがある場合とない場合で場合わけする。
-
-class ImportantContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      //onTap: ここにTapしたらDaily recordに画面遷移する（タップしたカードの日付を渡す）
-      child: Container(
-        width: 400,
-        child: SimpleUrlPreview(
-          url:
-              //ここにもっとも滞在時間が長いURLが表示される
-              //日付と開始時刻、終了時刻でフィルターをかけたURLを表示する
-              'https://www.bloomberg.co.jp/news/articles/2021-10-01/R0B7KODWRGG301?srnd=cojp-v2',
-          bgColor: Colors.white,
-          titleLines: 1,
-          descriptionLines: 2,
-          imageLoaderColor: Colors.white,
-          previewHeight: 150,
-          previewContainerPadding: EdgeInsets.all(5),
-          onTap: () {
-            Get.to(SearchResult());
-          },
-          titleStyle: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-          descriptionStyle: TextStyle(
-            fontSize: 14,
-            color: Colors.black,
-          ),
-          siteNameStyle: TextStyle(
-            fontSize: 14,
-            color: Colors.black,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-//擬似的にメモがある場合を再現
-class ImportantContent2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 400,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 2.0),
-          child: SizedBox(
-            width: 270,
-            height: 140,
-            child: Text(
-                //ここに日付でフィルターをかけたメモの内容が表示される
-                //recordsに保存した日付とメモの組み合わせから取得
-                'メモの内容が入ります'),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// class SearchResult extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Search')),
-//       body: Text('test'),
-//     );
-//   }
-// }
-
+///ここから検索結果のページ
 class SearchResult extends StatefulWidget {
   const SearchResult({
     Key? key,
@@ -315,3 +185,139 @@ class SearchResultState extends State<SearchResult> {
     );
   }
 }
+
+///ここからカード形式で表示するテスト
+// class ShowCards extends StatefulWidget {
+//   @override
+//   ShowCardsState createState() => ShowCardsState();
+// }
+//
+// class ShowCardsState extends State<ShowCards> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(8.0),
+//       child: SizedBox(
+//         height: 420,
+//         child: ListView(
+//           children: [
+//             Card(
+//               child: SizedBox(
+//                 width: 300,
+//                 height: 200,
+//                 child: Column(
+//                   children: [
+//                     Row(
+//                       children: [
+//                         Text('10月10日　'),
+//                         Text('日経平均終値：30,200円'),
+//                       ],
+//                     ),
+//                     Row(
+//                       children: [
+//                         Text('タグ1'),
+//                         Text('タグ2'),
+//                         Text('タグ3'),
+//                       ],
+//                     ),
+//                     ImportantContent(),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             Card(
+//               child: SizedBox(
+//                 width: 300,
+//                 height: 200,
+//                 child: Column(
+//                   children: [
+//                     Row(
+//                       children: [
+//                         Text('10月9日　'),
+//                         Text('日経平均終値：30,000円'),
+//                       ],
+//                     ),
+//                     Row(
+//                       children: [
+//                         Text('タグ1'),
+//                         Text('タグ2'),
+//                         Text('タグ3'),
+//                       ],
+//                     ),
+//                     ImportantContent2(),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//リストの作成は、recordの中に本日の日付と一致するものがあれば作成する？
+//ImportantContentはメモがある場合とない場合で場合わけする。
+
+// class ImportantContent extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       //onTap: ここにTapしたらDaily recordに画面遷移する（タップしたカードの日付を渡す）
+//       child: Container(
+//         width: 400,
+//         child: SimpleUrlPreview(
+//           url:
+//           //ここにもっとも滞在時間が長いURLが表示される
+//           //日付と開始時刻、終了時刻でフィルターをかけたURLを表示する
+//           'https://www.bloomberg.co.jp/news/articles/2021-10-01/R0B7KODWRGG301?srnd=cojp-v2',
+//           bgColor: Colors.white,
+//           titleLines: 1,
+//           descriptionLines: 2,
+//           imageLoaderColor: Colors.white,
+//           previewHeight: 150,
+//           previewContainerPadding: EdgeInsets.all(5),
+//           onTap: () {
+//             Get.to(SearchResult());
+//           },
+//           titleStyle: TextStyle(
+//             fontSize: 16,
+//             fontWeight: FontWeight.bold,
+//             color: Colors.black,
+//           ),
+//           descriptionStyle: TextStyle(
+//             fontSize: 14,
+//             color: Colors.black,
+//           ),
+//           siteNameStyle: TextStyle(
+//             fontSize: 14,
+//             color: Colors.black,
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+//
+///擬似的にメモがある場合を再現
+// class ImportantContent2 extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 400,
+//       child: Card(
+//         child: Padding(
+//           padding: const EdgeInsets.only(bottom: 2.0),
+//           child: SizedBox(
+//             width: 270,
+//             height: 140,
+//             child: Text(
+//               //ここに日付でフィルターをかけたメモの内容が表示される
+//               //recordsに保存した日付とメモの組み合わせから取得
+//                 'メモの内容が入ります'),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

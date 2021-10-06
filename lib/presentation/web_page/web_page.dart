@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:one_app_everyday921/domain/record.dart';
+import 'package:one_app_everyday921/domain/record_class.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 //ここからWebPageのURLを保存するモデル（コントローラーを記載）
 
