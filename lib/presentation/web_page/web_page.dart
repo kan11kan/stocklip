@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:one_app_everyday921/domain/record.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 //ここからWebPageのURLを保存するモデル（コントローラーを記載）
 
@@ -41,21 +42,10 @@ class WebContentPage extends StatelessWidget {
             DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
         String day = outputFormatDay.format(now);
 
-        //ここで上書きするデータを登録する処理を記載。
-        // wc.record.update((record) {
-        //   record!.url = url;
-        //   record.day = day;
-        //   record.startTime = now;
-        // });
+        //一回一回の履歴に対してインスタンスを作成する
+        Record tmpRecord = Record(url: url, day: day, startTime: now);
 
-        //書き換えてみる（変更の度に全てのURL等のデータを書き換えているのでだめ。監視してしまってる）
-        //監視していないurlやdayをそのままいれたい、、、
-        wc.record.value.url = url;
-        wc.record.value.day = day;
-        wc.record.value.startTime = now;
-        print(wc.record.value.url);
-
-        wc.records.add(wc.record.value);
+        wc.records.add(tmpRecord);
         //boxに保存する処理を記載
         void saveUrl() async {
           await Hive.openBox('recordsGeneratedByUrl');

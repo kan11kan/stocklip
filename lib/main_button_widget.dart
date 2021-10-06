@@ -2,16 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
 import 'main.dart';
 
+//ここからモーダルを表示するウィジェット
 class showModalWidget extends StatelessWidget {
-  const showModalWidget({
+  showModalWidget({
     Key? key,
   }) : super(key: key);
 
   @override
+  var tag1 = false.obs;
+
   Widget build(BuildContext context) => Container(
         height: 320,
         color: Colors.white,
@@ -34,16 +39,19 @@ class showModalWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                      child: const Text('金利'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
-                      ),
-                      onPressed: () {
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('金利'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag1.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
 //ここにタグの表示非表示切り替え処理を書く
-                      },
+                          (tag1.value) ? tag1.value = false : tag1.value = true;
+                        },
+                      ),
                     ),
                     ElevatedButton(
                       child: const Text('日経平均'),
