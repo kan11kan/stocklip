@@ -49,6 +49,7 @@ class WebContentPage extends StatelessWidget {
         // });
 
         //書き換えてみる（変更の度に全てのURL等のデータを書き換えているのでだめ。監視してしまってる）
+        //監視していないurlやdayをそのままいれたい、、、
         wc.record.value.url = url;
         wc.record.value.day = day;
         wc.record.value.startTime = now;

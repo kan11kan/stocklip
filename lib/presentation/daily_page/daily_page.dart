@@ -39,7 +39,7 @@ class DailyPage extends StatelessWidget {
     // print(urls.value[1].url);
     // print(urls.value[2].url);
     // print(urls.value[3].url);
-    print(urls.value.length);
+    // print(urls.value.length);
     // final list = [];
   }
 
@@ -102,10 +102,12 @@ class DailyPage extends StatelessWidget {
                       final DateTime now = DateTime.now();
                       dc.dailyRecord.value.day = now;
                       dc.dailyRecord.value.memo = memoContent;
-                      //ここがうまくいっていない。↑値がはいってこない。
+                      dc.dailyRecords.add(dc.dailyRecord.value);
+                      //ここがうまくいっていない。↑値がはいってこない？
                       // 別のところに書いてもnull配列で返るので代入ができていないもしくは監視ができていない）
                       box.put('dailyRecords', jsonEncode(dc.dailyRecords));
-                      print('${box.get("dailyRecords")}');
+                      // print('${box.get("dailyRecords")}');
+                      // print(dc.dailyRecords.value);
                     }
 
                     saveDailyData();
