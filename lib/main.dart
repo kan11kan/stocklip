@@ -99,7 +99,7 @@ class MyHomePage extends StatelessWidget {
     true,
   ];
   final tvc = Get.put(TabViewController());
-
+  // final dc = Get.put(DailyDataController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,6 +141,12 @@ class MyHomePage extends StatelessWidget {
         () => Visibility(
           child: FloatingActionButton(
             onPressed: () {
+              void tmp() async {
+                final box = await Hive.openBox('recordsByDay');
+                print('${box.get("dailyRecords")}');
+              }
+
+              tmp();
               showModalBottomSheet<void>(
                 context: context,
                 builder: (BuildContext context) {

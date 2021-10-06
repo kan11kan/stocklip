@@ -35,16 +35,27 @@ class WebContentPage extends StatelessWidget {
     return WebView(
       initialUrl: tvc.selectedUrl.value.toString(),
       onPageStarted: (url) {
-        //ここで現在の年月日について取得。
+        //登録するデータ（url,dayを準備）
         final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
-        //DateTime→Stringへの変換方法を記載
-        DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+        DateFormat outputFormatDay =
+            DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
         String day = outputFormatDay.format(now);
-        wc.record.update((record) {
-          record!.url = url;
-          record.day = day;
-          record.startTime = now;
-        });
+
+        //ここで上書きするデータを登録する処理を記載。
+        // wc.record.update((record) {
+        //   record!.url = url;
+        //   record.day = day;
+        //   record.startTime = now;
+        // });
+
+        //書き換えてみる（変更の度に全てのURL等のデータを書き換えているのでだめ。監視してしまってる）
+        wc.record.value.url = url;
+        wc.record.value.day = day;
+        wc.record.value.startTime = now;
+        print(wc.record.value.url);
+
+        wc.records.add(wc.record.value);
+        //boxに保存する処理を記載
         void saveUrl() async {
           await Hive.openBox('recordsGeneratedByUrl');
           final box = await Hive.openBox('recordsGeneratedByUrl');
@@ -53,15 +64,16 @@ class WebContentPage extends StatelessWidget {
           // print('${box.get('records')}');
         }
 
+        //関数を実行して保存する処理
         saveUrl();
       },
-      onPageFinished: (url) {
-        final DateTime now = DateTime.now();
-        wc.record.update((record) {
-          record!.endTime = now;
-        });
-        wc.records.add(wc.record.value);
-      },
+      // onPageFinished: (url) {
+      //   final DateTime now = DateTime.now();
+      //   wc.record.update((record) {
+      //     record!.endTime = now;
+      //   });
+
+      // },
     );
   }
 }

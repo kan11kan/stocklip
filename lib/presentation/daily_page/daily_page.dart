@@ -98,12 +98,14 @@ class DailyPage extends StatelessWidget {
                   onPressed: () {
                     //ここにデータの保存について記載
                     void saveDailyData() async {
-                      await Hive.openBox('recordsByDay');
                       final box = await Hive.openBox('recordsByDay');
                       final DateTime now = DateTime.now();
-                      dc.records.value.day = now;
-                      dc.records.value.memo = memoContent;
-                      box.put('records', jsonEncode(dc.records));
+                      dc.dailyRecord.value.day = now;
+                      dc.dailyRecord.value.memo = memoContent;
+                      //ここがうまくいっていない。↑値がはいってこない。
+                      // 別のところに書いてもnull配列で返るので代入ができていないもしくは監視ができていない）
+                      box.put('dailyRecords', jsonEncode(dc.dailyRecords));
+                      print('${box.get("dailyRecords")}');
                     }
 
                     saveDailyData();
