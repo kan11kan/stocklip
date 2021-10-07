@@ -145,7 +145,7 @@ class MyHomePage extends StatelessWidget {
               label: 'Daily news',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_box_rounded),
+              icon: Icon(Icons.public),
               label: 'Web Page',
             ),
           ],

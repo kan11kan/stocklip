@@ -22,6 +22,7 @@ class ButtonHeaderWidget extends StatelessWidget {
       );
 }
 
+///ここが日付選択ボタン。クリックするとカレンダーが開く
 class ButtonWidget extends StatelessWidget {
   final String text;
   final VoidCallback onClicked;
@@ -33,6 +34,8 @@ class ButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+
+  ///ここのウィジェットは期間の開始と終わり両方作っている（呼び出し元で2つ呼び出されている）
   Widget build(BuildContext context) => ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: Size.fromHeight(40),
@@ -48,6 +51,7 @@ class ButtonWidget extends StatelessWidget {
       );
 }
 
+///今ヘッダーウィジェットは表示させていない。
 class HeaderWidget extends StatelessWidget {
   final String title;
   final Widget child;

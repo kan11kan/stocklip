@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:hive/hive.dart';
@@ -9,9 +10,18 @@ import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/daily_class.dart';
 
 import 'archives_button_widget.dart';
+import 'archives_controller.dart';
+
+///検索が押されたら次のページ（SearchResult）に値を渡す処理を記　→Done
+///（SearchResult）で()box（key=''）から日付が選択期間内にあるもの（ロジックを調べる）
+///→配列作る方針で、、、
+///URLのタイトル、とテキストが部分一致するものを取得
+///（SearchResult）でsimpleURLpreviewで該当のURLを表示
 
 ///アーカイブページ全体の記述
 class ArchivesPage extends StatelessWidget {
+  final skc = Get.put(SearchKeyController());
+  var searchKeywords = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -28,6 +38,9 @@ class ArchivesPage extends StatelessWidget {
                       child: SizedBox(
                         height: 45,
                         child: TextField(
+                          ///検索ボタン押下でフィールドをリセット
+                          controller: searchKeywords,
+
                           decoration: InputDecoration(
                             hintText: 'キーワード検索',
                             enabledBorder: OutlineInputBorder(
@@ -52,8 +65,13 @@ class ArchivesPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
-                      //Get.to()で記載
+                      ///SearchResultに検索キーワード、検索期間を渡す
+                      print('${skc.startDay.value}');
+                      print('${skc.endDay.value}');
+                      print(searchKeywords);
+                      searchKeywords.clear();
+
+                      ///検索の開始と終了取得成功！！！
                       Get.to(SearchResult());
                     },
                     child: Text('検索'),
@@ -75,23 +93,30 @@ class DateRangePickerWidget extends StatefulWidget {
   _DateRangePickerWidgetState createState() => _DateRangePickerWidgetState();
 }
 
+///表示する期間の状態管理
 class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
-  DateTimeRange dateRange = DateTimeRange(
-      start: DateTime.now(), end: DateTime.now().add(Duration(hours: 24 * 3)));
+  final skc = Get.put(SearchKeyController());
 
+  DateTimeRange dateRange = DateTimeRange(
+      start: DateTime.now().add(Duration(days: 1) * -6), end: DateTime.now());
+
+  ///ここで選択期間の開始の日付を取得！！！
   String getFrom() {
     if (dateRange == null) {
       return 'From';
     } else {
-      return DateFormat('MM/dd/yyyy').format(dateRange.start);
+      skc.startDay.value = DateFormat('MM/dd/yyyy').format(dateRange.start);
+      return skc.startDay.value;
     }
   }
 
+  ///ここで選択期間の終了の日付を取得！！！
   String getUntil() {
     if (dateRange == null) {
       return 'Until';
     } else {
-      return DateFormat('MM/dd/yyyy').format(dateRange.end);
+      skc.endDay.value = DateFormat('MM/dd/yyyy').format(dateRange.end);
+      return skc.endDay.value;
     }
   }
 
@@ -104,6 +129,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
             SizedBox(
               width: 150,
               child: ButtonWidget(
+                ///ここで開始の日付を表示！！！
                 text: getFrom(),
                 onClicked: () => pickDateRange(context),
               ),
@@ -114,6 +140,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
             SizedBox(
               width: 150,
               child: ButtonWidget(
+                ///ここで終了の日付を表示！！！
                 text: getUntil(),
                 onClicked: () => pickDateRange(context),
               ),
@@ -122,12 +149,14 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
         ),
       );
 
+  ///ユーザーが実際に期間選択する画面
   Future pickDateRange(BuildContext context) async {
     final initialDateRange = DateTimeRange(
-      start: DateTime.now(),
-      end: DateTime.now().add(Duration(hours: 24 * 3)),
+      start: DateTime.now().add(Duration(days: 1) * -6),
+      end: DateTime.now(),
     );
     final newDateRange = await showDateRangePicker(
+      ///showDateRangePickerはパッケージ
       context: context,
       firstDate: DateTime(DateTime.now().year - 15),
       lastDate: DateTime(DateTime.now().year + 5),
@@ -256,12 +285,12 @@ class ShowCardsState extends State<ShowCards> {
 class SearchResult extends StatefulWidget {
   const SearchResult({
     Key? key,
-    // this.color = const Color(0xFFFFE306),
-    // this.child,
   }) : super(key: key);
 
-  // final Color color;
-  // final Widget? child;
+  ///開始日と終了日のDurationを取得？
+  ///開始日＋差分　の日付配列を作成
+  ///日付と一致するものをrecordsを取得
+  ///キーワードと一致するものを表示
 
   @override
   SearchResultState createState() => new SearchResultState();
