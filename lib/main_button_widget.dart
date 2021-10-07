@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -8,7 +9,17 @@ import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
 import 'main.dart';
 
-//ここからモーダルを表示するウィジェット
+///URLの配列を定義（Dailyの非表示URL選択でも使いたいのでコントローラー作成）
+class MainUrlsController extends GetxController {
+  var mainUrls = [
+    'https://www.reuters.com/',
+    'https://www.bloomberg.co.jp/',
+    'https://finance.yahoo.co.jp/',
+    'https://nikkei225jp.com/cme/'
+  ].obs;
+}
+
+///ここからモーダルを表示するウィジェット
 class showModalWidget extends StatelessWidget {
   showModalWidget({
     Key? key,
@@ -208,7 +219,7 @@ class BookmarkWidget extends StatelessWidget {
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
                     //タップされたらときTabBarIndexの値を変更したいができていない様子。少なくとも監視はできていない
-                    tvc.selectedUrl.value = 'https://jp.reuters.com/';
+                    tvc.selectedUrl.value = 'https://www.reuters.com/';
                     WebContentPage();
                   },
                   child: Column(

@@ -47,7 +47,7 @@ class WebContentPage extends StatelessWidget {
         ///endTimeが空かつrecordのURLが異なる場合に
         ever(wc.records, (_) {
           var endTime = DateTime.now();
-          wc.records.last.endTime = endTime;
+          wc.records[wc.records.length - 2].endTime = endTime;
         });
 
         ///boxに保存する処理を記載

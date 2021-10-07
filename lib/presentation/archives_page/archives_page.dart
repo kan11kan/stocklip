@@ -153,7 +153,7 @@ class ShowCardsState extends State<ShowCards> {
   ///DailyRecordクラスのオブジェクト配列の変化を監視
   RxList<Daily> dailyRecords = <Daily>[].obs;
 
-  ///box('importantUrl',key='importantUrl')を開いてdailyRecordに格納、監視
+  ///box('importantUrl')の(key='importantUrl')を開いてdailyRecordに格納、監視
   void getDailyRecords() async {
     final box = await Hive.openBox('importantUrl');
     dailyRecords.value = jsonDecode(box.get('importantUrl'))

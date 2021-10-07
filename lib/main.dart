@@ -48,7 +48,7 @@ void main() async {
   runApp(MyApp());
 }
 
-//MyHomePageの呼び出し
+///MyHomePageの呼び出し
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   @override
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//TabView（どのタブバーがタップされたのかを管理するコントローラーを作成）
+///TabView（どのタブバーがタップされたのかを管理するコントローラーを作成）
 class TabViewController extends GetxController {
   //Hiveの確認
   // final bbb = ''.obs;
@@ -79,7 +79,7 @@ class TabViewController extends GetxController {
   }
 }
 
-//MyHomePageをStatelessWidgetで作る
+///MyHomePageをStatelessWidgetで作る
 class MyHomePage extends StatelessWidget {
   //childListでどのページを表示するのか（Tabは共通でそれ以外の中身部分）を管理
   final List<Widget> contentsList = [

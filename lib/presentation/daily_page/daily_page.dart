@@ -12,12 +12,15 @@ import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dar
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
+import '../../main_button_widget.dart';
+
 String memoContent = '';
 
 ///Dailyの中身を記載
 class DailyPage extends StatelessWidget {
   final wc = Get.put(WebController());
   final dc = Get.put(DailyDataController());
+  final muc = Get.put(MainUrlsController());
 
   ///しんじさんのコード
   ///Recordクラスのオブジェクト配列の変化を監視
@@ -60,10 +63,19 @@ class DailyPage extends StatelessWidget {
     String today = outputFormatDay.format(now);
 
     ///urlsのうち、日付が一致するものをだけを抽出して変数に格納する。
-    var todayUrls = RxList(
-        wc.records.where((el) => el.day == today && el.hide == false).toList()
-          ..sort((a, b) => a.readTime.compareTo(b.readTime)));
-    //トップに記載しているURLは履歴から除外したい
+    ///トップに記載しているURLは履歴から除外したい。（なぜかコントローラーから取得すると反映されないので直書き）
+    ///今後は+タグの数×100min,星×1000とかで優先度をつける？？
+    var todayUrls = RxList(wc.records
+        .where((el) =>
+            el.day == today &&
+            el.hide == false &&
+            el.url != 'https://www.bloomberg.co.jp/' &&
+            el.url != 'https://finance.yahoo.co.jp/' &&
+            el.url != 'https://nikkei225jp.com/cme' &&
+            el.url != 'https://www.reuters.com/')
+        .toList()
+      ..sort((a, b) => b.readTime.compareTo(a.readTime)));
+
     // .toList().filter((e) => e == "https://finance.yahoo.co.jp/")
     // list.sort((a,b) => a.id.compareTo(b.id))
 
