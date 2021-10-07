@@ -59,7 +59,7 @@ class DailyPage extends StatelessWidget {
 
     ///処理が走った日付（String）と時刻（DateTime）を取得
     final now = DateTime.now();
-    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd HH:mm');
+    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd'); //HH:mm');
     String today = outputFormatDay.format(now);
 
     ///urlsのうち、日付が一致するものをだけを抽出して変数に格納する。
