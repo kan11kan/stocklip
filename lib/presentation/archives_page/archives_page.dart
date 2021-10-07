@@ -14,55 +14,57 @@ import 'archives_button_widget.dart';
 class ArchivesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          shadowColor: Colors.black54,
-          child: Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-                  child: Container(
-                    child: SizedBox(
-                      height: 45,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'キーワード検索',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(
-                              color: Colors.grey,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Card(
+            shadowColor: Colors.black54,
+            child: Container(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                    child: Container(
+                      child: SizedBox(
+                        height: 45,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'キーワード検索',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: BorderSide(
-                              color: Colors.grey,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  child: DateRangePickerWidget(),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
-                    //Get.to()で記載
-                    Get.to(SearchResult());
-                  },
-                  child: Text('検索'),
-                ),
-              ],
+                  Container(
+                    child: DateRangePickerWidget(),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      //Archivesのページに検索履歴を表示する。戻るボタンでArchivesに戻る。
+                      //Get.to()で記載
+                      Get.to(SearchResult());
+                    },
+                    child: Text('検索'),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        ShowCards(),
-      ],
+          ShowCards(),
+        ],
+      ),
     );
   }
 }
@@ -207,15 +209,19 @@ class ShowCardsState extends State<ShowCards> {
                       children: [
                         Text('${dailyRecords[index].day}'),
                         Text('${nikkei[index]}'),
-                        ElevatedButton(
-                          ///例で記載
-                          child: Text('${tags[3]}'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            onPrimary: Colors.black,
-                            shape: const StadiumBorder(),
-                          ),
-                          onPressed: () {},
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              ///例で記載
+                              child: Text('${tags[3]}'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                onPrimary: Colors.black,
+                                shape: const StadiumBorder(),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
                         ),
                         Container(
                           child: dailyRecords[index].memo == ''

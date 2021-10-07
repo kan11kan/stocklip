@@ -44,6 +44,7 @@ class WebContentPage extends StatelessWidget {
 
         ///wc.recordsを監視し、変更（新しいURLの追加）のタイミングで
         ///wc.recordsのオブジェクト配列の最後の'endTime'にendTimeを代入する処理を書く
+        ///endTimeが空かつrecordのURLが異なる場合に
         ever(wc.records, (_) {
           var endTime = DateTime.now();
           wc.records.last.endTime = endTime;

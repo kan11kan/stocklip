@@ -6,4 +6,23 @@ class WebController extends GetxController {
   final RxList<Record> records = <Record>[].obs;
   final todayUrls = <String>[];
   var record = Record().obs;
+
+  @override
+  void onInit() {
+    // widgetにメモリが割り当てられ次第実行される
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    // widgetが描画され次第実行される
+    super.onReady();
+  }
+
+  void onClose() {
+    // controllerがメモリから削除される直前に実行される
+    var endTime = DateTime.now();
+    records.last.endTime = endTime;
+    super.onClose();
+  }
 }
