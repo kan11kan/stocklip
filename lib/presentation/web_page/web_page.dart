@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -12,24 +13,23 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../main.dart';
 
-//Webの中身だけ表示するページ
+///Webの中身だけ表示するページ
 class WebContentPage extends StatelessWidget {
   final tvc = Get.put(TabViewController());
   final wc = Get.put(WebController());
   final tags = [];
 
-  // void getUrls() async {
-  //   await Hive.openBox('url');
-  //   final box = await Hive.openBox('url');
-  //   wc.records.value = jsonDecode(box.get('records'))
-  //       .map((el) => Record.fromJson(el))
-  //       .toList()
-  //       .cast<Record>() as List<Record>;
-  // }
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
 
   @override
   Widget build(BuildContext context) {
     return WebView(
+      // javascriptMode: JavascriptMode.unrestricted,
+      // onWebViewCreated: (WebViewController webViewController) {
+      //   _controller.complete(webViewController);
+      // },
+
       initialUrl: tvc.selectedUrl.value.toString(),
       onPageStarted: (url) {
         ///登録するデータ（url,dayを準備）

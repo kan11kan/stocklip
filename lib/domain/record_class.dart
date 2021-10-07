@@ -5,6 +5,7 @@ class Record {
     this.hide = false,
     this.startTime,
     this.endTime,
+    this.title = '',
     // this.tags,
     // required this.tags,
     // this.newstitle = ''
@@ -19,6 +20,7 @@ class Record {
   int get readTime => endTime != null && startTime != null
       ? endTime!.difference(startTime!).inSeconds
       : 0;
+  String title;
   // List<String> tags = [];
   // String newstitle;
 
@@ -42,7 +44,12 @@ class Record {
   Record.fromJson(Map<String, dynamic> json)
       : url = json["url"],
         day = json["day"],
-        hide = json["hide"];
+        hide = json["hide"],
+        title = json["title"];
+
+  ///startTimeとendTimeを作成したらエラーになったので一旦消す。
+  // startTime = json["startTime"],
+  // endTime = json["endTime"];
   // newstitle = json['newstitle'],
   // tags = json["tags"];
   //jsondecodeでjson tagsを囲う（decodeする）→List<String>に変換する。
@@ -53,6 +60,9 @@ class Record {
       'url': url,
       'day': day,
       'hide': hide,
+      'title': title,
+      // 'startTime': startTime,
+      // 'endTime': endTime
     };
     //レコード型のものがMap<String ,dynamic>になる。
     // JsonをDecodeしたものがMap<String,dynamic>になる

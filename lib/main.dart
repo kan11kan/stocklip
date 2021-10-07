@@ -14,6 +14,7 @@ import 'package:one_app_everyday921/presentation/daily_page/daily_page.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
+import 'domain/daily_class.dart';
 import 'domain/record_class.dart';
 import 'main_button_widget.dart';
 
@@ -29,38 +30,25 @@ void main() async {
 
   ///最初にboxを開く処理を書くとエラーで立ち上がらない！！
   ///box.get('record')==null ? :
-  ///
 
   final box = await Hive.openBox('recordsGeneratedByUrl');
-  wc.records.value = jsonDecode(box.get('records'))
-      .map((el) => Record.fromJson(el))
-      .toList()
-      .cast<Record>() as List<Record>;
-  try {
-    print('${box.get('records')}');
-  } catch (e) {
-    print(e);
+
+  if (box.get('records') != null) {
+    wc.records.value = jsonDecode(box.get('records'))
+        .map((el) => Record.fromJson(el))
+        .toList()
+        .cast<Record>() as List<Record>;
   }
 
   ///Dailyが保存されているか確認
-  // final box1 = await Hive.openBox('importantUrl');
-  // dc.dailyRecords.value = jsonDecode(box.get('importantUrl'))
-  //     .map((el) => Daily.fromJson(el))
-  //     .toList()
-  //     .cast<Daily>() as List<Daily>;
-  // try {
-  //   print('${box1.get('importantUrl')}');
-  // } catch (e) {
-  //   print(e);
-  // }
+  final box1 = await Hive.openBox('mostImportantUrl');
 
-  // final dc = Get.put(DailyDataController());
-  // final dbox = await Hive.openBox('recordsByDay');
-  // dc.records.value = jsonDecode(dbox.get('recordsByDay'))
-  //     .map((el) => DailyData.fromJson(el));
-  //     .toList()
-  //     .cast<DailyData>() as List<DailyData>;
-  // print('${box.get('records')}');
+  if (box1.get('mostImportantUrl') != null) {
+    dc.dailyRecords.value = jsonDecode(box1.get('mostImportantUrl'))
+        .map((el) => Daily.fromJson(el))
+        .toList()
+        .cast<Daily>() as List<Daily>;
+  }
 
   // print(urls.value[0].url);
   // print(urls.value[1].url);

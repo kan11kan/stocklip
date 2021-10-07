@@ -8,6 +8,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/daily_class.dart';
+import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 
 import 'archives_button_widget.dart';
 import 'archives_controller.dart';
@@ -21,6 +22,7 @@ import 'archives_controller.dart';
 ///アーカイブページ全体の記述
 class ArchivesPage extends StatelessWidget {
   final skc = Get.put(SearchKeyController());
+  final dc = Get.put(DailyDataController());
   var searchKeywords = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,24 @@ class ArchivesPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      ///boxにdailyを保存できるかここで試す
+                      void putMostImportantUrl() async {
+                        final box = await Hive.openBox('importantUrl');
+                        box.put('importantUrl', jsonEncode(dc.dailyRecords));
+                      }
+
+                      String day =
+                          DateTime.now().add(Duration(days: 1) * -1) as String;
+                      Daily tmpDaily = Daily(
+                          memo: 'test',
+                          day: day, //日付が変わった1日前の履歴
+                          mostImportantUrl:
+                              'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
+                      dc.dailyRecords.add(tmpDaily);
+
+                      ///ここで1日に一回boxに保存
+                      putMostImportantUrl();
+
                       ///SearchResultに検索キーワード、検索期間を渡す
                       print('${skc.startDay.value}');
                       print('${skc.endDay.value}');
@@ -184,11 +204,13 @@ class ShowCardsState extends State<ShowCards> {
 
   ///box('importantUrl')の(key='importantUrl')を開いてdailyRecordに格納、監視
   void getDailyRecords() async {
-    final box = await Hive.openBox('importantUrl');
-    dailyRecords.value = jsonDecode(box.get('importantUrl'))
-        .map((el) => Daily.fromJson(el))
-        .toList()
-        .cast<Daily>() as List<Daily>;
+    final box = await Hive.openBox('dailyRecords');
+    if (box.get('dailyRecords') != null) {
+      dailyRecords.value = jsonDecode(box.get('dailyRecords'))
+          .map((el) => Daily.fromJson(el))
+          .toList()
+          .cast<Daily>() as List<Daily>;
+    }
   }
 
   ///memo, 日付のオブジェクト配列から日付を取得（順番は古い順になっている？）

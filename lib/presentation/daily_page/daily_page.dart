@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -14,7 +15,14 @@ import 'package:simple_url_preview/simple_url_preview.dart';
 
 import '../../main_button_widget.dart';
 
-String memoContent = '';
+///1日に1回dailyRecordを記録する処理
+const everyDay = const Duration(hours: 1);
+
+///テストのために1時間置きに実行処理
+final timer = Timer.periodic(everyDay, (Timer t) => createDailyFunc());
+createDailyFunc() {
+  ///ここにDailyクラスをインスタンス化し、dailyRecordsに追加する処理を書く
+}
 
 ///Dailyの中身を記載
 class DailyPage extends StatelessWidget {
@@ -158,24 +166,32 @@ class DailyPage extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           ///ここにデータの保存について記載
-                          // void saveDailyData() async {
-                          //   final box = await Hive.openBox('recordsByDay');
-                          //   final DateTime now = DateTime.now();
-                          //   DateFormat outputFormatDay =
-                          //       DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
-                          //   String day = outputFormatDay.format(now);
-                          ///一旦全てのメモ（更新は配列の最後から取得）を保存する記載（残す）
-                          // Daily dailyTmpRecord = Daily(memo: memoContent, day: day);
-                          // dc.dailyRecords.add(dailyTmpRecord);
-                          // box.put('dailyRecords', jsonEncode(dc.dailyRecords));
-                          // print('${box.get("dailyRecords")}');
-                          // print(memos);
-                          //saveDailyData();
+                          ///boxにputすると動かなくなる。boxそのものがnullかどうかではなく
+                          /// 型の変換でエラーをはいているような気がする
+                          void saveDailyData() async {
+                            final box = await Hive.openBox('mostImportantUrl');
+                            final DateTime now = DateTime.now();
+                            DateFormat outputFormatDay =
+                                DateFormat('yyyy-MM-dd');
+                            String day = outputFormatDay.format(now);
+
+                            ///一旦全てのメモ（更新は配列の最後から取得）を保存する記載（残す）
+                            Daily dailyTmpRecord = Daily(
+                                memo: 'test',
+                                day: day,
+                                mostImportantUrl:
+                                    'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
+                            dc.dailyRecords.add(dailyTmpRecord);
+                            box.put('mostImportantUrl',
+                                jsonEncode(dc.dailyRecords));
+                          }
+
+                          saveDailyData();
 
                           ///確認用
                           void confirmDailyBox() async {
-                            final box = await Hive.openBox('importantUrl');
-                            print('${box.get("importantUrl")}');
+                            final box = await Hive.openBox('mostImportantUrl');
+                            print('${box.get("mostImportantUrl")}');
                           }
 
                           confirmDailyBox();
