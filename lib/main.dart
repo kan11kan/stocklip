@@ -1,5 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,10 +9,12 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:one_app_everyday921/presentation/archives_page/archives_page.dart';
+import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_page.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
+import 'domain/record_class.dart';
 import 'main_button_widget.dart';
 
 void main() async {
@@ -21,15 +25,34 @@ void main() async {
   /// その後の状態管理はすべてgetxで行う。
 
   final wc = Get.put(WebController());
+  final dc = Get.put(DailyDataController());
 
   ///最初にboxを開く処理を書くとエラーで立ち上がらない！！
   ///box.get('record')==null ? :
-  // final box = await Hive.openBox('recordsGeneratedByUrl');
-  // wc.records.value = jsonDecode(box.get('records'))
-  //     .map((el) => Record.fromJson(el))
+  ///
+
+  final box = await Hive.openBox('recordsGeneratedByUrl');
+  wc.records.value = jsonDecode(box.get('records'))
+      .map((el) => Record.fromJson(el))
+      .toList()
+      .cast<Record>() as List<Record>;
+  try {
+    print('${box.get('records')}');
+  } catch (e) {
+    print(e);
+  }
+
+  ///Dailyが保存されているか確認
+  // final box1 = await Hive.openBox('importantUrl');
+  // dc.dailyRecords.value = jsonDecode(box.get('importantUrl'))
+  //     .map((el) => Daily.fromJson(el))
   //     .toList()
-  //     .cast<Record>() as List<Record>;
-  // print('${box.get('records')}');
+  //     .cast<Daily>() as List<Daily>;
+  // try {
+  //   print('${box1.get('importantUrl')}');
+  // } catch (e) {
+  //   print(e);
+  // }
 
   // final dc = Get.put(DailyDataController());
   // final dbox = await Hive.openBox('recordsByDay');
@@ -65,13 +88,6 @@ class MyApp extends StatelessWidget {
 
 ///TabView（どのタブバーがタップされたのかを管理するコントローラーを作成）
 class TabViewController extends GetxController {
-  //Hiveの確認
-  // final bbb = ''.obs;
-  // void aaa() async {
-  //   await Hive.openBox('settings');
-  //   final box = await Hive.openBox('settings');
-  //   bbb.value = box.get('key');
-  // }
   var selectedUrl = ''.obs; //選択された画像に対してUrlを割り当てる。
   var selectedTabIndex = 0.obs; //選択されたタブを'selectedTabIndex'で管理している
   void onItemTapped(int index) {
