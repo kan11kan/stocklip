@@ -154,15 +154,16 @@ class ArchivesPage extends StatelessWidget {
                       ///SearchResultに検索キーワード、検索期間を渡す
                       print('${skc.startDay.value}');
                       print('${skc.endDay.value}');
-                      print(searchKeywords);
+                      print(searchKeywords.text);
+                      //controller.text.toLowerCase()
 
                       ///String　→　DateTimeへの変換処理
-                      ///
                       DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
                       DateTime tmpStartTime =
                           outputFormatDay.parse(skc.startDay.value);
                       DateTime tmpEndTime =
                           outputFormatDay.parse(skc.endDay.value);
+                      skc.searchKeywords.value = searchKeywords.text;
 
                       ///日付の差分を計算（型はint）
                       var duration = tmpEndTime.difference(tmpStartTime).inDays;
@@ -172,7 +173,7 @@ class ArchivesPage extends StatelessWidget {
                       searchKeywords.clear();
 
                       ///検索の開始と終了取得成功！！！
-                      Get.to(SearchResult());
+                      Get.to(SearchResultTop());
                     },
                     child: Text('検索'),
                   ),
@@ -439,33 +440,111 @@ class ShowCardsState extends State<ShowCards> {
 }
 
 ///ここから検索結果のページ
-class SearchResult extends StatefulWidget {
-  const SearchResult({
+class SearchResultTop extends StatefulWidget {
+  SearchResultTop({
     Key? key,
   }) : super(key: key);
-
-  ///開始日と終了日のDurationを取得？
-  ///開始日＋差分　の日付配列を作成
-  ///日付と一致するものをrecordsを取得
-  ///キーワードと一致するものを表示
-
   @override
-  SearchResultState createState() => new SearchResultState();
+  SearchResultTopState createState() => new SearchResultTopState();
 }
 
-class SearchResultState extends State<SearchResult> {
-  double _size = 1.0;
-
+///Stateを記載
+class SearchResultTopState extends State<SearchResultTop> {
+  final skc = Get.put(SearchKeyController());
+  final wc = Get.put(WebController());
   @override
   Widget build(BuildContext context) {
+    ///⓪検索結果を表示するページを記載
+    ///①starDayをDateTime型に変換
+    DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
+    DateTime startDateTime = outputFormatDay.parse(skc.startDay.value);
+
+    ///②開始日と終了日のDurationを取得（int型）
+    // int aaa =skc.duration.value;
+    ///③開始日＋差分　の日付配列(DateTime型)を作成
+    final List researchDateArray = [skc.startDay];
+    for (int i = 1; i < skc.duration.value; i++) {
+      var tmp = startDateTime.add(Duration(days: 1) * i);
+      researchDateArray.add(tmp);
+    }
+
+    final searchResultArray = []; //これは<Record>型
+
+    //検索元はyyyy-MM-dd
+    ///④日付と一致するものをrecordsから取得
+    for (int i = 1; i < researchDateArray.length; i++) {
+      var tmpStringDay =
+          '${researchDateArray[i].year}-${researchDateArray[i].month}-${researchDateArray[i].day}';
+
+      wc.records
+          .where((el) =>
+              el.day == tmpStringDay &&
+              el.hide == false &&
+              el.url != '' &&
+              el.newsTitle!.contains('${skc.searchKeywords}'))
+          .toList()
+          .forEach((el) => searchResultArray.add(el));
+    }
+
+    ///⑤キーワードと一致するものを表示
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('search result'),
       ),
-      body: Text('〜〜の検索結果'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text('検索期間：${skc.startDay}~${skc.endDay}'),
+          Text('検索ワード:${skc.searchKeywords}'),
+          Container(
+            width: 345,
+            child: Column(
+              children: [
+                for (int index = 1;
+                    index < searchResultArray.length + 1;
+                    index++)
+                  SimpleUrlPreview(
+                    url: searchResultArray[index - 1].url,
+                    bgColor: Colors.white,
+                    titleLines: 1,
+                    descriptionLines: 2,
+                    imageLoaderColor: Colors.white,
+                    previewHeight: 150,
+                    previewContainerPadding: EdgeInsets.all(5),
+                    onTap: () {
+                      // Get.to(WebContentPage());
+                    },
+                    titleStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    descriptionStyle: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                    siteNameStyle: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                  ),
+                Text('test'),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
+
+// class searchResult extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context){
+//     return Text('aa');
+//   }
+// }
 
 ///ここからカード形式で表示するテスト
 // class ShowCards extends StatefulWidget {

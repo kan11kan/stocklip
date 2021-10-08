@@ -7,4 +7,5 @@ class SearchKeyController extends GetxController {
   var startDay = ''.obs;
   var endDay = ''.obs;
   RxInt duration = 0.obs;
+  var searchKeywords = ''.obs;
 }
