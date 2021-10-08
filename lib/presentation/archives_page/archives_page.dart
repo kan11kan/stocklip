@@ -69,8 +69,9 @@ class ArchivesPage extends StatelessWidget {
       var mostImportantUrls = wc.records
           .where((el) =>
               el.day == dateList[i] &&
-              el.url != null && //メモを入力した時はallurls==''
-              el.memo != null)
+                  el.memo == null &&
+                  el.url != '' || //メモを入力した時はallurls==''
+              el.day == dateList[i] && el.memo != null && el.url == '')
           .toList()
         ..sort((a, b) => b.readTime.compareTo(a.readTime));
       var mostImportant = mostImportantUrls[0];
@@ -283,20 +284,6 @@ class ShowCardsState extends State<ShowCards> {
   final DailyDataController dc = Get.find();
   // final wc = Get.put(WebController());
 
-  // ///DailyRecordクラスのオブジェクト配列の変化を監視
-  // RxList<Daily> dailyRecords = <Daily>[].obs;
-  //
-  // ///box('mostImportantUrl')の(key='mostImportantUrl')を開いてdailyRecordに格納、監視
-  // void getDailyRecords() async {
-  //   final box = await Hive.openBox('mostImportantUrl');
-  //   if (box.get('mostImportantUrl') != null) {
-  //     dailyRecords.value = jsonDecode(box.get('mostImportantUrl'))
-  //         .map((el) => Daily.fromJson(el))
-  //         .toList()
-  //         .cast<Daily>() as List<Daily>;
-  //   }
-  // }
-
   ///memo, 日付のオブジェクト配列から日付を取得（順番は古い順になっている？）
   ///日経平均終値と日付を({日付:日付,日経:日経})オブジェクト配列に格納（とりあえずマニュアルで）
   final List nikkei = [
@@ -386,46 +373,48 @@ class ShowCardsState extends State<ShowCards> {
                           ],
                         ),
                         Container(
-                          child: wc.mostImportantUrls[index].memo == ''
-                              ? Card(
-                                  child: SimpleUrlPreview(
-                                    url: wc.mostImportantUrls[index].url,
-                                    bgColor: Colors.white,
-                                    titleLines: 1,
-                                    descriptionLines: 2,
-                                    imageLoaderColor: Colors.white,
-                                    previewHeight: 150,
-                                    previewContainerPadding: EdgeInsets.all(5),
-                                    onTap: () {
-                                      // Get.to(WebContentPage());
-                                    },
-                                    titleStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                            child: wc.mostImportantUrls[index].memo != null
+                                ? Card(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 2.0),
+                                      child: SizedBox(
+                                        width: 270,
+                                        height: 140,
+                                        child: Text(
+                                            // 'test')
+                                            '${wc.mostImportantUrls[index].memo}'),
+                                      ),
                                     ),
-                                    descriptionStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
+                                  )
+                                : Card(
+                                    child: SimpleUrlPreview(
+                                      url: wc.mostImportantUrls[index].url,
+                                      bgColor: Colors.white,
+                                      titleLines: 1,
+                                      descriptionLines: 2,
+                                      imageLoaderColor: Colors.white,
+                                      previewHeight: 150,
+                                      previewContainerPadding:
+                                          EdgeInsets.all(5),
+                                      onTap: () {
+                                        // Get.to(WebContentPage());
+                                      },
+                                      titleStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                      descriptionStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                      siteNameStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                    siteNameStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                )
-                              : Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 2.0),
-                                    child: SizedBox(
-                                      width: 270,
-                                      height: 140,
-                                      child: Text(
-                                          '${wc.mostImportantUrls[index].memo}'),
-                                    ),
-                                  ),
-                                ),
-                        ),
+                                  )),
                       ],
                     ),
                   ),

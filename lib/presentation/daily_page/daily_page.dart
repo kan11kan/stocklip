@@ -137,12 +137,16 @@ class DailyPage extends StatelessWidget {
                                 DateFormat('yyyy-MM-dd');
                             String day = outputFormatDay.format(now);
                             Record dailyTmpRecord = Record(
-                                memo: '${myController}', day: day, url: '');
+                                memo: '${myController.text}',
+                                day: day,
+                                url: '');
                             wc.records.add(dailyTmpRecord);
                             box.put('recors', jsonEncode(wc.records));
                           }
 
                           saveDailyData();
+
+                          myController.clear();
 
                           ///確認用
                           // void confirmDailyBox() async {
