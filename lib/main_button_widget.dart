@@ -19,34 +19,41 @@ class MainUrlsController extends GetxController {
   ].obs;
 }
 
-///ここからモーダルを表示するウィジェット
+///ここからfloatingActionButton押下時のモーダル表示部分
 class showModalWidget extends StatelessWidget {
   showModalWidget({
     Key? key,
   }) : super(key: key);
-
   @override
+
+  ///ここでタグの状態を管理
+  var tag = false.obs;
   var tag1 = false.obs;
+  var tag2 = false.obs;
+  var tag3 = false.obs;
+  var tag4 = false.obs;
+  var tag5 = false.obs;
+  var tag6 = false.obs;
+  var tag7 = false.obs;
+  var tag8 = false.obs;
 
   Widget build(BuildContext context) => Container(
         height: 320,
         color: Colors.white,
         child: Center(
           child: Column(
-// mainAxisAlignment: MainAxisAlignment.center,
-// mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    child: Icon(Icons.close),
+                    child: const Icon(Icons.close),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -54,24 +61,27 @@ class showModalWidget extends StatelessWidget {
                       () => ElevatedButton(
                         child: const Text('金利'),
                         style: ElevatedButton.styleFrom(
+                          primary: (tag.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag.value) ? tag.value = false : tag.value = true;
+                        },
+                      ),
+                    ),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('日経平均'),
+                        style: ElevatedButton.styleFrom(
                           primary: (tag1.value) ? Colors.blue : Colors.white,
                           onPrimary: Colors.black,
                           shape: const StadiumBorder(),
                         ),
                         onPressed: () {
-//ここにタグの表示非表示切り替え処理を書く
                           (tag1.value) ? tag1.value = false : tag1.value = true;
                         },
                       ),
-                    ),
-                    ElevatedButton(
-                      child: const Text('日経平均'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
-                      ),
-                      onPressed: () {},
                     ),
                     ElevatedButton(
                       child: const Text('米国株'),
@@ -86,7 +96,7 @@ class showModalWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -97,9 +107,7 @@ class showModalWidget extends StatelessWidget {
                         onPrimary: Colors.black,
                         shape: const StadiumBorder(),
                       ),
-                      onPressed: () {
-//ここにタグの表示非表示切り替え処理を書く
-                      },
+                      onPressed: () {},
                     ),
                     ElevatedButton(
                       child: const Text('テクニカル'),
@@ -123,7 +131,7 @@ class showModalWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -134,9 +142,7 @@ class showModalWidget extends StatelessWidget {
                         onPrimary: Colors.black,
                         shape: const StadiumBorder(),
                       ),
-                      onPressed: () {
-//ここにタグの表示非表示切り替え処理を書く
-                      },
+                      onPressed: () {},
                     ),
                     ElevatedButton(
                       child: const Text('債券'),
@@ -164,7 +170,7 @@ class showModalWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      child: Icon(Icons.star_purple500_outlined),
+                      child: const Icon(Icons.star_purple500_outlined),
                       onPressed: () {},
                     ),
                   ],
@@ -176,7 +182,9 @@ class showModalWidget extends StatelessWidget {
       );
 }
 
-//ここからホーム画面の描画について
+///ここからホーム画面の描画について
+///後でGoogle検索実装
+///一度URLを飛ばしてonloadのタイミングで入力されたワードを検索？？わからん
 class BookmarkWidget extends StatelessWidget {
   BookmarkWidget({
     Key? key,
@@ -187,6 +195,7 @@ class BookmarkWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          ///検索フォーム
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 85, 10, 70),
             child: SizedBox(
@@ -196,13 +205,13 @@ class BookmarkWidget extends StatelessWidget {
                   hintText: 'Google検索',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.grey,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.grey,
                     ),
                   ),
@@ -210,15 +219,16 @@ class BookmarkWidget extends StatelessWidget {
               ),
             ),
           ),
+
+          ///それぞれの画像がタップされた時にURLを渡してWebViewへ遷移
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
-                    //タップされたらときTabBarIndexの値を変更したいができていない様子。少なくとも監視はできていない
                     tvc.selectedUrl.value = 'https://www.reuters.com/';
                     WebContentPage();
                   },
@@ -235,7 +245,7 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
@@ -243,7 +253,7 @@ class BookmarkWidget extends StatelessWidget {
                     WebContentPage();
                   },
                   child: Column(
-                    children: [
+                    children: const [
                       Image(
                         width: 80,
                         height: 80,
@@ -255,7 +265,7 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
@@ -263,7 +273,7 @@ class BookmarkWidget extends StatelessWidget {
                     WebContentPage();
                   },
                   child: Column(
-                    children: [
+                    children: const [
                       Image(
                         width: 80,
                         height: 80,
@@ -275,7 +285,7 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: Column(
                   children: [
                     GestureDetector(
@@ -284,7 +294,7 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
                         WebContentPage();
                       },
-                      child: Image(
+                      child: const Image(
                         width: 80,
                         height: 80,
                         image: AssetImage('images/cme_logo.jpeg'),
@@ -300,11 +310,10 @@ class BookmarkWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
-                    //タップされたらときTabBarIndexの値を変更したいができていない様子。少なくとも監視はできていない
                     tvc.selectedUrl.value = 'https://jp.reuters.com/';
                     WebContentPage();
                   },
@@ -321,7 +330,7 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
@@ -329,7 +338,7 @@ class BookmarkWidget extends StatelessWidget {
                     WebContentPage();
                   },
                   child: Column(
-                    children: [
+                    children: const [
                       Image(
                         width: 80,
                         height: 80,
@@ -341,7 +350,7 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
@@ -349,7 +358,7 @@ class BookmarkWidget extends StatelessWidget {
                     WebContentPage();
                   },
                   child: Column(
-                    children: [
+                    children: const [
                       Image(
                         width: 80,
                         height: 80,
@@ -361,7 +370,7 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 30),
                 child: Column(
                   children: [
                     GestureDetector(
@@ -370,13 +379,13 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
                         WebContentPage();
                       },
-                      child: Image(
+                      child: const Image(
                         width: 80,
                         height: 80,
                         image: AssetImage('images/cme_logo.jpeg'),
                       ),
                     ),
-                    Text('CME日経平均')
+                    const Text('CME日経平均')
                   ],
                 ),
               ),

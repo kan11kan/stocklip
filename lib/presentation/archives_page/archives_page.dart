@@ -8,35 +8,36 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record_class.dart';
-import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 import 'archives_button_widget.dart';
 import 'archives_controller.dart';
 
-///検索が押されたら次のページ（SearchResult）に値を渡す処理を記　→Done
-///（SearchResult）で()box（key=''）から日付が選択期間内にあるもの（ロジックを調べる）
-///→配列作る方針で、、、
-///URLのタイトル、とテキストが部分一致するものを取得
-///（SearchResult）でsimpleURLpreviewで該当のURLを表示
-
-///box管理
-///box名：recordsGeneratedByUrl
-///boxkey:records
+///対処すべき問題
+///urlのtitleが空のとき、エラーが発生
+///検索結果がきちんと出ているかわからない
 
 final WebController wc = Get.find();
 
 ///アーカイブページ全体の記述
-class ArchivesPage extends StatelessWidget {
-  final skc = Get.put(SearchKeyController());
-  final dc = Get.put(DailyDataController());
-  final wc = Get.put(WebController());
-  var searchKeywords = TextEditingController();
-  RxList<Record> importantInfo = <Record>[].obs;
-  @override
+class ArchivesPage extends StatefulWidget {
+  const ArchivesPage({Key? key}) : super(key: key);
 
-  ///box('mostImportantUrl')の(key='mostImportantUrl')を開いてdailyRecordに格納、監視
+  @override
+  State<ArchivesPage> createState() => _ArchivesPageState();
+}
+
+class _ArchivesPageState extends State<ArchivesPage> {
+  final skc = Get.put(SearchKeyController());
+
+  final wc = Get.put(WebController());
+
+  var searchKeywords = TextEditingController();
+
+  RxList<Record> importantInfo = <Record>[].obs;
+
+  ///box('recordsGeneratedByUrl')の(key='records')を開いてrecordsに格納、監視
   void getRecords() async {
     final box = await Hive.openBox('recordsGeneratedByUrl');
     if (box.get('records') != null) {
@@ -47,16 +48,14 @@ class ArchivesPage extends StatelessWidget {
     }
   }
 
+  ///方針
   ///※　build以下記載　※　メモがなければ日付配列[0]~[n]のmostImportantUrlを取得し、mostImportantInfoに格納
   ///この時、メモがあればメモを格納、なければURLを取得し格納する
-  ///※保存ボタンを押した時に、dailyRecordsにurl='',memo='content'で保存
   ///※urlが更新された時に、dailyRecordsにurl='url',memo=''で保存している
 
-  ///box('mostImportantUrl',key='importantUrl')を開く処理
-  ///※※※※※※※　　　　dcは使わない方針に変更してロジック考えてみる　　※※※※※※※※
-  ///※※※※※※※　　　　recordsにmemoを追加(dayとurlはある)　　　　　※※※※※※※※
-  ///※※※※※※※　　　　dailyRecordへの記載を変更しないといけない、、　※※※※※※※※
+  @override
   Widget build(BuildContext context) {
+    ///recordsGeneratedByUrlボックス(key=records)を開く
     getRecords();
 
     ///mostImportantUrlを取得する流れ
@@ -64,125 +63,76 @@ class ArchivesPage extends StatelessWidget {
     var dateList = RxList(wc.records.map((el) => el.day).toSet().toList());
 
     ///dailyRecordsから日付でフィルターしてurlを取得
-
     for (int i = 0; i < dateList.length; i++) {
       var mostImportantUrls = wc.records
           .where((el) =>
-              el.day == dateList[i] &&
-                  el.memo == null &&
-                  el.url != '' || //メモを入力した時はallurls==''
-              el.day == dateList[i] && el.memo != null && el.url == '')
+              (el.day == dateList[i] && el.memo == null && el.url != '') ||
+              (el.day == dateList[i] && el.memo != null && el.url == ''))
           .toList()
         ..sort((a, b) => b.readTime.compareTo(a.readTime));
       var mostImportant = mostImportantUrls[0];
       wc.mostImportantUrls.add(mostImportant);
     }
 
-    // var todayUrls = RxList(wc.records
-    //         .where((el) =>
-    //             el.day == today &&
-    //             el.hide == false &&
-    //             el.url != 'https://www.bloomberg.co.jp/' &&
-    //             el.url != 'https://finance.yahoo.co.jp/' &&
-    //             el.url != 'https://nikkei225jp.com/cme' &&
-    //             el.url != 'https://www.reuters.com/' &&
-    //             el.url != '')
-    //         .toList()
-    //       ..sort((a, b) => b.readTime.compareTo(a.readTime)));
-
     return SingleChildScrollView(
       child: Column(
         children: [
           Card(
             shadowColor: Colors.black54,
-            child: Container(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-                    child: Container(
-                      child: SizedBox(
-                        height: 45,
-                        child: TextField(
-                          ///検索ボタン押下でフィールドをリセット
-                          controller: searchKeywords,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                  child: SizedBox(
+                    height: 45,
+                    child: TextField(
+                      ///検索ボタン押下でフィールドをリセット
+                      controller: searchKeywords,
 
-                          decoration: InputDecoration(
-                            hintText: 'キーワード検索',
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: BorderSide(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(50),
-                              borderSide: BorderSide(
-                                color: Colors.grey,
-                              ),
-                            ),
+                      decoration: InputDecoration(
+                        hintText: 'キーワード検索',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    child: DateRangePickerWidget(),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // ///boxにdailyを保存できるかここで試す
-                      // void putMostImportantUrl() async {
-                      //   final box = await Hive.openBox('importantUrl');
-                      //   box.put('importantUrl', jsonEncode(dc.dailyRecords));
-                      // }
-                      //
-                      // DateTime yesterday =
-                      //     DateTime.now().add(Duration(days: 1) * -1);
-                      // DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
-                      // String day = outputFormatDay.format(yesterday);
-                      //
-                      // Daily tmpDaily = Daily(
-                      //     memo: 'test',
-                      //     day: day, //日付が変わった1日前の履歴
-                      //     allUrls:
-                      //         'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
-                      // dc.dailyRecords.add(tmpDaily);
-                      //
-                      // ///ここで1日に一回boxに保存
-                      // putMostImportantUrl();
+                ),
+                DateRangePickerWidget(),
+                ElevatedButton(
+                  onPressed: () {
+                    ///SearchResultに検索キーワード、検索期間を渡す
+                    ///String　→　DateTimeへの変換処理
+                    DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
+                    DateTime tmpStartTime =
+                        outputFormatDay.parse(skc.startDay.value);
+                    DateTime tmpEndTime =
+                        outputFormatDay.parse(skc.endDay.value);
+                    skc.searchKeywords.value = searchKeywords.text;
 
-                      ///SearchResultに検索キーワード、検索期間を渡す
-                      print('${skc.startDay.value}');
-                      print('${skc.endDay.value}');
-                      print(searchKeywords.text);
-                      //controller.text.toLowerCase()
+                    ///日付の差分を計算（型はint）
+                    var duration = tmpEndTime.difference(tmpStartTime).inDays;
+                    skc.duration.value = duration;
+                    searchKeywords.clear();
 
-                      ///String　→　DateTimeへの変換処理
-                      DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
-                      DateTime tmpStartTime =
-                          outputFormatDay.parse(skc.startDay.value);
-                      DateTime tmpEndTime =
-                          outputFormatDay.parse(skc.endDay.value);
-                      skc.searchKeywords.value = searchKeywords.text;
-
-                      ///日付の差分を計算（型はint）
-                      var duration = tmpEndTime.difference(tmpStartTime).inDays;
-                      skc.duration.value = duration;
-                      print(skc.duration.value);
-
-                      searchKeywords.clear();
-
-                      ///検索の開始と終了取得成功！！！
-                      Get.to(SearchResultTop());
-                    },
-                    child: Text('検索'),
-                  ),
-                ],
-              ),
+                    ///検索の開始と終了取得成功！！！
+                    Get.to(SearchResultTop());
+                  },
+                  child: const Text('検索'),
+                ),
+              ],
             ),
           ),
-          ShowCards(),
+          const ShowCards(),
         ],
       ),
     );
@@ -191,6 +141,8 @@ class ArchivesPage extends StatelessWidget {
 
 ///ここから日付の範囲を指定するWidget
 class DateRangePickerWidget extends StatefulWidget {
+  const DateRangePickerWidget({Key? key}) : super(key: key);
+
   @override
   _DateRangePickerWidgetState createState() => _DateRangePickerWidgetState();
 }
@@ -200,26 +152,19 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
   final skc = Get.put(SearchKeyController());
 
   DateTimeRange dateRange = DateTimeRange(
-      start: DateTime.now().add(Duration(days: 1) * -6), end: DateTime.now());
+      start: DateTime.now().add(const Duration(days: 1) * -6),
+      end: DateTime.now());
 
   ///ここで選択期間の開始の日付を取得！！！
   String getFrom() {
-    if (dateRange == null) {
-      return 'From';
-    } else {
-      skc.startDay.value = DateFormat('dd-MM-yyyy').format(dateRange.start);
-      return skc.startDay.value;
-    }
+    skc.startDay.value = DateFormat('dd-MM-yyyy').format(dateRange.start);
+    return skc.startDay.value;
   }
 
   ///ここで選択期間の終了の日付を取得！！！
   String getUntil() {
-    if (dateRange == null) {
-      return 'Until';
-    } else {
-      skc.endDay.value = DateFormat('dd-MM-yyyy').format(dateRange.end);
-      return skc.endDay.value;
-    }
+    skc.endDay.value = DateFormat('dd-MM-yyyy').format(dateRange.end);
+    return skc.endDay.value;
   }
 
   @override
@@ -237,7 +182,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
               ),
             ),
             const SizedBox(width: 8),
-            Icon(Icons.arrow_forward, color: Colors.blueGrey),
+            const Icon(Icons.arrow_forward, color: Colors.blueGrey),
             const SizedBox(width: 8),
             SizedBox(
               width: 150,
@@ -254,7 +199,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
   ///ユーザーが実際に期間選択する画面
   Future pickDateRange(BuildContext context) async {
     final initialDateRange = DateTimeRange(
-      start: DateTime.now().add(Duration(days: 1) * -6),
+      start: DateTime.now().add(const Duration(days: 1) * -6),
       end: DateTime.now(),
     );
     final newDateRange = await showDateRangePicker(
@@ -277,13 +222,10 @@ class ShowCards extends StatefulWidget {
     Key? key,
   }) : super(key: key);
   @override
-  ShowCardsState createState() => new ShowCardsState();
+  ShowCardsState createState() => ShowCardsState();
 }
 
 class ShowCardsState extends State<ShowCards> {
-  final DailyDataController dc = Get.find();
-  // final wc = Get.put(WebController());
-
   ///memo, 日付のオブジェクト配列から日付を取得（順番は古い順になっている？）
   ///日経平均終値と日付を({日付:日付,日経:日経})オブジェクト配列に格納（とりあえずマニュアルで）
   final List nikkei = [
@@ -329,21 +271,12 @@ class ShowCardsState extends State<ShowCards> {
     'その他'
   ];
 
-  ///オブジェクト配列の長さを取得
-  ///配列の長さ分のカードを作成
-  ///Text（'日付'）を作成
-  ///Text('日経平均終値')を作成
-  ///Text('tags')を作成
-  ///メモの有無を確認する
-  ///メモがあればメモを表示、なければURLを表示　　isMemo ? showMemo() : showUrl();
-
   ///ここからリストビュー
   @override
   Widget build(BuildContext context) {
     ///リストビュービルダー
-    ///
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         children: [
           SizedBox(
@@ -373,48 +306,44 @@ class ShowCardsState extends State<ShowCards> {
                           ],
                         ),
                         Container(
-                            child: wc.mostImportantUrls[index].memo != null
-                                ? Card(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 2.0),
-                                      child: SizedBox(
-                                        width: 270,
-                                        height: 140,
-                                        child: Text(
-                                            // 'test')
-                                            '${wc.mostImportantUrls[index].memo}'),
-                                      ),
+                          child: wc.mostImportantUrls[index].memo != null
+                              ? Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: SizedBox(
+                                      width: 270,
+                                      height: 140,
+                                      child: Text(
+                                          '${wc.mostImportantUrls[index].memo}'),
                                     ),
-                                  )
-                                : Card(
-                                    child: SimpleUrlPreview(
-                                      url: wc.mostImportantUrls[index].url,
-                                      bgColor: Colors.white,
-                                      titleLines: 1,
-                                      descriptionLines: 2,
-                                      imageLoaderColor: Colors.white,
-                                      previewHeight: 150,
-                                      previewContainerPadding:
-                                          EdgeInsets.all(5),
-                                      onTap: () {
-                                        // Get.to(WebContentPage());
-                                      },
-                                      titleStyle: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                      descriptionStyle: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                      siteNameStyle: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
+                                  ),
+                                )
+                              : Card(
+                                  child: SimpleUrlPreview(
+                                    url: wc.mostImportantUrls[index].url,
+                                    bgColor: Colors.white,
+                                    titleLines: 1,
+                                    descriptionLines: 2,
+                                    imageLoaderColor: Colors.white,
+                                    previewHeight: 150,
+                                    previewContainerPadding: EdgeInsets.all(5),
+                                    onTap: () {},
+                                    titleStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
                                     ),
-                                  )),
+                                    descriptionStyle: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    siteNameStyle: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                        ),
                       ],
                     ),
                   ),
@@ -449,7 +378,6 @@ class SearchResultTopState extends State<SearchResultTop> {
     DateTime startDateTime = outputFormatDay.parse(skc.startDay.value);
 
     ///②開始日と終了日のDurationを取得（int型）
-    // int aaa =skc.duration.value;
     ///③開始日＋差分　の日付配列(DateTime型)を作成
     final List researchDateArray = [skc.startDay];
     for (int i = 1; i < skc.duration.value; i++) {
@@ -527,146 +455,3 @@ class SearchResultTopState extends State<SearchResultTop> {
     );
   }
 }
-
-// class searchResult extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context){
-//     return Text('aa');
-//   }
-// }
-
-///ここからカード形式で表示するテスト
-// class ShowCards extends StatefulWidget {
-//   @override
-//   ShowCardsState createState() => ShowCardsState();
-// }
-//
-// class ShowCardsState extends State<ShowCards> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: SizedBox(
-//         height: 420,
-//         child: ListView(
-//           children: [
-//             Card(
-//               child: SizedBox(
-//                 width: 300,
-//                 height: 200,
-//                 child: Column(
-//                   children: [
-//                     Row(
-//                       children: [
-//                         Text('10月10日　'),
-//                         Text('日経平均終値：30,200円'),
-//                       ],
-//                     ),
-//                     Row(
-//                       children: [
-//                         Text('タグ1'),
-//                         Text('タグ2'),
-//                         Text('タグ3'),
-//                       ],
-//                     ),
-//                     ImportantContent(),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             Card(
-//               child: SizedBox(
-//                 width: 300,
-//                 height: 200,
-//                 child: Column(
-//                   children: [
-//                     Row(
-//                       children: [
-//                         Text('10月9日　'),
-//                         Text('日経平均終値：30,000円'),
-//                       ],
-//                     ),
-//                     Row(
-//                       children: [
-//                         Text('タグ1'),
-//                         Text('タグ2'),
-//                         Text('タグ3'),
-//                       ],
-//                     ),
-//                     ImportantContent2(),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-//リストの作成は、recordの中に本日の日付と一致するものがあれば作成する？
-//ImportantContentはメモがある場合とない場合で場合わけする。
-
-// class ImportantContent extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       //onTap: ここにTapしたらDaily recordに画面遷移する（タップしたカードの日付を渡す）
-//       child: Container(
-//         width: 400,
-//         child: SimpleUrlPreview(
-//           url:
-//           //ここにもっとも滞在時間が長いURLが表示される
-//           //日付と開始時刻、終了時刻でフィルターをかけたURLを表示する
-//           'https://www.bloomberg.co.jp/news/articles/2021-10-01/R0B7KODWRGG301?srnd=cojp-v2',
-//           bgColor: Colors.white,
-//           titleLines: 1,
-//           descriptionLines: 2,
-//           imageLoaderColor: Colors.white,
-//           previewHeight: 150,
-//           previewContainerPadding: EdgeInsets.all(5),
-//           onTap: () {
-//             Get.to(SearchResult());
-//           },
-//           titleStyle: TextStyle(
-//             fontSize: 16,
-//             fontWeight: FontWeight.bold,
-//             color: Colors.black,
-//           ),
-//           descriptionStyle: TextStyle(
-//             fontSize: 14,
-//             color: Colors.black,
-//           ),
-//           siteNameStyle: TextStyle(
-//             fontSize: 14,
-//             color: Colors.black,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-///擬似的にメモがある場合を再現
-// class ImportantContent2 extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 400,
-//       child: Card(
-//         child: Padding(
-//           padding: const EdgeInsets.only(bottom: 2.0),
-//           child: SizedBox(
-//             width: 270,
-//             height: 140,
-//             child: Text(
-//               //ここに日付でフィルターをかけたメモの内容が表示される
-//               //recordsに保存した日付とメモの組み合わせから取得
-//                 'メモの内容が入ります'),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -1,18 +1,12 @@
 class Daily {
-  Daily({this.memo, this.day, this.allUrls, this.mostImportantUrl
-      // this.records
-      });
+  Daily({this.memo, this.day, this.allUrls, this.mostImportantUrl});
 
   // フィールド
   String? memo;
   String? day;
   String? allUrls;
   String? mostImportantUrl;
-  // String valuableUrl; //一番readtimeが
-  // List? tags = [];
-  // List<Record>? records; //レコードをここで管理する。
 
-  //書き方違うかも
   Daily.fromJson(Map<String, dynamic> json)
       : memo = json["memo"],
         day = json["day"],

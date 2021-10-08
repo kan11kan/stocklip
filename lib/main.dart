@@ -9,28 +9,19 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:one_app_everyday921/presentation/archives_page/archives_page.dart';
-import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_page.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
-import 'domain/daily_class.dart';
 import 'domain/record_class.dart';
 import 'main_button_widget.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
   ///wc.recordは常にデータをもっている状態にする。boxからwc.recordsをgetする
   /// その後の状態管理はすべてgetxで行う。
-
   final wc = Get.put(WebController());
-  final dc = Get.put(DailyDataController());
-
-  ///最初にboxを開く処理を書くとエラーで立ち上がらない！！
-  ///box.get('record')==null ? :
-
   final box = await Hive.openBox('recordsGeneratedByUrl');
 
   if (box.get('records') != null) {
@@ -41,15 +32,6 @@ void main() async {
   }
 
   ///Dailyが保存されているか確認
-  final box1 = await Hive.openBox('mostImportantUrl');
-
-  if (box1.get('mostImportantUrl') != null) {
-    dc.dailyRecords.value = jsonDecode(box1.get('mostImportantUrl'))
-        .map((el) => Daily.fromJson(el))
-        .toList()
-        .cast<Daily>() as List<Daily>;
-  }
-
   // print(urls.value[0].url);
   // print(urls.value[1].url);
   // print(urls.value[2].url);
@@ -65,7 +47,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'nanannanana',
+      title: '',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -76,6 +58,7 @@ class MyApp extends StatelessWidget {
 
 ///TabView（どのタブバーがタップされたのかを管理するコントローラーを作成）
 class TabViewController extends GetxController {
+  ///WebBarをタップしたらエラーになる（URLが選択されていない　→　初期値に適当なものを入れる？）
   var selectedUrl = ''.obs; //選択された画像に対してUrlを割り当てる。
   var selectedTabIndex = 0.obs; //選択されたタブを'selectedTabIndex'で管理している
   void onItemTapped(int index) {
@@ -85,7 +68,7 @@ class TabViewController extends GetxController {
 
 ///MyHomePageをStatelessWidgetで作る
 class MyHomePage extends StatelessWidget {
-  //childListでどのページを表示するのか（Tabは共通でそれ以外の中身部分）を管理
+  ///childListでどのページを表示するのか（Tabは共通でそれ以外の中身部分）を管理
   final List<Widget> contentsList = [
     MyHomePageContent(),
     ArchivesPage(),
@@ -95,8 +78,8 @@ class MyHomePage extends StatelessWidget {
   final List<Widget> navBarNameList = [
     const Text('Home'),
     const Text('Archives'),
-    const Text('Daily news'),
-    const Text('Web page')
+    const Text('Daily News'),
+    const Text('Web Page')
   ];
   final List<bool> floatingButtonList = [
     false,
@@ -105,7 +88,9 @@ class MyHomePage extends StatelessWidget {
     true,
   ];
   final tvc = Get.put(TabViewController());
-  // final dc = Get.put(DailyDataController());
+
+  MyHomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,9 +98,13 @@ class MyHomePage extends StatelessWidget {
         title: Obx(
           () => navBarNameList[tvc.selectedTabIndex.value],
         ),
-        leading: Icon(Icons.arrow_back_ios),
-        actions: <Widget>[IconButton(onPressed: () {}, icon: Icon(Icons.menu))],
+        leading: const Icon(Icons.arrow_back),
+        actions: <Widget>[
+          IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
+        ],
       ),
+
+      ///ここからTabBar
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -169,27 +158,19 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-//ここからボディの中身（MyHomePageContent == HomeのTab,NavBar以外の部分）を記載していく
+///ここからボディの中身（MyHomePageContent == HomeのTab,NavBar以外の部分）を記載していく
 class MyHomePageContent extends StatelessWidget {
   final tvc = Get.put(TabViewController());
+
+  MyHomePageContent({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(child: BookmarkWidget());
   }
 }
 
-//dateの書き方について念の為残す
-//   final List<Record> records = <Record>[]; // setStateで状態を管理したいのでここで宣言をしている値
-//   final String day =
-//       DateFormat('yyyy-MM-dd').format(DateTime.now()); //一度だけ定義したい値
-//   Widget build(BuildContext context) {
-//     DateTime now = DateTime.now(); //ビルドするたびに代入される値。setstateでは変えることができない。
-//     // DateFormat outputFormat = DateFormat('yyyy/MM/dd(E) HH:mm:ss');
-//     DateFormat outputFormat = DateFormat('yyyy-MM-dd');
-//     String day = outputFormat.format(now);
-
 ///後から解消する不具合
-///①最初にWebPageにタブバーへ移動すると、URLが未選択　→
+///①最初にWebPageにタブバーへ移動すると、URLが未選択　→タイトルがとれないのでarchivesがエラーに
 ///②simple url preview　の　並び替えがうまくいかない
 ///③1ワードでしかキーワード検索できない
 ///④Daily　Newsの優先順位付けのロジックにタグがない
