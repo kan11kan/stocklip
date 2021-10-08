@@ -156,6 +156,16 @@ class ArchivesPage extends StatelessWidget {
                       print('${skc.endDay.value}');
                       print(searchKeywords);
                       print('${"dc.dailyRecords"}');
+
+                      ///String　→　DateTimeへの変換処理
+                      DateTime tmpStartTime =
+                          DateTime.parse(skc.startDay.value);
+                      DateTime tmpEndTime = DateTime.parse(skc.endDay.value);
+
+                      ///日付の差分を計算
+                      var Duration = tmpEndTime.difference(tmpStartTime).inDays;
+                      skc.duration.value = Duration;
+
                       searchKeywords.clear();
 
                       ///検索の開始と終了取得成功！！！

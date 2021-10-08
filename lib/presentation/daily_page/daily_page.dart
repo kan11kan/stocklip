@@ -93,6 +93,13 @@ class DailyPage extends StatelessWidget {
       child: Column(
         children: [
           Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: SizedBox(
+              height: 30,
+              child: Text('${today}の履歴'),
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: items.length == 0
                 ? Text('今日の履歴はありません')

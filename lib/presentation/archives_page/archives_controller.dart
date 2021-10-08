@@ -6,4 +6,5 @@ class RecordController extends GetxController {}
 class SearchKeyController extends GetxController {
   var startDay = ''.obs;
   var endDay = ''.obs;
+  var duration;
 }

@@ -21,6 +21,7 @@ class WebContentPage extends StatelessWidget {
   final dc = Get.put(DailyDataController());
   final tags = [];
 
+  ///WebViewControllerはサイトのタイトル取得に必要。
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
@@ -32,8 +33,21 @@ class WebContentPage extends StatelessWidget {
       //   _controller.complete(webViewController);
       // },
 
+      ///Webviewが作られたときの処理
+      onWebViewCreated: _controller.complete,
+
       initialUrl: tvc.selectedUrl.value.toString(),
+
+      ///ページの読み込み開始時の処理
       onPageStarted: (url) {
+        // Future<String> getUrlTitle(url) async {
+        //   final controller = await _controller.future;
+        //   final newsTitle = await controller.getTitle();
+        //   return newsTitle!;
+        // }
+
+        // final newsTitle = _controller.getTitle();
+
         ///登録するデータ（url,dayを準備）
         final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
         DateFormat outputFormatDay =
@@ -51,18 +65,6 @@ class WebContentPage extends StatelessWidget {
           var endTime = DateTime.now();
           wc.records[wc.records.length - 2].endTime = endTime;
         });
-
-        ///boxにrecordsを保存する処理を記載
-        void saveUrl() async {
-          await Hive.openBox('recordsGeneratedByUrl');
-          final box = await Hive.openBox('recordsGeneratedByUrl');
-
-          box.put('records', jsonEncode(wc.records));
-          // print('${box.get('records')}');
-        }
-
-        ///関数を実行して保存する処理
-        saveUrl();
 
         ///ここにデイリーデータの保存について記載
         ///boxにputすると動かなくなる。boxそのものがnullかどうかではなく
@@ -90,6 +92,24 @@ class WebContentPage extends StatelessWidget {
         // }
 
         // confirmDailyBox();
+      },
+      onPageFinished: (String url) async {
+        // ページタイトル取得
+        final controller = await _controller.future;
+        final title = await controller.getTitle();
+        wc.records.last.newsTitle = title;
+
+        ///boxにrecordsを保存する処理を記載
+        void saveUrl() async {
+          await Hive.openBox('recordsGeneratedByUrl');
+          final box = await Hive.openBox('recordsGeneratedByUrl');
+
+          box.put('records', jsonEncode(wc.records));
+          // print('${box.get('records')}');
+        }
+
+        ///関数を実行してboxに保存する処理
+        saveUrl();
       },
 
       // },
