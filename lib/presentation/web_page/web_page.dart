@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:one_app_everyday921/domain/daily_class.dart';
 import 'package:one_app_everyday921/domain/record_class.dart';
+import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 //ここからWebPageのURLを保存するモデル（コントローラーを記載）
 
@@ -17,6 +19,7 @@ import '../../main.dart';
 class WebContentPage extends StatelessWidget {
   final tvc = Get.put(TabViewController());
   final wc = Get.put(WebController());
+  final dc = Get.put(DailyDataController());
   final tags = [];
 
   final Completer<WebViewController> _controller =
@@ -50,7 +53,7 @@ class WebContentPage extends StatelessWidget {
           wc.records[wc.records.length - 2].endTime = endTime;
         });
 
-        ///boxに保存する処理を記載
+        ///boxにrecordsを保存する処理を記載
         void saveUrl() async {
           await Hive.openBox('recordsGeneratedByUrl');
           final box = await Hive.openBox('recordsGeneratedByUrl');
@@ -61,6 +64,33 @@ class WebContentPage extends StatelessWidget {
 
         ///関数を実行して保存する処理
         saveUrl();
+
+        ///ここにデイリーデータの保存について記載
+        ///boxにputすると動かなくなる。boxそのものがnullかどうかではなく
+        /// 型の変換でエラーをはいているような気がする
+        void saveDailyData() async {
+          final box = await Hive.openBox('mostImportantUrl');
+          // final DateTime now = DateTime.now();
+          // DateFormat outputFormatDay =
+          // DateFormat('yyyy-MM-dd');
+          // String day = outputFormatDay.format(now);
+
+          ///一旦全てのメモ（更新は配列の最後から取得）を保存する記載（残す）
+          Daily dailyTmpRecord =
+              Daily(memo: dc.memoContent.value, day: day, allUrls: url);
+          dc.dailyRecords.add(dailyTmpRecord);
+          box.put('mostImportantUrl', jsonEncode(dc.dailyRecords));
+        }
+
+        saveDailyData();
+
+        ///確認用
+        void confirmDailyBox() async {
+          final box = await Hive.openBox('mostImportantUrl');
+          print('${box.get("mostImportantUrl")}');
+        }
+
+        confirmDailyBox();
       },
 
       // },

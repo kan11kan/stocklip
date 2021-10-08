@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -15,14 +14,14 @@ import 'package:simple_url_preview/simple_url_preview.dart';
 
 import '../../main_button_widget.dart';
 
-///1日に1回dailyRecordを記録する処理
-const everyDay = const Duration(hours: 1);
-
-///テストのために1時間置きに実行処理
-final timer = Timer.periodic(everyDay, (Timer t) => createDailyFunc());
-createDailyFunc() {
-  ///ここにDailyクラスをインスタンス化し、dailyRecordsに追加する処理を書く
-}
+// ///1日に1回dailyRecordを記録する処理
+// const everyDay = const Duration(hours: 1);
+//
+// ///テストのために1時間置きに実行処理
+// final timer = Timer.periodic(everyDay, (Timer t) => createDailyFunc());
+// createDailyFunc() {
+//   ///ここにDailyクラスをインスタンス化し、dailyRecordsに追加する処理を書く
+// }
 
 ///Dailyの中身を記載
 class DailyPage extends StatelessWidget {
@@ -51,9 +50,6 @@ class DailyPage extends StatelessWidget {
     // final list = [];
   }
 
-  ///getXと同じ？？？
-  var memoController = TextEditingController();
-
   ///（importantUrl）boxにDailyクラスのインスタンスを(key = 'importantUrl')保存するメソッドを定義（呼び出しは後で）
   void putMostImportantUrl() async {
     final box = await Hive.openBox('importantUrl');
@@ -64,6 +60,8 @@ class DailyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ///ここでRecordクラスの全てのrecordsを取得し、url,day,hideをurlsに格納。
     getUrls();
+    var myController = TextEditingController();
+    dc.memoContent.value = '${myController}';
 
     ///処理が走った日付（String）と時刻（DateTime）を取得
     final now = DateTime.now();
@@ -88,41 +86,6 @@ class DailyPage extends StatelessWidget {
     // .toList().filter((e) => e == "https://finance.yahoo.co.jp/")
     // list.sort((a,b) => a.id.compareTo(b.id))
 
-    ///ここからmostImportantUrlを取得する記述
-    ///recordsから日付一致、hide=falseの配列を取得　→　滞在時間が長いもの順に並べる
-    String mostImportantUrl = RxList(wc.records
-            .where((el) => el.day == today && el.hide == false)
-            .toList()
-          ..sort((a, b) => a.readTime.compareTo(b.readTime)))[0]
-        .url;
-
-    ///managementDateの変更を監視し、日付が変わったタイミングでboxにdailyRecordsをプットする
-    ///version①
-    // RxString managementDate = outputFormatDay.format(now).obs;
-    // ever(managementDate, (_) {
-    //   var day = now.add(Duration(days: 1) * -1);
-    //   dc.dailyRecords.last.mostImportantUrl = mostImportantUrl as String;
-    //   dc.dailyRecords.last.day = day as String;
-
-    ///managementDateの変更を監視、日付変更を検知し、ever以降の処理を走らせる。
-    ///version②
-    RxString observeDate = outputFormatDay.format(now).obs;
-    ever(observeDate, (_) {
-      ///メモは監視できているのか要確認。日付更新のタイミングでインスタンス作成→boxに保存
-      String day = now.add(Duration(days: 1) * -1) as String;
-      Daily tmpDaily = Daily(
-          memo: memoController.text,
-          day: day, //日付が変わった1日前の履歴
-          mostImportantUrl: mostImportantUrl);
-      dc.dailyRecords.add(tmpDaily);
-
-      ///日付変更とともにメモフィールドを初期化
-      memoController.text = '';
-
-      ///ここで1日に一回boxに保存
-      putMostImportantUrl();
-    });
-
     ///itemsを作成し、インデックスを管理
     RxList items =
         List<int>.generate(todayUrls.length, (int index) => index).obs;
@@ -142,13 +105,7 @@ class DailyPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 4.0),
                           child: TextField(
-                            // onChanged: (string) {
-                            //   memoContent = string;
-                            ///コントローラーで管理してみる
-                            controller: memoController,
-
-                            // print(name);
-                            // },
+                            controller: myController,
                             decoration: InputDecoration(
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
@@ -165,22 +122,18 @@ class DailyPage extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          ///ここにデータの保存について記載
-                          ///boxにputすると動かなくなる。boxそのものがnullかどうかではなく
-                          /// 型の変換でエラーをはいているような気がする
+                          ///クリックでメモ内容をDailyRecordに保存する
+                          ///url=''、day='String'で保存する。
                           void saveDailyData() async {
                             final box = await Hive.openBox('mostImportantUrl');
                             final DateTime now = DateTime.now();
                             DateFormat outputFormatDay =
                                 DateFormat('yyyy-MM-dd');
                             String day = outputFormatDay.format(now);
-
-                            ///一旦全てのメモ（更新は配列の最後から取得）を保存する記載（残す）
                             Daily dailyTmpRecord = Daily(
-                                memo: 'test',
+                                memo: '${myController}',
                                 day: day,
-                                mostImportantUrl:
-                                    'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
+                                mostImportantUrl: '');
                             dc.dailyRecords.add(dailyTmpRecord);
                             box.put('mostImportantUrl',
                                 jsonEncode(dc.dailyRecords));
@@ -189,12 +142,12 @@ class DailyPage extends StatelessWidget {
                           saveDailyData();
 
                           ///確認用
-                          void confirmDailyBox() async {
-                            final box = await Hive.openBox('mostImportantUrl');
-                            print('${box.get("mostImportantUrl")}');
-                          }
-
-                          confirmDailyBox();
+                          // void confirmDailyBox() async {
+                          //   final box = await Hive.openBox('mostImportantUrl');
+                          //   print('${box.get("mostImportantUrl")}');
+                          // }
+                          //
+                          // confirmDailyBox();
                         },
                         child: Text(
                           '保\n' + '存',
@@ -385,3 +338,36 @@ class DailyPage extends StatelessWidget {
     );
   }
 }
+
+///方針転換　：日付変更を監視してインスタンスを作成、保存　→　URLを全て保存→クエリ
+///後で使いそうなので残す
+// ///ここからmostImportantUrlを取得する記述
+// ///recordsから日付一致、hide=falseの配列を取得　→　滞在時間が長いもの順に並べる
+// String mostImportantUrl = RxList(wc.records
+//         .where((el) => el.day == today && el.hide == false)
+//         .toList()
+//       ..sort((a, b) => a.readTime.compareTo(b.readTime)))[0]
+//     .url;
+//
+//
+// ///managementDateの変更を監視、日付変更を検知し、ever以降の処理を走らせる。
+// ///version②
+// RxString observeDate = outputFormatDay.format(now).obs;
+// ever(
+//   observeDate,
+//   (_) {
+//     ///メモは監視できているのか要確認。日付更新のタイミングでインスタンス作成→boxに保存
+//     String day = now.add(Duration(days: 1) * -1) as String;
+//     Daily tmpDaily = Daily(
+//         memo: memoController.text,
+//         day: day, //日付が変わった1日前の履歴
+//         mostImportantUrl: mostImportantUrl);
+//     dc.dailyRecords.add(tmpDaily);
+//
+//     ///日付変更とともにメモフィールドを初期化
+//     memoController.text = '';
+//
+//     ///ここで1日に一回boxに保存
+//     putMostImportantUrl();
+//   },
+// );

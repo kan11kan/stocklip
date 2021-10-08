@@ -24,8 +24,48 @@ class ArchivesPage extends StatelessWidget {
   final skc = Get.put(SearchKeyController());
   final dc = Get.put(DailyDataController());
   var searchKeywords = TextEditingController();
+
   @override
+
+  ///box('mostImportantUrl')の(key='mostImportantUrl')を開いてdailyRecordに格納、監視
+  void getDailyRecords() async {
+    final box = await Hive.openBox('mostImportantUrl');
+    if (box.get('mostImportantUrl') != null) {
+      dc.dailyRecords.value = jsonDecode(box.get('mostImportantUrl'))
+          .map((el) => Daily.fromJson(el))
+          .toList()
+          .cast<Daily>() as List<Daily>;
+    }
+  }
+
+  ///※　build以下記載　※　メモがなければ日付配列[0]~[n]のmostImportantUrlを取得し、mostImportantInfoに格納
+  ///この時、メモがあればメモを格納、なければURLを取得し格納する
+  ///※保存ボタンを押した時に、dailyRecordsにurl='',memo='content'で保存
+  ///※urlが更新された時に、dailyRecordsにurl='url',memo=''で保存している
+
+  ///box('mostImportantUrl',key='importantUrl')を開く処理
+
   Widget build(BuildContext context) {
+    getDailyRecords();
+
+    ///mostImportantUrlを取得する流れ
+    ///重複なしの日付配列を作成
+    var dateList = RxList(dc.dailyRecords.map((el) => el.day).toSet().toList());
+
+    ///dailyRecordsから日付でフィルターしてurlを取得
+
+    // var todayUrls = RxList(wc.records
+    //         .where((el) =>
+    //             el.day == today &&
+    //             el.hide == false &&
+    //             el.url != 'https://www.bloomberg.co.jp/' &&
+    //             el.url != 'https://finance.yahoo.co.jp/' &&
+    //             el.url != 'https://nikkei225jp.com/cme' &&
+    //             el.url != 'https://www.reuters.com/' &&
+    //             el.url != '')
+    //         .toList()
+    //       ..sort((a, b) => b.readTime.compareTo(a.readTime)));
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -73,12 +113,15 @@ class ArchivesPage extends StatelessWidget {
                         box.put('importantUrl', jsonEncode(dc.dailyRecords));
                       }
 
-                      String day =
-                          DateTime.now().add(Duration(days: 1) * -1) as String;
+                      DateTime yesterday =
+                          DateTime.now().add(Duration(days: 1) * -1);
+                      DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+                      String day = outputFormatDay.format(yesterday);
+
                       Daily tmpDaily = Daily(
                           memo: 'test',
                           day: day, //日付が変わった1日前の履歴
-                          mostImportantUrl:
+                          allUrls:
                               'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
                       dc.dailyRecords.add(tmpDaily);
 
@@ -89,6 +132,7 @@ class ArchivesPage extends StatelessWidget {
                       print('${skc.startDay.value}');
                       print('${skc.endDay.value}');
                       print(searchKeywords);
+                      print('${"dc.dailyRecords"}');
                       searchKeywords.clear();
 
                       ///検索の開始と終了取得成功！！！
@@ -199,23 +243,53 @@ class ShowCards extends StatefulWidget {
 }
 
 class ShowCardsState extends State<ShowCards> {
-  ///DailyRecordクラスのオブジェクト配列の変化を監視
-  RxList<Daily> dailyRecords = <Daily>[].obs;
+  final DailyDataController dc = Get.find();
 
-  ///box('importantUrl')の(key='importantUrl')を開いてdailyRecordに格納、監視
-  void getDailyRecords() async {
-    final box = await Hive.openBox('dailyRecords');
-    if (box.get('dailyRecords') != null) {
-      dailyRecords.value = jsonDecode(box.get('dailyRecords'))
-          .map((el) => Daily.fromJson(el))
-          .toList()
-          .cast<Daily>() as List<Daily>;
-    }
-  }
+  // ///DailyRecordクラスのオブジェクト配列の変化を監視
+  // RxList<Daily> dailyRecords = <Daily>[].obs;
+  //
+  // ///box('mostImportantUrl')の(key='mostImportantUrl')を開いてdailyRecordに格納、監視
+  // void getDailyRecords() async {
+  //   final box = await Hive.openBox('mostImportantUrl');
+  //   if (box.get('mostImportantUrl') != null) {
+  //     dailyRecords.value = jsonDecode(box.get('mostImportantUrl'))
+  //         .map((el) => Daily.fromJson(el))
+  //         .toList()
+  //         .cast<Daily>() as List<Daily>;
+  //   }
+  // }
 
   ///memo, 日付のオブジェクト配列から日付を取得（順番は古い順になっている？）
   ///日経平均終値と日付を({日付:日付,日経:日経})オブジェクト配列に格納（とりあえずマニュアルで）
-  final List nikkei = [];
+  final List nikkei = [
+    30000,
+    29000,
+    35000,
+    399,
+    333,
+    444444,
+    4442,
+    2,
+    3333,
+    333,
+    3333,
+    22,
+    4,
+    4,
+    5,
+    5,
+    6,
+    6,
+    7,
+    78,
+    8,
+    86,
+    5,
+    43,
+    3,
+    2,
+    2
+  ];
 
   ///tagsの配列を作成（タグ　→　◯月◯日のタグNumber[1,2,5,6]など）
   final List tags = [
@@ -241,10 +315,8 @@ class ShowCardsState extends State<ShowCards> {
   ///ここからリストビュー
   @override
   Widget build(BuildContext context) {
-    ///box('importantUrl',key='importantUrl')を開く処理
-    getDailyRecords();
-
     ///リストビュービルダー
+    ///
     return Container(
       padding: EdgeInsets.all(8),
       child: Column(
@@ -252,13 +324,14 @@ class ShowCardsState extends State<ShowCards> {
           SizedBox(
             height: 400,
             child: ListView.builder(
-              itemCount: dailyRecords.length,
+              itemCount: dc.dailyRecords.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   child: Container(
                     child: Column(
                       children: [
-                        Text('${dailyRecords[index].day}'),
+                        Text(
+                            '${dc.dailyRecords[index].day}'), //('${dailyRecords[index].day}'),
                         Text('${nikkei[index]}'),
                         Row(
                           children: [
@@ -275,7 +348,7 @@ class ShowCardsState extends State<ShowCards> {
                           ],
                         ),
                         Container(
-                          child: dailyRecords[index].memo == ''
+                          child: dc.dailyRecords[index].memo == ''
                               ? Card(
                                   child: Text('URLが表示されます'),
                                 )

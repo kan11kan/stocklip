@@ -187,3 +187,11 @@ class MyHomePageContent extends StatelessWidget {
 //     // DateFormat outputFormat = DateFormat('yyyy/MM/dd(E) HH:mm:ss');
 //     DateFormat outputFormat = DateFormat('yyyy-MM-dd');
 //     String day = outputFormat.format(now);
+
+///後から解消する不具合
+///①最初にWebPageにタブバーへ移動すると、URLが未選択　→
+///②simple url preview　の　並び替えがうまくいかない
+///③1ワードでしかキーワード検索できない
+///④Daily　Newsの優先順位付けのロジックにタグがない
+///⑤タグの管理
+///⑥戻る、進むボタンの実装
