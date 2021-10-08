@@ -7,8 +7,10 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:one_app_everyday921/domain/daily_class.dart';
+import 'package:one_app_everyday921/domain/record_class.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
+import 'package:simple_url_preview/simple_url_preview.dart';
 
 import 'archives_button_widget.dart';
 import 'archives_controller.dart';
@@ -19,22 +21,29 @@ import 'archives_controller.dart';
 ///URLのタイトル、とテキストが部分一致するものを取得
 ///（SearchResult）でsimpleURLpreviewで該当のURLを表示
 
+///box管理
+///box名：recordsGeneratedByUrl
+///boxkey:records
+
+final WebController wc = Get.find();
+
 ///アーカイブページ全体の記述
 class ArchivesPage extends StatelessWidget {
   final skc = Get.put(SearchKeyController());
   final dc = Get.put(DailyDataController());
+  final wc = Get.put(WebController());
   var searchKeywords = TextEditingController();
-
+  RxList<Record> importantInfo = <Record>[].obs;
   @override
 
   ///box('mostImportantUrl')の(key='mostImportantUrl')を開いてdailyRecordに格納、監視
-  void getDailyRecords() async {
-    final box = await Hive.openBox('mostImportantUrl');
-    if (box.get('mostImportantUrl') != null) {
-      dc.dailyRecords.value = jsonDecode(box.get('mostImportantUrl'))
-          .map((el) => Daily.fromJson(el))
+  void getRecords() async {
+    final box = await Hive.openBox('recordsGeneratedByUrl');
+    if (box.get('records') != null) {
+      importantInfo.value = jsonDecode(box.get('records'))
+          .map((el) => Record.fromJson(el))
           .toList()
-          .cast<Daily>() as List<Daily>;
+          .cast<Record>() as List<Record>;
     }
   }
 
@@ -44,15 +53,29 @@ class ArchivesPage extends StatelessWidget {
   ///※urlが更新された時に、dailyRecordsにurl='url',memo=''で保存している
 
   ///box('mostImportantUrl',key='importantUrl')を開く処理
-
+  ///※※※※※※※　　　　dcは使わない方針に変更してロジック考えてみる　　※※※※※※※※
+  ///※※※※※※※　　　　recordsにmemoを追加(dayとurlはある)　　　　　※※※※※※※※
+  ///※※※※※※※　　　　dailyRecordへの記載を変更しないといけない、、　※※※※※※※※
   Widget build(BuildContext context) {
-    getDailyRecords();
+    getRecords();
 
     ///mostImportantUrlを取得する流れ
     ///重複なしの日付配列を作成
-    var dateList = RxList(dc.dailyRecords.map((el) => el.day).toSet().toList());
+    var dateList = RxList(wc.records.map((el) => el.day).toSet().toList());
 
     ///dailyRecordsから日付でフィルターしてurlを取得
+
+    for (int i = 0; i < dateList.length; i++) {
+      var mostImoportantUrls = wc.records
+          .where((el) =>
+              el.day == dateList[i] &&
+              el.url != null && //メモを入力した時はallurls==''
+              el.memo != null)
+          .toList()
+        ..sort((a, b) => b.readTime.compareTo(a.readTime));
+      var mostImportant = mostImoportantUrls[0];
+      wc.mostImportantUrls.add(mostImportant);
+    }
 
     // var todayUrls = RxList(wc.records
     //         .where((el) =>
@@ -107,26 +130,26 @@ class ArchivesPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      ///boxにdailyを保存できるかここで試す
-                      void putMostImportantUrl() async {
-                        final box = await Hive.openBox('importantUrl');
-                        box.put('importantUrl', jsonEncode(dc.dailyRecords));
-                      }
-
-                      DateTime yesterday =
-                          DateTime.now().add(Duration(days: 1) * -1);
-                      DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
-                      String day = outputFormatDay.format(yesterday);
-
-                      Daily tmpDaily = Daily(
-                          memo: 'test',
-                          day: day, //日付が変わった1日前の履歴
-                          allUrls:
-                              'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
-                      dc.dailyRecords.add(tmpDaily);
-
-                      ///ここで1日に一回boxに保存
-                      putMostImportantUrl();
+                      // ///boxにdailyを保存できるかここで試す
+                      // void putMostImportantUrl() async {
+                      //   final box = await Hive.openBox('importantUrl');
+                      //   box.put('importantUrl', jsonEncode(dc.dailyRecords));
+                      // }
+                      //
+                      // DateTime yesterday =
+                      //     DateTime.now().add(Duration(days: 1) * -1);
+                      // DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+                      // String day = outputFormatDay.format(yesterday);
+                      //
+                      // Daily tmpDaily = Daily(
+                      //     memo: 'test',
+                      //     day: day, //日付が変わった1日前の履歴
+                      //     allUrls:
+                      //         'https://www.bloomberg.co.jp/news/articles/2021-10-06/R0KIVVT0AFB501?srnd=cojp-v2');
+                      // dc.dailyRecords.add(tmpDaily);
+                      //
+                      // ///ここで1日に一回boxに保存
+                      // putMostImportantUrl();
 
                       ///SearchResultに検索キーワード、検索期間を渡す
                       print('${skc.startDay.value}');
@@ -244,6 +267,7 @@ class ShowCards extends StatefulWidget {
 
 class ShowCardsState extends State<ShowCards> {
   final DailyDataController dc = Get.find();
+  // final wc = Get.put(WebController());
 
   // ///DailyRecordクラスのオブジェクト配列の変化を監視
   // RxList<Daily> dailyRecords = <Daily>[].obs;
@@ -324,15 +348,15 @@ class ShowCardsState extends State<ShowCards> {
           SizedBox(
             height: 400,
             child: ListView.builder(
-              itemCount: dc.dailyRecords.length,
+              itemCount: wc.mostImportantUrls.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   child: Container(
                     child: Column(
                       children: [
                         Text(
-                            '${dc.dailyRecords[index].day}'), //('${dailyRecords[index].day}'),
-                        Text('${nikkei[index]}'),
+                            '${wc.mostImportantUrls[index].day}'), //('${dailyRecords[index].day}'),
+                        // Text('${nikkei[index]}'),
                         Row(
                           children: [
                             ElevatedButton(
@@ -348,9 +372,33 @@ class ShowCardsState extends State<ShowCards> {
                           ],
                         ),
                         Container(
-                          child: dc.dailyRecords[index].memo == ''
+                          child: wc.mostImportantUrls[index].memo == ''
                               ? Card(
-                                  child: Text('URLが表示されます'),
+                                  child: SimpleUrlPreview(
+                                    url: wc.mostImportantUrls[index].url,
+                                    bgColor: Colors.white,
+                                    titleLines: 1,
+                                    descriptionLines: 2,
+                                    imageLoaderColor: Colors.white,
+                                    previewHeight: 150,
+                                    previewContainerPadding: EdgeInsets.all(5),
+                                    onTap: () {
+                                      // Get.to(WebContentPage());
+                                    },
+                                    titleStyle: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    descriptionStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    siteNameStyle: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 )
                               : Card(
                                   child: Padding(
@@ -358,7 +406,8 @@ class ShowCardsState extends State<ShowCards> {
                                     child: SizedBox(
                                       width: 270,
                                       height: 140,
-                                      child: Text('メモが表示されます'),
+                                      child: Text(
+                                          '${wc.mostImportantUrls[index].memo}'),
                                     ),
                                   ),
                                 ),

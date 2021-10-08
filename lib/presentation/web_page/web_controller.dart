@@ -6,6 +6,7 @@ class WebController extends GetxController {
   final RxList<Record> records = <Record>[].obs;
   final todayUrls = <String>[];
   var record = Record().obs;
+  var mostImportantUrls = [];
 
   ///以下参考情報（滞在時間毎のデータ取得で使うかも）
   // @override

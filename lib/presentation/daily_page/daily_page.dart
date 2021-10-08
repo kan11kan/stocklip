@@ -6,9 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:one_app_everyday921/domain/daily_class.dart';
 import 'package:one_app_everyday921/domain/record_class.dart';
-import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
@@ -26,7 +24,7 @@ import '../../main_button_widget.dart';
 ///Dailyの中身を記載
 class DailyPage extends StatelessWidget {
   final wc = Get.put(WebController());
-  final dc = Get.put(DailyDataController());
+  // final dc = Get.put(DailyDataController());
   final muc = Get.put(MainUrlsController());
 
   ///しんじさんのコード
@@ -51,17 +49,17 @@ class DailyPage extends StatelessWidget {
   }
 
   ///（importantUrl）boxにDailyクラスのインスタンスを(key = 'importantUrl')保存するメソッドを定義（呼び出しは後で）
-  void putMostImportantUrl() async {
-    final box = await Hive.openBox('importantUrl');
-    box.put('importantUrl', jsonEncode(dc.dailyRecords));
-  }
+  // void putMostImportantUrl() async {
+  //   final box = await Hive.openBox('importantUrl');
+  //   box.put('importantUrl', jsonEncode(dc.dailyRecords));
+  // }
 
   @override
   Widget build(BuildContext context) {
     ///ここでRecordクラスの全てのrecordsを取得し、url,day,hideをurlsに格納。
     getUrls();
     var myController = TextEditingController();
-    dc.memoContent.value = '${myController}';
+    // dc.memoContent.value = '${myController}';
 
     ///処理が走った日付（String）と時刻（DateTime）を取得
     final now = DateTime.now();
@@ -122,21 +120,19 @@ class DailyPage extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          ///クリックでメモ内容をDailyRecordに保存する
+                          ///クリックでメモ内容を'recordsGeneratedByUrl'の'records'に保存する
                           ///url=''、day='String'で保存する。
                           void saveDailyData() async {
-                            final box = await Hive.openBox('mostImportantUrl');
+                            final box =
+                                await Hive.openBox('recordsGeneratedByUrl');
                             final DateTime now = DateTime.now();
                             DateFormat outputFormatDay =
                                 DateFormat('yyyy-MM-dd');
                             String day = outputFormatDay.format(now);
-                            Daily dailyTmpRecord = Daily(
-                                memo: '${myController}',
-                                day: day,
-                                mostImportantUrl: '');
-                            dc.dailyRecords.add(dailyTmpRecord);
-                            box.put('mostImportantUrl',
-                                jsonEncode(dc.dailyRecords));
+                            Record dailyTmpRecord = Record(
+                                memo: '${myController}', day: day, url: '');
+                            wc.records.add(dailyTmpRecord);
+                            box.put('recors', jsonEncode(wc.records));
                           }
 
                           saveDailyData();
