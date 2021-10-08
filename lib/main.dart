@@ -58,8 +58,7 @@ class MyApp extends StatelessWidget {
 
 ///TabView（どのタブバーがタップされたのかを管理するコントローラーを作成）
 class TabViewController extends GetxController {
-  ///WebBarをタップしたらエラーになる（URLが選択されていない　→　初期値に適当なものを入れる？）
-  var selectedUrl = ''.obs; //選択された画像に対してUrlを割り当てる。
+  var selectedUrl = 'https://www.google.com/'.obs; //選択された画像に対してUrlを割り当てる。
   var selectedTabIndex = 0.obs; //選択されたタブを'selectedTabIndex'で管理している
   void onItemTapped(int index) {
     selectedTabIndex.value = index;
@@ -136,11 +135,6 @@ class MyHomePage extends StatelessWidget {
         () => Visibility(
           child: FloatingActionButton(
             onPressed: () {
-              // void tmp() async {
-              //   final box = await Hive.openBox('recordsByDay');
-              //   print('${box.get("dailyRecords")}');
-              // }
-              // tmp();
               showModalBottomSheet<void>(
                 context: context,
                 builder: (BuildContext context) {
@@ -172,7 +166,7 @@ class MyHomePageContent extends StatelessWidget {
 ///後から解消する不具合
 ///①最初にWebPageにタブバーへ移動すると、URLが未選択　→タイトルがとれないのでarchivesがエラーに
 ///②simple url preview　の　並び替えがうまくいかない
-///③1ワードでしかキーワード検索できない
-///④Daily　Newsの優先順位付けのロジックにタグがない
+
 ///⑤タグの管理
 ///⑥戻る、進むボタンの実装
+///⑦Google検索→グーグルが開く

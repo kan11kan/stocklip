@@ -37,13 +37,15 @@ class _ArchivesPageState extends State<ArchivesPage> {
 
   var searchKeywords = TextEditingController();
 
-  RxList<Record> importantInfo = <Record>[].obs;
+  ///wc.recordsに変えてみる
+  // RxList<Record> importantInfo = <Record>[].obs;
 
   ///box('recordsGeneratedByUrl')の(key='records')を開いてrecordsに格納、監視
   void getRecords() async {
     final box = await Hive.openBox('recordsGeneratedByUrl');
     if (box.get('records') != null) {
-      importantInfo.value = jsonDecode(box.get('records'))
+      wc.records.value = jsonDecode(box.get('records'))
+          // importantInfo.value = jsonDecode(box.get('records'))
           .map((el) => Record.fromJson(el))
           .toList()
           .cast<Record>() as List<Record>;
@@ -63,18 +65,30 @@ class _ArchivesPageState extends State<ArchivesPage> {
     ///mostImportantUrlを取得する流れ
     ///重複なしの日付配列を作成
     var dateList = RxList(wc.records.map((el) => el.day).toSet().toList());
+    List<Record> importantInfoList = [];
 
     ///dailyRecordsから日付でフィルターしてurlを取得
     for (int i = 0; i < dateList.length; i++) {
+      ///wc.recordsの値の中で日付一致　かつメモがない　かつ　URLがある　または
+      ///日付一致　かつ　メモあり　かつ　URLなしのrecordsを取得して配列にいれる
       var mostImportantUrls = wc.records
           .where((el) =>
-              (el.day == dateList[i] && el.memo == null && el.url != '') ||
+              (el.day == dateList[i] //&& el.memo == null
+                  &&
+                  el.url != '') ||
               (el.day == dateList[i] && el.memo != null && el.url == ''))
           .toList()
+
+        ///そのなかでリードタイムが長い順に並び替える
         ..sort((a, b) => b.readTime.compareTo(a.readTime));
-      var mostImportant = mostImportantUrls[0];
-      wc.mostImportantUrls.add(mostImportant);
+
+      ///→　もっともreadTimeが長いものを取得してmostImportantに格納
+      var mostImportantRecord = mostImportantUrls[0];
+
+      ///日付の存在する期間の数のrecordをmostImportantUrlsに格納
+      importantInfoList.add(mostImportantRecord);
     }
+    wc.mostImportantUrls = importantInfoList;
 
     return SingleChildScrollView(
       child: Column(
@@ -374,15 +388,18 @@ class SearchResultTopState extends State<SearchResultTop> {
   @override
   Widget build(BuildContext context) {
     ///⓪検索結果を表示するページを記載
-    ///①starDayをDateTime型に変換
+    ///①startDayをDateTime型に変換
     DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
     DateTime startDateTime = outputFormatDay.parse(skc.startDay.value);
+    // print(startDateTime);
 
     ///②開始日と終了日のDurationを取得（int型）
     ///③開始日＋差分　の日付配列(DateTime型)を作成
-    final List researchDateArray = [skc.startDay];
-    for (int i = 1; i < skc.duration.value; i++) {
-      var tmp = startDateTime.add(const Duration(days: 1) * i);
+    // final List researchDateArray = [skc.startDay];
+    final List<DateTime> researchDateArray = [];
+    for (int i = 0; i < skc.duration.value; i++) {
+      DateTime tmp = startDateTime.add((Duration(days: 1) * i));
+      // outputFormatDay.format(startDateTime.add((Duration(days: 1) * i)));
       researchDateArray.add(tmp);
     }
 
@@ -392,16 +409,17 @@ class SearchResultTopState extends State<SearchResultTop> {
     ///④日付と一致するものをrecordsから取得
     for (int i = 1; i < researchDateArray.length; i++) {
       var tmpStringDay =
-          '${researchDateArray[i].year}-${researchDateArray[i].month}-${researchDateArray[i].day}';
-
+          '${researchDateArray[i].year}-${researchDateArray[i].month}-0${researchDateArray[i].day}';
+      print(tmpStringDay);
       wc.records
           .where((el) =>
               el.day == tmpStringDay &&
               el.hide == false &&
               el.url != '' &&
               el.newsTitle!.contains('${skc.searchKeywords}'))
-          .toList()
+          // // .toList()
           .forEach((el) => searchResultArray.add(el));
+      // print(tmpStringDay);
     }
 
     ///⑤キーワードと一致するものを表示
