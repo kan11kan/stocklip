@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1029729773041",
+    "project_id": "stocklip-deploy-test",
+    "storage_bucket": "stocklip-deploy-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029729773041:android:953bfadf4eb59ee0895050",
+        "android_client_info": {
+          "package_name": "com.example.one_app_everyday921"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029729773041-11tu3ac9vbetv9v0e24jditn3733hpib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw09BBZIWbdH3RdMD3WUWjgyTl-QlacHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029729773041-11tu3ac9vbetv9v0e24jditn3733hpib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
