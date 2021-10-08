@@ -66,14 +66,14 @@ class ArchivesPage extends StatelessWidget {
     ///dailyRecordsから日付でフィルターしてurlを取得
 
     for (int i = 0; i < dateList.length; i++) {
-      var mostImoportantUrls = wc.records
+      var mostImportantUrls = wc.records
           .where((el) =>
               el.day == dateList[i] &&
               el.url != null && //メモを入力した時はallurls==''
               el.memo != null)
           .toList()
         ..sort((a, b) => b.readTime.compareTo(a.readTime));
-      var mostImportant = mostImoportantUrls[0];
+      var mostImportant = mostImportantUrls[0];
       wc.mostImportantUrls.add(mostImportant);
     }
 
@@ -155,16 +155,19 @@ class ArchivesPage extends StatelessWidget {
                       print('${skc.startDay.value}');
                       print('${skc.endDay.value}');
                       print(searchKeywords);
-                      print('${"dc.dailyRecords"}');
 
                       ///String　→　DateTimeへの変換処理
+                      ///
+                      DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
                       DateTime tmpStartTime =
-                          DateTime.parse(skc.startDay.value);
-                      DateTime tmpEndTime = DateTime.parse(skc.endDay.value);
+                          outputFormatDay.parse(skc.startDay.value);
+                      DateTime tmpEndTime =
+                          outputFormatDay.parse(skc.endDay.value);
 
-                      ///日付の差分を計算
-                      var Duration = tmpEndTime.difference(tmpStartTime).inDays;
-                      skc.duration.value = Duration;
+                      ///日付の差分を計算（型はint）
+                      var duration = tmpEndTime.difference(tmpStartTime).inDays;
+                      skc.duration.value = duration;
+                      print(skc.duration.value);
 
                       searchKeywords.clear();
 
@@ -202,7 +205,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
     if (dateRange == null) {
       return 'From';
     } else {
-      skc.startDay.value = DateFormat('MM/dd/yyyy').format(dateRange.start);
+      skc.startDay.value = DateFormat('dd-MM-yyyy').format(dateRange.start);
       return skc.startDay.value;
     }
   }
@@ -212,7 +215,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
     if (dateRange == null) {
       return 'Until';
     } else {
-      skc.endDay.value = DateFormat('MM/dd/yyyy').format(dateRange.end);
+      skc.endDay.value = DateFormat('dd-MM-yyyy').format(dateRange.end);
       return skc.endDay.value;
     }
   }
