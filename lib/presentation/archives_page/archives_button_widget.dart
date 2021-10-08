@@ -38,13 +38,13 @@ class ButtonWidget extends StatelessWidget {
   ///ここのウィジェットは期間の開始と終わり両方作っている（呼び出し元で2つ呼び出されている）
   Widget build(BuildContext context) => ElevatedButton(
         style: ElevatedButton.styleFrom(
-          minimumSize: Size.fromHeight(40),
+          minimumSize: const Size.fromHeight(40),
           primary: Colors.white,
         ),
         child: FittedBox(
           child: Text(
             text,
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            style: const TextStyle(fontSize: 20, color: Colors.black),
           ),
         ),
         onPressed: onClicked,
@@ -68,7 +68,7 @@ class HeaderWidget extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 0,
               fontWeight: FontWeight.bold,

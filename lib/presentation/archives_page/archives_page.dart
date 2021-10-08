@@ -17,6 +17,8 @@ import 'archives_controller.dart';
 ///対処すべき問題
 ///urlのtitleが空のとき、エラーが発生
 ///検索結果がきちんと出ているかわからない
+///メモを保存したらメモのカード表示になるがメモの内容が出てこない
+///Archivesを何度も開くと何回もカードが生成される
 
 final WebController wc = Get.find();
 
@@ -107,7 +109,7 @@ class _ArchivesPageState extends State<ArchivesPage> {
                     ),
                   ),
                 ),
-                DateRangePickerWidget(),
+                const DateRangePickerWidget(),
                 ElevatedButton(
                   onPressed: () {
                     ///SearchResultに検索キーワード、検索期間を渡す
@@ -125,7 +127,7 @@ class _ArchivesPageState extends State<ArchivesPage> {
                     searchKeywords.clear();
 
                     ///検索の開始と終了取得成功！！！
-                    Get.to(SearchResultTop());
+                    Get.to(const SearchResultTop());
                   },
                   child: const Text('検索'),
                 ),
@@ -285,67 +287,66 @@ class ShowCardsState extends State<ShowCards> {
               itemCount: wc.mostImportantUrls.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Text(
-                            '${wc.mostImportantUrls[index].day}'), //('${dailyRecords[index].day}'),
-                        // Text('${nikkei[index]}'),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              ///例で記載
-                              child: Text('${tags[3]}'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.white,
-                                onPrimary: Colors.black,
-                                shape: const StadiumBorder(),
-                              ),
-                              onPressed: () {},
+                  child: Column(
+                    children: [
+                      Text(
+                          '${wc.mostImportantUrls[index].day}'), //('${dailyRecords[index].day}'),
+                      // Text('${nikkei[index]}'),
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            ///例で記載
+                            child: Text('${tags[3]}'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              onPrimary: Colors.black,
+                              shape: const StadiumBorder(),
                             ),
-                          ],
-                        ),
-                        Container(
-                          child: wc.mostImportantUrls[index].memo != null
-                              ? Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 2.0),
-                                    child: SizedBox(
-                                      width: 270,
-                                      height: 140,
-                                      child: Text(
-                                          '${wc.mostImportantUrls[index].memo}'),
-                                    ),
-                                  ),
-                                )
-                              : Card(
-                                  child: SimpleUrlPreview(
-                                    url: wc.mostImportantUrls[index].url,
-                                    bgColor: Colors.white,
-                                    titleLines: 1,
-                                    descriptionLines: 2,
-                                    imageLoaderColor: Colors.white,
-                                    previewHeight: 150,
-                                    previewContainerPadding: EdgeInsets.all(5),
-                                    onTap: () {},
-                                    titleStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    descriptionStyle: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                    siteNameStyle: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                      Container(
+                        child: wc.mostImportantUrls[index].memo != null
+                            ? Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: SizedBox(
+                                    width: 270,
+                                    height: 140,
+                                    child: Text(
+                                        '${wc.mostImportantUrls[index].memo}'),
                                   ),
                                 ),
-                        ),
-                      ],
-                    ),
+                              )
+                            : Card(
+                                child: SimpleUrlPreview(
+                                  url: wc.mostImportantUrls[index].url,
+                                  bgColor: Colors.white,
+                                  titleLines: 1,
+                                  descriptionLines: 2,
+                                  imageLoaderColor: Colors.white,
+                                  previewHeight: 150,
+                                  previewContainerPadding:
+                                      const EdgeInsets.all(5),
+                                  onTap: () {},
+                                  titleStyle: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                  descriptionStyle: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                  siteNameStyle: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ],
                   ),
                 );
               },
@@ -359,11 +360,11 @@ class ShowCardsState extends State<ShowCards> {
 
 ///ここから検索結果のページ
 class SearchResultTop extends StatefulWidget {
-  SearchResultTop({
+  const SearchResultTop({
     Key? key,
   }) : super(key: key);
   @override
-  SearchResultTopState createState() => new SearchResultTopState();
+  SearchResultTopState createState() => SearchResultTopState();
 }
 
 ///Stateを記載
@@ -381,7 +382,7 @@ class SearchResultTopState extends State<SearchResultTop> {
     ///③開始日＋差分　の日付配列(DateTime型)を作成
     final List researchDateArray = [skc.startDay];
     for (int i = 1; i < skc.duration.value; i++) {
-      var tmp = startDateTime.add(Duration(days: 1) * i);
+      var tmp = startDateTime.add(const Duration(days: 1) * i);
       researchDateArray.add(tmp);
     }
 
@@ -414,7 +415,7 @@ class SearchResultTopState extends State<SearchResultTop> {
         children: [
           Text('検索期間：${skc.startDay}~${skc.endDay}'),
           Text('検索ワード:${skc.searchKeywords}'),
-          Container(
+          SizedBox(
             width: 345,
             child: Column(
               children: [
@@ -428,25 +429,25 @@ class SearchResultTopState extends State<SearchResultTop> {
                     descriptionLines: 2,
                     imageLoaderColor: Colors.white,
                     previewHeight: 150,
-                    previewContainerPadding: EdgeInsets.all(5),
+                    previewContainerPadding: const EdgeInsets.all(5),
                     onTap: () {
                       // Get.to(WebContentPage());
                     },
-                    titleStyle: TextStyle(
+                    titleStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    descriptionStyle: TextStyle(
+                    descriptionStyle: const TextStyle(
                       fontSize: 14,
                       color: Colors.black,
                     ),
-                    siteNameStyle: TextStyle(
+                    siteNameStyle: const TextStyle(
                       fontSize: 14,
                       color: Colors.black,
                     ),
                   ),
-                Text('test'),
+                const Text('test'),
               ],
             ),
           ),
