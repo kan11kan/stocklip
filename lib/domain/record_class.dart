@@ -8,6 +8,15 @@ class Record {
     this.memo = '',
     this.newsTitle = '',
     this.tag = false,
+    this.tag1 = false,
+    this.tag2 = false,
+    this.tag3 = false,
+    this.tag4 = false,
+    this.tag5 = false,
+    this.tag6 = false,
+    this.tag7 = false,
+    this.tag8 = false,
+    this.tag9 = false,
     // required this.tags,
     // this.newstitle = ''
   });
@@ -24,6 +33,15 @@ class Record {
   String? memo;
   String? newsTitle;
   bool tag;
+  bool tag1;
+  bool tag2;
+  bool tag3;
+  bool tag4;
+  bool tag5;
+  bool tag6;
+  bool tag7;
+  bool tag8;
+  bool tag9;
 
   // List<String> tags = [];
   // String newstitle;
@@ -51,7 +69,16 @@ class Record {
         hide = json["hide"],
         memo = json["memo"],
         newsTitle = json["newsTitle"],
-        tag = json["tag"];
+        tag = json["tag"],
+        tag1 = json["tag1"],
+        tag2 = json["tag2"],
+        tag3 = json["tag3"],
+        tag4 = json["tag4"],
+        tag5 = json["tag5"],
+        tag6 = json["tag6"],
+        tag7 = json["tag7"],
+        tag8 = json["tag8"],
+        tag9 = json["tag9"];
 
   ///startTimeとendTimeを作成したらエラーになったので一旦消す。
   // startTime = json["startTime"],
@@ -67,7 +94,17 @@ class Record {
       'hide': hide,
       'memo': memo,
       'newsTitle': newsTitle,
-      'tag': tag
+      'tag': tag,
+      'tag1': tag1,
+      'tag2': tag2,
+      'tag3': tag3,
+      'tag4': tag4,
+      'tag5': tag5,
+      'tag6': tag6,
+      'tag7': tag7,
+      'tag8': tag8,
+      'tag9': tag9
+
       // 'startTime': startTime,
       // 'endTime': endTime
     };

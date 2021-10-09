@@ -39,6 +39,7 @@ class showModalWidget extends StatelessWidget {
   var tag6 = false.obs;
   var tag7 = false.obs;
   var tag8 = false.obs;
+  var tag9 = false.obs;
 
   final wc = Get.put(WebController());
 
@@ -78,7 +79,7 @@ class showModalWidget extends StatelessWidget {
                     ),
                     Obx(
                       () => ElevatedButton(
-                        child: const Text('日経平均'),
+                        child: const Text('債券'),
                         style: ElevatedButton.styleFrom(
                           primary: (tag1.value) ? Colors.blue : Colors.white,
                           onPrimary: Colors.black,
@@ -86,17 +87,23 @@ class showModalWidget extends StatelessWidget {
                         ),
                         onPressed: () {
                           (tag1.value) ? tag1.value = false : tag1.value = true;
+                          wc.records.last.tag1 = tag1.value;
                         },
                       ),
                     ),
-                    ElevatedButton(
-                      child: const Text('米国株'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('米国株'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag2.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag2.value) ? tag2.value = false : tag2.value = true;
+                          wc.records.last.tag2 = tag2.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -106,32 +113,47 @@ class showModalWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                      child: const Text('個別株'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('日本株'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag3.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag3.value) ? tag3.value = false : tag3.value = true;
+                          wc.records.last.tag3 = tag3.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
-                    ElevatedButton(
-                      child: const Text('テクニカル'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('中国株'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag4.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag4.value) ? tag4.value = false : tag4.value = true;
+                          wc.records.last.tag4 = tag4.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
-                    ElevatedButton(
-                      child: const Text('FRB'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('FRB'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag5.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag5.value) ? tag5.value = false : tag5.value = true;
+                          wc.records.last.tag5 = tag5.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -141,32 +163,47 @@ class showModalWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                      child: const Text('REIT'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('テクニカル'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag6.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag6.value) ? tag6.value = false : tag6.value = true;
+                          wc.records.last.tag6 = tag6.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
-                    ElevatedButton(
-                      child: const Text('債券'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('REIT'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag7.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag7.value) ? tag7.value = false : tag7.value = true;
+                          wc.records.last.tag7 = tag7.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
-                    ElevatedButton(
-                      child: const Text('その他'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.black,
-                        shape: const StadiumBorder(),
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Text('その他'),
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag8.value) ? Colors.blue : Colors.white,
+                          onPrimary: Colors.black,
+                          shape: const StadiumBorder(),
+                        ),
+                        onPressed: () {
+                          (tag8.value) ? tag8.value = false : tag8.value = true;
+                          wc.records.last.tag8 = tag8.value;
+                        },
                       ),
-                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -175,9 +212,20 @@ class showModalWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      child: const Icon(Icons.star_purple500_outlined),
-                      onPressed: () {},
+                    Obx(
+                      () => ElevatedButton(
+                        child: const Icon(Icons.stars),
+                        onPressed: () {
+                          (tag9.value) ? tag9.value = false : tag9.value = true;
+                          wc.records.last.tag9 = tag9.value;
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: (tag9.value) ? Colors.blue : Colors.white,
+                          onPrimary: (tag9.value)
+                              ? Colors.white
+                              : Colors.blue, //ボタンの背景色
+                        ),
+                      ),
                     ),
                   ],
                 ),
