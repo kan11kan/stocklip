@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
 import 'main.dart';
@@ -12,11 +13,11 @@ import 'main.dart';
 ///URLの配列を定義（Dailyの非表示URL選択でも使いたいのでコントローラー作成）
 class MainUrlsController extends GetxController {
   var mainUrls = [
-    'https://www.reuters.com/', 
-    'https://www.bloomberg.co.jp/', 
-    'https://finance.yahoo.co.jp/', 
+    'https://www.reuters.com/',
+    'https://www.bloomberg.co.jp/',
+    'https://finance.yahoo.co.jp/',
     'https://nikkei225jp.com/cme/'
-    ].obs;
+  ].obs;
 
   RxList<int> items = <int>[].obs;
 }
@@ -38,6 +39,8 @@ class showModalWidget extends StatelessWidget {
   var tag6 = false.obs;
   var tag7 = false.obs;
   var tag8 = false.obs;
+
+  final wc = Get.put(WebController());
 
   Widget build(BuildContext context) => Container(
         height: 320,
@@ -69,6 +72,7 @@ class showModalWidget extends StatelessWidget {
                         ),
                         onPressed: () {
                           (tag.value) ? tag.value = false : tag.value = true;
+                          wc.records.last.tag = tag.value;
                         },
                       ),
                     ),

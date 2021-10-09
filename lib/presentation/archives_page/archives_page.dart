@@ -286,10 +286,20 @@ class ShowCardsState extends State<ShowCards> {
     '債券',
     'その他'
   ];
+  var selectedTagList = [];
 
   ///ここからリストビュー
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList.add(false) : selectedTagList.add(true);
+    }
+
     ///リストビュービルダー
     return Container(
       padding: const EdgeInsets.all(8),
@@ -310,7 +320,9 @@ class ShowCardsState extends State<ShowCards> {
                         children: [
                           ElevatedButton(
                             ///例で記載
-                            child: Text('${tags[3]}'),
+                            child: Visibility(
+                                visible: selectedTagList[index],
+                                child: Text('${tags[3]}')),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
                               onPrimary: Colors.black,
