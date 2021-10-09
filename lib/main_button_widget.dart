@@ -12,11 +12,13 @@ import 'main.dart';
 ///URLの配列を定義（Dailyの非表示URL選択でも使いたいのでコントローラー作成）
 class MainUrlsController extends GetxController {
   var mainUrls = [
-    'https://www.reuters.com/',
-    'https://www.bloomberg.co.jp/',
-    'https://finance.yahoo.co.jp/',
+    'https://www.reuters.com/', 
+    'https://www.bloomberg.co.jp/', 
+    'https://finance.yahoo.co.jp/', 
     'https://nikkei225jp.com/cme/'
-  ].obs;
+    ].obs;
+
+  RxList<int> items = <int>[].obs;
 }
 
 ///ここからfloatingActionButton押下時のモーダル表示部分
