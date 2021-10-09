@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -14,21 +13,28 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../main.dart';
 
 ///Webの中身だけ表示するページ
-class WebContentPage extends StatelessWidget {
+
+class WebContentPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => WebContentPageState();
+}
+
+class WebContentPageState extends State<WebContentPage> {
+//class WebContentPage extends StatelessWidget {
   final tvc = Get.put(TabViewController());
   final wc = Get.put(WebController());
   final tags = [];
 
   ///WebViewControllerはサイトのタイトル取得に必要。
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  // final Completer<WebViewController> _controller =
+  //     Completer<WebViewController>();
 
   // String decideURL() {
   //   if (tvc.selectedUrl == null) return 'https://www.google.com';
   //   return tvc.selectedUrl.value.toString();
   // }
-
-  WebContentPage({Key? key}) : super(key: key);
+  late WebViewController _controller;
+  //WebContentPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +46,7 @@ class WebContentPage extends StatelessWidget {
       // },
 
       ///Webviewが作られたときの処理
-      onWebViewCreated: _controller.complete,
+      // onWebViewCreated: controller.complete,
 
       initialUrl: tvc.selectedUrl.value,
 
@@ -86,7 +92,7 @@ class WebContentPage extends StatelessWidget {
       onPageFinished: (String url) async {
         // print('---------------------onPageFinished---------------------');
 
-        final controller = await _controller.future;
+        final controller = await _controller;
         final title = await controller.getTitle();
         wc.records.last.newsTitle = title;
 
