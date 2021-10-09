@@ -262,46 +262,63 @@ class DailyPage extends StatelessWidget {
                                           );
                                         },
                                         child: Container(
-                                          height: 150,
+                                          height: 200,
                                           width: double.infinity,
-                                          child: Row(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                width: 345,
-                                                child: SimpleUrlPreview(
-                                                  url: todayUrls[index].url,
-                                                  bgColor: Colors.white,
-                                                  titleLines: 1,
-                                                  descriptionLines: 2,
-                                                  imageLoaderColor:
-                                                      Colors.white,
-                                                  previewHeight: 150,
-                                                  previewContainerPadding:
-                                                      EdgeInsets.all(5),
-                                                  onTap: () {
-                                                    // Get.to(WebContentPage());
-                                                  },
-                                                  titleStyle: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
+                                              Row(
+                                                children: [
+                                                  Visibility(
+                                                    visible: true,
+                                                    child: Text('日経平均'),
                                                   ),
-                                                  descriptionStyle:
-                                                      const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                  ),
-                                                  siteNameStyle:
-                                                      const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
+                                                  Text('ccc')
+                                                ],
                                               ),
-                                              ReorderableDragStartListener(
-                                                index: index,
-                                                child: const Icon(
-                                                    Icons.drag_handle),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 345,
+                                                    child: SimpleUrlPreview(
+                                                      url: todayUrls[index].url,
+                                                      bgColor: Colors.white,
+                                                      titleLines: 1,
+                                                      descriptionLines: 2,
+                                                      imageLoaderColor:
+                                                          Colors.white,
+                                                      previewHeight: 150,
+                                                      previewContainerPadding:
+                                                          EdgeInsets.all(5),
+                                                      onTap: () {
+                                                        // Get.to(WebContentPage());
+                                                      },
+                                                      titleStyle:
+                                                          const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
+                                                      descriptionStyle:
+                                                          const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                      siteNameStyle:
+                                                          const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  ReorderableDragStartListener(
+                                                    index: index,
+                                                    child: const Icon(
+                                                        Icons.drag_handle),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),

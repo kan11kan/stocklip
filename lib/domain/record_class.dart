@@ -6,7 +6,8 @@ class Record {
       this.startTime,
       this.endTime,
       this.memo = '',
-      this.newsTitle = ''
+      this.newsTitle = '',
+      this.tag = false
       // this.tags,
       // required this.tags,
       // this.newstitle = ''
@@ -23,6 +24,7 @@ class Record {
       : 0;
   String? memo;
   String? newsTitle;
+  bool tag;
 
   // List<String> tags = [];
   // String newstitle;
@@ -49,7 +51,8 @@ class Record {
         day = json["day"],
         hide = json["hide"],
         memo = json["memo"],
-        newsTitle = json["newsTitle"];
+        newsTitle = json["newsTitle"],
+        tag = json["tag"];
 
   ///startTimeとendTimeを作成したらエラーになったので一旦消す。
   // startTime = json["startTime"],
@@ -64,7 +67,8 @@ class Record {
       'day': day,
       'hide': hide,
       'memo': memo,
-      'newsTitle': newsTitle
+      'newsTitle': newsTitle,
+      'tag': tag
       // 'startTime': startTime,
       // 'endTime': endTime
     };
