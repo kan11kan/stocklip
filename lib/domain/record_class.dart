@@ -1,16 +1,16 @@
 class Record {
-  Record(
-      {this.url = '',
-      this.day = '',
-      this.hide = false,
-      this.startTime,
-      this.endTime,
-      this.memo = '',
-      this.newsTitle = ''
-      // this.tags,
-      // required this.tags,
-      // this.newstitle = ''
-      });
+  Record({
+    this.url = '',
+    this.day = '',
+    this.hide = false,
+    this.startTime,
+    this.endTime,
+    this.memo = '',
+    this.newsTitle = '',
+    this.tag = false,
+    // required this.tags,
+    // this.newstitle = ''
+  });
   // フィールド
   String url;
   String day;
@@ -23,6 +23,7 @@ class Record {
       : 0;
   String? memo;
   String? newsTitle;
+  bool tag;
 
   // List<String> tags = [];
   // String newstitle;
@@ -49,7 +50,8 @@ class Record {
         day = json["day"],
         hide = json["hide"],
         memo = json["memo"],
-        newsTitle = json["newsTitle"];
+        newsTitle = json["newsTitle"],
+        tag = json["tag"];
 
   ///startTimeとendTimeを作成したらエラーになったので一旦消す。
   // startTime = json["startTime"],
@@ -64,7 +66,8 @@ class Record {
       'day': day,
       'hide': hide,
       'memo': memo,
-      'newsTitle': newsTitle
+      'newsTitle': newsTitle,
+      'tag': tag,
       // 'startTime': startTime,
       // 'endTime': endTime
     };

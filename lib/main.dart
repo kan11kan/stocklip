@@ -170,3 +170,4 @@ class MyHomePageContent extends StatelessWidget {
 ///⑤タグの管理
 ///⑥戻る、進むボタンの実装
 ///⑦Google検索→グーグルが開く
+///⑧日付の修正

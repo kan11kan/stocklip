@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 
 import 'main.dart';
@@ -24,6 +25,7 @@ class showModalWidget extends StatelessWidget {
   showModalWidget({
     Key? key,
   }) : super(key: key);
+  final wc = Get.put(WebController());
   @override
 
   ///ここでタグの状態を管理
@@ -67,6 +69,7 @@ class showModalWidget extends StatelessWidget {
                         ),
                         onPressed: () {
                           (tag.value) ? tag.value = false : tag.value = true;
+                          wc.records.last.tag = tag.value;
                         },
                       ),
                     ),
@@ -190,8 +193,8 @@ class BookmarkWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  @override
   final tvc = Get.put(TabViewController());
+  @override
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

@@ -264,45 +264,56 @@ class DailyPage extends StatelessWidget {
                                         child: Container(
                                           height: 150,
                                           width: double.infinity,
-                                          child: Row(
+                                          child: Column(
                                             children: [
-                                              Container(
-                                                width: 345,
-                                                child: SimpleUrlPreview(
-                                                  url: todayUrls[index].url,
-                                                  bgColor: Colors.white,
-                                                  titleLines: 1,
-                                                  descriptionLines: 2,
-                                                  imageLoaderColor:
-                                                      Colors.white,
-                                                  previewHeight: 150,
-                                                  previewContainerPadding:
-                                                      EdgeInsets.all(5),
-                                                  onTap: () {
-                                                    // Get.to(WebContentPage());
-                                                  },
-                                                  titleStyle: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 345,
+                                                    child: SimpleUrlPreview(
+                                                      url: todayUrls[index].url,
+                                                      bgColor: Colors.white,
+                                                      titleLines: 1,
+                                                      descriptionLines: 2,
+                                                      imageLoaderColor:
+                                                          Colors.white,
+                                                      previewHeight: 150,
+                                                      previewContainerPadding:
+                                                          EdgeInsets.all(5),
+                                                      onTap: () {
+                                                        // Get.to(WebContentPage());
+                                                      },
+                                                      titleStyle:
+                                                          const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
+                                                      descriptionStyle:
+                                                          const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                      siteNameStyle:
+                                                          const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
                                                   ),
-                                                  descriptionStyle:
-                                                      const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
+                                                  ReorderableDragStartListener(
+                                                    index: index,
+                                                    child: const Icon(
+                                                        Icons.drag_handle),
                                                   ),
-                                                  siteNameStyle:
-                                                      const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
+                                                ],
                                               ),
-                                              ReorderableDragStartListener(
-                                                index: index,
-                                                child: const Icon(
-                                                    Icons.drag_handle),
-                                              ),
+                                              //選択されたタグを可視化しようとしたが、UIのバランスがよく無いのでとりやめ
+                                              // Visibility(
+                                              //   visible: todayUrls[index].tag,
+                                              //   child: Text('金利'),
+                                              // ),
                                             ],
                                           ),
                                         ),
