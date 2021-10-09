@@ -206,22 +206,36 @@ class BookmarkWidget extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 85, 10, 70),
             child: SizedBox(
               height: 45,
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Google検索',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Google検索',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          borderSide: const BorderSide(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: const BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
+                  ElevatedButton(
+                      onPressed: () {
+                        ///仮で記載
+                        tvc.selectedTabIndex.value = 3;
+                        tvc.selectedUrl.value = 'https://www.google.com/';
+                        WebContentPage();
+                      },
+                      child: Text('検索'))
+                ],
               ),
             ),
           ),
