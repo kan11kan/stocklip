@@ -447,48 +447,52 @@ class SearchResultTopState extends State<SearchResultTop> {
       appBar: AppBar(
         title: const Text('search result'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text('検索期間：${skc.startDay}~${skc.endDay}'),
-          Text('検索ワード:${skc.searchKeywords}'),
-          SizedBox(
-            width: 345,
-            child: Column(
-              children: [
-                for (int index = 1;
-                    index < searchResultArray.length + 1;
-                    index++)
-                  SimpleUrlPreview(
-                    url: searchResultArray[index - 1].url,
-                    bgColor: Colors.white,
-                    titleLines: 1,
-                    descriptionLines: 2,
-                    imageLoaderColor: Colors.white,
-                    previewHeight: 150,
-                    previewContainerPadding: const EdgeInsets.all(5),
-                    onTap: () {
-                      // Get.to(WebContentPage());
-                    },
-                    titleStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text('検索期間：${skc.startDay}~${skc.endDay}'),
+            Text('検索ワード:${skc.searchKeywords}'),
+            SizedBox(
+              width: 345,
+              child: Column(
+                children: [
+                  searchResultArray.isEmpty
+                      ? const Text('該当する履歴がありません')
+                      : const Visibility(visible: false, child: Text('')),
+                  for (int index = 1;
+                      index < searchResultArray.length + 1;
+                      index++)
+                    SimpleUrlPreview(
+                      url: searchResultArray[index - 1].url,
+                      bgColor: Colors.white,
+                      titleLines: 1,
+                      descriptionLines: 2,
+                      imageLoaderColor: Colors.white,
+                      previewHeight: 150,
+                      previewContainerPadding: const EdgeInsets.all(5),
+                      onTap: () {
+                        // Get.to(WebContentPage());
+                      },
+                      titleStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      descriptionStyle: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                      ),
+                      siteNameStyle: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                      ),
                     ),
-                    descriptionStyle: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                    siteNameStyle: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
-                const Text('test'),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
