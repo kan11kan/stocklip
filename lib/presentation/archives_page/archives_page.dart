@@ -318,17 +318,17 @@ class ShowCardsState extends State<ShowCards> {
                       // Text('${nikkei[index]}'),
                       Row(
                         children: [
-                          ElevatedButton(
-                            ///例で記載
-                            child: Visibility(
-                                visible: selectedTagList[index],
-                                child: Text('${tags[3]}')),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              onPrimary: Colors.black,
-                              shape: const StadiumBorder(),
+                          Visibility(
+                            visible: selectedTagList[index],
+                            child: ElevatedButton(
+                              child: Text('${tags[0]}'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                onPrimary: Colors.black,
+                                shape: const StadiumBorder(),
+                              ),
+                              onPressed: () {},
                             ),
-                            onPressed: () {},
                           ),
                         ],
                       ),
