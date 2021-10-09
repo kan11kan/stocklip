@@ -23,10 +23,16 @@ class WebContentPage extends StatelessWidget {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
+  // String decideURL() {
+  //   if (tvc.selectedUrl == null) return 'https://www.google.com';
+  //   return tvc.selectedUrl.value.toString();
+  // }
+
   WebContentPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // print('///////////////////////////////////////////////////////////////////////////\n/////---------------------${tvc.selectedUrl.value}---------------------/////\n///////////////////////////////////////////////////////////////////////////');
     return WebView(
       // javascriptMode: JavascriptMode.unrestricted,
       // onWebViewCreated: (WebViewController webViewController) {
@@ -36,10 +42,23 @@ class WebContentPage extends StatelessWidget {
       ///Webviewが作られたときの処理
       onWebViewCreated: _controller.complete,
 
-      initialUrl: tvc.selectedUrl.value.toString(),
+      initialUrl: tvc.selectedUrl.value,
+
+// 2回目以降の表示でエラーが出るのはcontroller が怪しい。
+// E/eglCodecCommon(23366): glUtilsParamSize: unknow param 0x000088ef
+// I/chatty  (23366): uid=10146(com.example.one_app_everyday921) Chrome_InProcGp identical 2 lines
+// E/eglCodecCommon(23366): glUtilsParamSize: unknow param 0x000088ef
+// E/flutter (23366): [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: Bad state: Future already completed
+
+// hotreloadでは以下の記述
+// The following LateError was thrown during paint():
+// LateInitializationError: Field '_currentAndroidViewSize@427508051' has not been initialized.
 
       ///ページの読み込み開始時の処理
       onPageStarted: (url) {
+        // print('---------------------onPageStarted---------------------');
+        // print(url);
+
         ///登録するデータ（url,dayを準備）
         final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
         DateFormat outputFormatDay =
@@ -65,9 +84,17 @@ class WebContentPage extends StatelessWidget {
       ///ここの処理が不安、、、URLはrecordsの最後に追加でいいのか？
       ///ページの読み込みが終わった段階で、URLのタイトルを取得
       onPageFinished: (String url) async {
+        // print('---------------------onPageFinished---------------------');
+
         final controller = await _controller.future;
         final title = await controller.getTitle();
         wc.records.last.newsTitle = title;
+
+// ここでもエラー起きてるくさい
+// [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: MissingPluginException(No implementation found for method getTitle on channel plugins.flutter.io/webview_15)
+// ERROR:page_load_metrics_update_dispatcher.cc(170)] Invalid first_paint 0.275 s for first_image_paint 0.242 s
+
+        // print('---------------------onPageFinished gotTitle maybe... ---------------------');
 
         ///boxにrecordsを保存する処理を記載
         void saveUrl() async {
