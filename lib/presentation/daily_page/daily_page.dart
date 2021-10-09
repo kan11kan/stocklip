@@ -23,7 +23,7 @@ class DailyPage extends StatefulWidget {
   DailyPage({Key? key}) : super(key: key);
   @override
   State<DailyPage> createState() => _DailyPageState();
-  final memoContent = TextEditingController();
+  TextEditingController memoContent = TextEditingController();
 }
 
 class _DailyPageState extends State<DailyPage> {
@@ -138,10 +138,13 @@ class _DailyPageState extends State<DailyPage> {
                     String day = outputFormatDay.format(now);
 
                     ///Recordクラスのインスタンスを作成
-                    ///
 
-                    Record dailyTmpRecord =
-                        Record(memo: dc.memoContent.value, day: day, url: '');
+                    Record dailyTmpRecord = Record(
+                        memo: dc.memoContent.value,
+                        day: day,
+                        url: '',
+                        startTime: now,
+                        endTime: now.add((Duration(days: 1) * 10)));
                     wc.records.add(dailyTmpRecord);
 
                     ///boxにput
@@ -150,8 +153,8 @@ class _DailyPageState extends State<DailyPage> {
 
                   saveDailyData();
 
-                  ///テキストフィールド初期化
-                  widget.memoContent.clear();
+                  ///テキストフィールド初期化　→保存しましたへ今後変更
+                  // widget.memoContent.clear();
                 },
                 child: const Text(
                   '保\n' '存',

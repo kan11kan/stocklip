@@ -333,7 +333,7 @@ class ShowCardsState extends State<ShowCards> {
                         ],
                       ),
                       Container(
-                        child: wc.mostImportantUrls[index].memo != null
+                        child: wc.mostImportantUrls[index].url == ''
                             ? Card(
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 2.0),
