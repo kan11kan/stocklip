@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record_class.dart';
+import 'package:one_app_everyday921/main.dart';
 import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
+import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
 import '../../main_button_widget.dart';
@@ -30,6 +32,7 @@ class _DailyPageState extends State<DailyPage> {
   final wc = Get.put(WebController());
   final muc = Get.put(MainUrlsController());
   final dc = Get.put(DailyDataController());
+  final tvc = Get.put(TabViewController());
 
   ///しんじさんのコード
   ///Recordクラスのオブジェクト配列の変化を監視
@@ -177,7 +180,7 @@ class _DailyPageState extends State<DailyPage> {
                     child: muc.items.isEmpty
                         ? const Text('今日の履歴はありません')
                         : GestureDetector(
-                            onLongPress: () {},
+                            onTap: () {},
                             child: Obx(
                               () => ReorderableListView(
                                 padding:
@@ -194,99 +197,11 @@ class _DailyPageState extends State<DailyPage> {
                                           const SlidableDrawerActionPane(),
                                       actionExtentRatio: 0.25,
                                       child: GestureDetector(
-                                        onLongPress: () {
-                                          showModalBottomSheet<void>(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container(
-                                                height: 400,
-                                                color: Colors.white,
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: <Widget>[
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                bottom: 30),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            ElevatedButton(
-                                                              child: const Text(
-                                                                  '金利'),
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                primary: Colors
-                                                                    .white,
-                                                                onPrimary:
-                                                                    Colors
-                                                                        .black,
-                                                                shape:
-                                                                    const StadiumBorder(),
-                                                              ),
-                                                              onPressed: () {
-                                                                //ここにタグの表示非表示切り替え処理を書く
-                                                              },
-                                                            ),
-                                                            ElevatedButton(
-                                                              child: const Text(
-                                                                  '日経平均'),
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                primary: Colors
-                                                                    .white,
-                                                                onPrimary:
-                                                                    Colors
-                                                                        .black,
-                                                                shape:
-                                                                    const StadiumBorder(),
-                                                              ),
-                                                              onPressed: () {},
-                                                            ),
-                                                            ElevatedButton(
-                                                              child: const Text(
-                                                                  '米国株'),
-                                                              style:
-                                                                  ElevatedButton
-                                                                      .styleFrom(
-                                                                primary: Colors
-                                                                    .white,
-                                                                onPrimary:
-                                                                    Colors
-                                                                        .black,
-                                                                shape:
-                                                                    const StadiumBorder(),
-                                                              ),
-                                                              onPressed: () {},
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        child: ElevatedButton(
-                                                          child: const Text(
-                                                              'Close BottomSheet'),
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                        onDoubleTap: () {
+                                          tvc.selectedTabIndex.value = 3;
+                                          tvc.selectedUrl.value =
+                                              todayUrls[muc.items[index]].url;
+                                          WebContentPage();
                                         },
                                         child: Container(
                                           height: 150,
