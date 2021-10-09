@@ -277,16 +277,25 @@ class ShowCardsState extends State<ShowCards> {
   ///tagsの配列を作成（タグ　→　◯月◯日のタグNumber[1,2,5,6]など）
   final List tags = [
     '金利',
-    '日経',
-    '米国株',
-    '個別株',
-    'テクニカル',
-    'FRB',
-    'REIT',
     '債券',
+    '米国株',
+    '日本株',
+    '中国株',
+    'FRB',
+    'テクニカル',
+    'REIT',
     'その他'
   ];
   var selectedTagList = [];
+  var selectedTagList1 = [];
+  var selectedTagList2 = [];
+  var selectedTagList3 = [];
+  var selectedTagList4 = [];
+  var selectedTagList5 = [];
+  var selectedTagList6 = [];
+  var selectedTagList7 = [];
+  var selectedTagList8 = [];
+  var selectedTagList9 = [];
 
   ///ここからリストビュー
   @override
@@ -299,6 +308,78 @@ class ShowCardsState extends State<ShowCards> {
           .length;
       tmp == 0 ? selectedTagList.add(false) : selectedTagList.add(true);
     }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag1 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList1.add(false) : selectedTagList1.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag2 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList2.add(false) : selectedTagList2.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag3 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList3.add(false) : selectedTagList3.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag4 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList4.add(false) : selectedTagList4.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag5 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList5.add(false) : selectedTagList5.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag6 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList6.add(false) : selectedTagList6.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag7 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList7.add(false) : selectedTagList7.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag8 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList8.add(false) : selectedTagList8.add(true);
+    }
+    for (int i = 0; i < wc.mostImportantUrls.length; i++) {
+      int tmp = wc.records
+          .where(
+              (el) => el.day == wc.mostImportantUrls[i].day && el.tag9 == true)
+          .toList()
+          .length;
+      tmp == 0 ? selectedTagList9.add(false) : selectedTagList9.add(true);
+    }
 
     ///リストビュービルダー
     return Container(
@@ -306,73 +387,215 @@ class ShowCardsState extends State<ShowCards> {
       child: Column(
         children: [
           SizedBox(
-            height: 400,
+            height: 800,
             child: ListView.builder(
               itemCount: wc.mostImportantUrls.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  child: Column(
-                    children: [
-                      Text(
-                          '${wc.mostImportantUrls[index].day}'), //('${dailyRecords[index].day}'),
-                      // Text('${nikkei[index]}'),
-                      Row(
-                        children: [
-                          Visibility(
-                            visible: selectedTagList[index],
-                            child: ElevatedButton(
-                              child: Text('${tags[0]}'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.white,
-                                onPrimary: Colors.black,
-                                shape: const StadiumBorder(),
-                              ),
-                              onPressed: () {},
+                return SizedBox(
+                  child: Card(
+                    child: Column(
+                      children: [
+                        Text(
+                            '${wc.mostImportantUrls[index].day}'), //('${dailyRecords[index].day}'),
+                        // Text('${nikkei[index]}'),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Visibility(
+                                  visible: selectedTagList[index],
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(minWidth: 5),
+                                    child: ElevatedButton(
+                                      child: Text('${tags[0]}',
+                                          style: TextStyle(fontSize: 12)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: selectedTagList1[index],
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(minWidth: 5),
+                                    child: ElevatedButton(
+                                      child: Text('${tags[1]}',
+                                          style: TextStyle(fontSize: 12)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: selectedTagList2[index],
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(minWidth: 5),
+                                    child: ElevatedButton(
+                                      child: Text('${tags[2]}',
+                                          style: TextStyle(fontSize: 12)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: selectedTagList3[index],
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(minWidth: 5),
+                                    child: ElevatedButton(
+                                      child: Text('${tags[3]}',
+                                          style: TextStyle(fontSize: 12)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: selectedTagList4[index],
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(minWidth: 5),
+                                    child: ElevatedButton(
+                                      child: Text('${tags[4]}',
+                                          style: TextStyle(fontSize: 12)),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.white,
+                                        onPrimary: Colors.black,
+                                        shape: const StadiumBorder(),
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        child: wc.mostImportantUrls[index].url == ''
-                            ? Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 2.0),
-                                  child: SizedBox(
-                                    width: 270,
-                                    height: 140,
-                                    child: Text(
-                                        '${wc.mostImportantUrls[index].memo}'),
+                            // Row(
+                            //   children: [
+                            //     Visibility(
+                            //       visible: selectedTagList5[index],
+                            //       child: ConstrainedBox(
+                            //         constraints: BoxConstraints(minWidth: 5),
+                            //         child: ElevatedButton(
+                            //           child: Text('${tags[5]}',
+                            //               style: TextStyle(fontSize: 12)),
+                            //           style: ElevatedButton.styleFrom(
+                            //             primary: Colors.white,
+                            //             onPrimary: Colors.black,
+                            //             shape: const StadiumBorder(),
+                            //           ),
+                            //           onPressed: () {},
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     Visibility(
+                            //       visible: selectedTagList6[index],
+                            //       child: ConstrainedBox(
+                            //         constraints: BoxConstraints(minWidth: 5),
+                            //         child: ElevatedButton(
+                            //           child: Text('${tags[6]}',
+                            //               style: TextStyle(fontSize: 12)),
+                            //           style: ElevatedButton.styleFrom(
+                            //             primary: Colors.white,
+                            //             onPrimary: Colors.black,
+                            //             shape: const StadiumBorder(),
+                            //           ),
+                            //           onPressed: () {},
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     Visibility(
+                            //       visible: selectedTagList7[index],
+                            //       child: ConstrainedBox(
+                            //         constraints: BoxConstraints(minWidth: 5),
+                            //         child: ElevatedButton(
+                            //           child: Text('${tags[7]}',
+                            //               style: TextStyle(fontSize: 12)),
+                            //           style: ElevatedButton.styleFrom(
+                            //             primary: Colors.white,
+                            //             onPrimary: Colors.black,
+                            //             shape: const StadiumBorder(),
+                            //           ),
+                            //           onPressed: () {},
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     Visibility(
+                            //       visible: selectedTagList8[index],
+                            //       child: ConstrainedBox(
+                            //         constraints: BoxConstraints(minWidth: 5),
+                            //         child: ElevatedButton(
+                            //           child: Text('${tags[8]}',
+                            //               style: TextStyle(fontSize: 12)),
+                            //           style: ElevatedButton.styleFrom(
+                            //             primary: Colors.white,
+                            //             onPrimary: Colors.black,
+                            //             shape: const StadiumBorder(),
+                            //           ),
+                            //           onPressed: () {},
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                          ],
+                        ),
+                        Container(
+                          child: wc.mostImportantUrls[index].url == ''
+                              ? Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 2.0),
+                                    child: SizedBox(
+                                      width: 270,
+                                      height: 150,
+                                      child: Text(
+                                          '${wc.mostImportantUrls[index].memo}'),
+                                    ),
+                                  ),
+                                )
+                              : Card(
+                                  child: SimpleUrlPreview(
+                                    url: wc.mostImportantUrls[index].url,
+                                    bgColor: Colors.white,
+                                    titleLines: 1,
+                                    descriptionLines: 2,
+                                    imageLoaderColor: Colors.white,
+                                    previewHeight: 150,
+                                    previewContainerPadding:
+                                        const EdgeInsets.all(5),
+                                    onTap: () {},
+                                    titleStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    descriptionStyle: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                    siteNameStyle: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
-                              )
-                            : Card(
-                                child: SimpleUrlPreview(
-                                  url: wc.mostImportantUrls[index].url,
-                                  bgColor: Colors.white,
-                                  titleLines: 1,
-                                  descriptionLines: 2,
-                                  imageLoaderColor: Colors.white,
-                                  previewHeight: 150,
-                                  previewContainerPadding:
-                                      const EdgeInsets.all(5),
-                                  onTap: () {},
-                                  titleStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                  descriptionStyle: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
-                                  siteNameStyle: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -449,7 +672,7 @@ class SearchResultTopState extends State<SearchResultTop> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('検索期間：${skc.startDay}~${skc.endDay}'),
             Text('検索ワード:${skc.searchKeywords}'),
