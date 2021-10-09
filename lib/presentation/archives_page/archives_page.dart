@@ -322,7 +322,7 @@ class ShowCardsState extends State<ShowCards> {
                             ///例で記載
                             child: Visibility(
                                 visible: selectedTagList[index],
-                                child: Text('${tags[3]}')),
+                                child: Text('${tags[0]}')),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
                               onPrimary: Colors.black,
@@ -333,7 +333,7 @@ class ShowCardsState extends State<ShowCards> {
                         ],
                       ),
                       Container(
-                        child: wc.mostImportantUrls[index].memo != null
+                        child: wc.mostImportantUrls[index].memo != false
                             ? Card(
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 2.0),
