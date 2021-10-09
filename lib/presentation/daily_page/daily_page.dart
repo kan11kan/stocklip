@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:one_app_everyday921/domain/record_class.dart';
+import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
@@ -17,9 +18,18 @@ import '../../main_button_widget.dart';
 ///並び替えのエラー
 
 ///Daily Newsの内容を記載
-class DailyPage extends StatelessWidget {
+
+class DailyPage extends StatefulWidget {
+  DailyPage({Key? key}) : super(key: key);
+  @override
+  State<DailyPage> createState() => _DailyPageState();
+  final memoContent = TextEditingController();
+}
+
+class _DailyPageState extends State<DailyPage> {
   final wc = Get.put(WebController());
   final muc = Get.put(MainUrlsController());
+  final dc = Get.put(DailyDataController());
 
   ///しんじさんのコード
   ///Recordクラスのオブジェクト配列の変化を監視
@@ -31,7 +41,10 @@ class DailyPage extends StatelessWidget {
     final box = await Hive.openBox('recordsGeneratedByUrl');
 
     ///ここで空の配列に入れ直している。
-    urls.value = jsonDecode(box.get('records')).map((el) => Record.fromJson(el)).toList().cast<Record>() as List<Record>;
+    urls.value = jsonDecode(box.get('records'))
+        .map((el) => Record.fromJson(el))
+        .toList()
+        .cast<Record>() as List<Record>;
     // print(urls.value[0].url);
     // print(urls.value[1].url);
     // print(urls.value[2].url);
@@ -44,7 +57,6 @@ class DailyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ///Recordクラスの全てのrecordsを取得し、url,day,hideをurlsに格納。
     getUrls();
-    var myController = TextEditingController();
 
     ///処理が走った日付（String）と時刻（DateTime）を取得
     final now = DateTime.now();
@@ -72,14 +84,14 @@ class DailyPage extends StatelessWidget {
     if (muc.items.isEmpty) {
       muc.items.value = tmpList;
     } else {
-      tmpList.asMap().forEach((el, idx) => idx >= muc.items.length ? muc.items.add(el) : print('stay'));
+      tmpList.asMap().forEach((el, idx) =>
+          idx >= muc.items.length ? muc.items.add(el) : print('stay'));
       // for (int i = 0; i < tmpList.length; i++) {
       //   if (i > muc.items.length) {
       //     muc.items.add(tmpList[i]);
       //   }
       // }
     }
-
 
     ///ここからページ内容
     return SingleChildScrollView(
@@ -99,7 +111,7 @@ class DailyPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 4.0, left: 16.0),
                   child: TextField(
-                    controller: myController,
+                    controller: widget.memoContent,
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: OutlineInputBorder(
@@ -117,6 +129,8 @@ class DailyPage extends StatelessWidget {
                 onPressed: () {
                   ///クリックでメモ内容を'recordsGeneratedByUrl'の'records'に保存する
                   ///url=''、day='String'で保存する。
+
+                  dc.memoContent.value = widget.memoContent.text;
                   void saveDailyData() async {
                     final box = await Hive.openBox('recordsGeneratedByUrl');
                     final DateTime now = DateTime.now();
@@ -124,7 +138,10 @@ class DailyPage extends StatelessWidget {
                     String day = outputFormatDay.format(now);
 
                     ///Recordクラスのインスタンスを作成
-                    Record dailyTmpRecord = Record(memo: myController.text, day: day, url: '');
+                    ///
+
+                    Record dailyTmpRecord =
+                        Record(memo: dc.memoContent.value, day: day, url: '');
                     wc.records.add(dailyTmpRecord);
 
                     ///boxにput
@@ -134,7 +151,7 @@ class DailyPage extends StatelessWidget {
                   saveDailyData();
 
                   ///テキストフィールド初期化
-                  myController.clear();
+                  widget.memoContent.clear();
                 },
                 child: const Text(
                   '保\n' '存',
@@ -160,14 +177,18 @@ class DailyPage extends StatelessWidget {
                             onLongPress: () {},
                             child: Obx(
                               () => ReorderableListView(
-                                padding: const EdgeInsets.symmetric(horizontal: 0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 0),
                                 shrinkWrap: true,
                                 // physics: NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  for (int index = 0; index < todayUrls.length; index++)
+                                  for (int index = 0;
+                                      index < todayUrls.length;
+                                      index++)
                                     Slidable(
                                       key: Key('$index'),
-                                      actionPane: const SlidableDrawerActionPane(),
+                                      actionPane:
+                                          const SlidableDrawerActionPane(),
                                       actionExtentRatio: 0.25,
                                       child: GestureDetector(
                                         onLongPress: () {
@@ -179,40 +200,69 @@ class DailyPage extends StatelessWidget {
                                                 color: Colors.white,
                                                 child: Center(
                                                   child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: <Widget>[
                                                       Container(
-                                                        padding: const EdgeInsets.only(bottom: 30),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 30),
                                                         child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
                                                           children: [
                                                             ElevatedButton(
-                                                              child: const Text('金利'),
-                                                              style: ElevatedButton.styleFrom(
-                                                                primary: Colors.white,
-                                                                onPrimary: Colors.black,
-                                                                shape: const StadiumBorder(),
+                                                              child: const Text(
+                                                                  '金利'),
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                primary: Colors
+                                                                    .white,
+                                                                onPrimary:
+                                                                    Colors
+                                                                        .black,
+                                                                shape:
+                                                                    const StadiumBorder(),
                                                               ),
                                                               onPressed: () {
                                                                 //ここにタグの表示非表示切り替え処理を書く
                                                               },
                                                             ),
                                                             ElevatedButton(
-                                                              child: const Text('日経平均'),
-                                                              style: ElevatedButton.styleFrom(
-                                                                primary: Colors.white,
-                                                                onPrimary: Colors.black,
-                                                                shape: const StadiumBorder(),
+                                                              child: const Text(
+                                                                  '日経平均'),
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                primary: Colors
+                                                                    .white,
+                                                                onPrimary:
+                                                                    Colors
+                                                                        .black,
+                                                                shape:
+                                                                    const StadiumBorder(),
                                                               ),
                                                               onPressed: () {},
                                                             ),
                                                             ElevatedButton(
-                                                              child: const Text('米国株'),
-                                                              style: ElevatedButton.styleFrom(
-                                                                primary: Colors.white,
-                                                                onPrimary: Colors.black,
-                                                                shape: const StadiumBorder(),
+                                                              child: const Text(
+                                                                  '米国株'),
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                primary: Colors
+                                                                    .white,
+                                                                onPrimary:
+                                                                    Colors
+                                                                        .black,
+                                                                shape:
+                                                                    const StadiumBorder(),
                                                               ),
                                                               onPressed: () {},
                                                             ),
@@ -221,8 +271,11 @@ class DailyPage extends StatelessWidget {
                                                       ),
                                                       Container(
                                                         child: ElevatedButton(
-                                                          child: const Text('Close BottomSheet'),
-                                                          onPressed: () => Navigator.pop(context),
+                                                          child: const Text(
+                                                              'Close BottomSheet'),
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
                                                         ),
                                                       )
                                                     ],
@@ -241,26 +294,35 @@ class DailyPage extends StatelessWidget {
                                                     width: 345,
                                                     // ----------------------- SimpleUrlPreview -----------------------
                                                     child: SimpleUrlPreview(
-                                                      url: todayUrls[muc.items[index]].url,
+                                                      url: todayUrls[
+                                                              muc.items[index]]
+                                                          .url,
                                                       bgColor: Colors.white,
                                                       titleLines: 1,
                                                       descriptionLines: 2,
-                                                      imageLoaderColor: Colors.white,
+                                                      imageLoaderColor:
+                                                          Colors.white,
                                                       previewHeight: 150,
-                                                      previewContainerPadding: const EdgeInsets.all(5),
+                                                      previewContainerPadding:
+                                                          const EdgeInsets.all(
+                                                              5),
                                                       onTap: () {
                                                         // Get.to(WebContentPage());
                                                       },
-                                                      titleStyle: const TextStyle(
+                                                      titleStyle:
+                                                          const TextStyle(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.black,
                                                       ),
-                                                      descriptionStyle: const TextStyle(
+                                                      descriptionStyle:
+                                                          const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.black,
                                                       ),
-                                                      siteNameStyle: const TextStyle(
+                                                      siteNameStyle:
+                                                          const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.black,
                                                       ),
@@ -268,7 +330,8 @@ class DailyPage extends StatelessWidget {
                                                   ),
                                                   ReorderableDragStartListener(
                                                     index: muc.items[index],
-                                                    child: const Icon(Icons.drag_handle),
+                                                    child: const Icon(
+                                                        Icons.drag_handle),
                                                   ),
                                                 ],
                                               )),
@@ -298,20 +361,25 @@ class DailyPage extends StatelessWidget {
                                   }
                                   // final int item = items.removeAt(oldIndex);//元のコード
                                   // urls.value = urls..removeAt(oldIndex); //山村さんのコード
-                                  print(' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
+                                  print(
+                                      ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
                                   print(muc.items);
-                                  print('${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  print(
+                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
-                                  final int item = muc.items.removeAt(oldIndex); //試してみる
+                                  final int item =
+                                      muc.items.removeAt(oldIndex); //試してみる
 
                                   print(muc.items);
-                                  print('${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  print(
+                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
                                   // items.value = items..insert(newIndex, item);//元のコード
                                   // urls.value = urls
                                   //   ..insert(newIndex, urls[oldIndex]); //山村さんのコード
                                   muc.items.insert(newIndex, item); //自分のコード
                                   print(muc.items);
-                                  print('${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  print(
+                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
                                   //ここがリストが入れ替わらないエラーの原因かも
                                 },
