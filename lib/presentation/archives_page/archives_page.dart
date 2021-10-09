@@ -409,7 +409,7 @@ class SearchResultTopState extends State<SearchResultTop> {
     ///③開始日＋差分　の日付配列(DateTime型)を作成
     // final List researchDateArray = [skc.startDay];
     final List<DateTime> researchDateArray = [];
-    for (int i = 0; i < skc.duration.value; i++) {
+    for (int i = 0; i < skc.duration.value + 1; i++) {
       DateTime tmp = startDateTime.add((Duration(days: 1) * i));
       // outputFormatDay.format(startDateTime.add((Duration(days: 1) * i)));
       researchDateArray.add(tmp);
@@ -420,8 +420,15 @@ class SearchResultTopState extends State<SearchResultTop> {
     //検索元はyyyy-MM-dd
     ///④日付と一致するものをrecordsから取得
     for (int i = 1; i < researchDateArray.length; i++) {
-      var tmpStringDay =
-          '${researchDateArray[i].year}-${researchDateArray[i].month}-0${researchDateArray[i].day}';
+      var tmpMonth = '';
+      var tmpDay = '';
+      researchDateArray[i].month > 9
+          ? tmpMonth = '${researchDateArray[i].month}'
+          : tmpMonth = '0${researchDateArray[i].month}';
+      researchDateArray[i].day > 9
+          ? tmpDay = '${researchDateArray[i].day}'
+          : tmpDay = '0${researchDateArray[i].day}';
+      var tmpStringDay = '${researchDateArray[i].year}-${tmpMonth}-${tmpDay}';
       print(tmpStringDay);
       wc.records
           .where((el) =>
