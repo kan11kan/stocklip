@@ -60,9 +60,13 @@ class WebContentPageState extends State<WebContentPage> {
 // The following LateError was thrown during paint():
 // LateInitializationError: Field '_currentAndroidViewSize@427508051' has not been initialized.
 
+// エラー回避のために追記
+      onWebViewCreated: (controller) {
+            _controller = controller;
+      },
       ///ページの読み込み開始時の処理
       onPageStarted: (url) {
-        // print('---------------------onPageStarted---------------------');
+        print('---------------------onPageStarted---------------------');
         // print(url);
 
         ///登録するデータ（url,dayを準備）
@@ -90,17 +94,16 @@ class WebContentPageState extends State<WebContentPage> {
       ///ここの処理が不安、、、URLはrecordsの最後に追加でいいのか？
       ///ページの読み込みが終わった段階で、URLのタイトルを取得
       onPageFinished: (String url) async {
-        // print('---------------------onPageFinished---------------------');
+        print('---------------------onPageFinished---------------------');
 
-        final controller = await _controller;
-        final title = await controller.getTitle();
+        final title = await _controller.getTitle();
         wc.records.last.newsTitle = title;
 
 // ここでもエラー起きてるくさい
 // [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: MissingPluginException(No implementation found for method getTitle on channel plugins.flutter.io/webview_15)
 // ERROR:page_load_metrics_update_dispatcher.cc(170)] Invalid first_paint 0.275 s for first_image_paint 0.242 s
 
-        // print('---------------------onPageFinished gotTitle maybe... ---------------------');
+        print('---------------------onPageFinished gotTitle maybe... ---------------------');
 
         ///boxにrecordsを保存する処理を記載
         void saveUrl() async {

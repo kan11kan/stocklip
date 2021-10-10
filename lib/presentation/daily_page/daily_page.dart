@@ -84,6 +84,7 @@ class _DailyPageState extends State<DailyPage> {
             el.url != 'https://newspicks.com/' &&
             el.url != 'https://www.reuters.com/' &&
             el.url != 'https://www.nikkei.com/' &&
+            el.url != 'https://www.google.com/' &&
             el.url != '')
         .toList()
       ..sort((a, b) => b.readTime.compareTo(a.readTime)));
@@ -292,25 +293,25 @@ class _DailyPageState extends State<DailyPage> {
                                   }
                                   // final int item = items.removeAt(oldIndex);//元のコード
                                   // urls.value = urls..removeAt(oldIndex); //山村さんのコード
-                                  print(
-                                      ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
-                                  print(muc.items);
-                                  print(
-                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  // print(
+                                  //     ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
+                                  // print(muc.items);
+                                  // print(
+                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
                                   final int item =
                                       muc.items.removeAt(oldIndex); //試してみる
 
-                                  print(muc.items);
-                                  print(
-                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  // print(muc.items);
+                                  // print(
+                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
                                   // items.value = items..insert(newIndex, item);//元のコード
                                   // urls.value = urls
                                   //   ..insert(newIndex, urls[oldIndex]); //山村さんのコード
                                   muc.items.insert(newIndex, item); //自分のコード
-                                  print(muc.items);
-                                  print(
-                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  // print(muc.items);
+                                  // print(
+                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
                                   //ここがリストが入れ替わらないエラーの原因かも
                                 },
