@@ -60,8 +60,19 @@ class WebContentPageState extends State<WebContentPage> {
 // The following LateError was thrown during paint():
 // LateInitializationError: Field '_currentAndroidViewSize@427508051' has not been initialized.
 
+// エラー回避のために追記
+      onWebViewCreated: (controller) {
+            _controller = controller;
+      },
       ///ページの読み込み開始時の処理
-      onPageStarted: (url) {
+      onPageStarted: (url) async {
+         ///boxにrecordsを保存する処理を記載
+        void saveUrl() async {
+          await Hive.openBox('recordsGeneratedByUrl');
+          final box = await Hive.openBox('recordsGeneratedByUrl');
+
+          box.put('records', jsonEncode(wc.records));
+        }
         // print('---------------------onPageStarted---------------------');
         // print(url);
 
@@ -71,8 +82,11 @@ class WebContentPageState extends State<WebContentPage> {
             DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
         String day = outputFormatDay.format(now);
 
+        final title = await _controller.getTitle();
+        // wc.records.last.newsTitle = title;
+
         ///一回一回の履歴に対してインスタンスを作成する
-        Record tmpRecord = Record(url: url, day: day, startTime: now);
+        Record tmpRecord = Record(url: url, day: day, startTime: now, newsTitle:title);
         wc.records.add(tmpRecord);
 
         ///wc.recordsを監視し、変更（新しいURLの追加）のタイミングで
@@ -85,16 +99,14 @@ class WebContentPageState extends State<WebContentPage> {
             wc.records[wc.records.length - 2].endTime = endTime;
           },
         );
+        ///関数を実行してboxに保存する処理
+        saveUrl();
       },
 
       ///ここの処理が不安、、、URLはrecordsの最後に追加でいいのか？
       ///ページの読み込みが終わった段階で、URLのタイトルを取得
-      onPageFinished: (String url) async {
+      // onPageFinished: (String url) async {
         // print('---------------------onPageFinished---------------------');
-
-        final controller = await _controller;
-        final title = await controller.getTitle();
-        wc.records.last.newsTitle = title;
 
 // ここでもエラー起きてるくさい
 // [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: MissingPluginException(No implementation found for method getTitle on channel plugins.flutter.io/webview_15)
@@ -102,17 +114,9 @@ class WebContentPageState extends State<WebContentPage> {
 
         // print('---------------------onPageFinished gotTitle maybe... ---------------------');
 
-        ///boxにrecordsを保存する処理を記載
-        void saveUrl() async {
-          await Hive.openBox('recordsGeneratedByUrl');
-          final box = await Hive.openBox('recordsGeneratedByUrl');
 
-          box.put('records', jsonEncode(wc.records));
-        }
 
-        ///関数を実行してboxに保存する処理
-        saveUrl();
-      },
+      // },
     );
   }
 }
