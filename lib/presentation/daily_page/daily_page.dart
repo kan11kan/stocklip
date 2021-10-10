@@ -80,6 +80,10 @@ class _DailyPageState extends State<DailyPage> {
             el.url != 'https://finance.yahoo.co.jp/' &&
             el.url != 'https://nikkei225jp.com/cme' &&
             el.url != 'https://www.reuters.com/' &&
+            el.url != 'https://www.jpx.co.jp/' &&
+            el.url != 'https://newspicks.com/' &&
+            el.url != 'https://www.reuters.com/' &&
+            el.url != 'https://www.nikkei.com/' &&
             el.url != '')
         .toList()
       ..sort((a, b) => b.readTime.compareTo(a.readTime)));

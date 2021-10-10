@@ -75,7 +75,15 @@ class _ArchivesPageState extends State<ArchivesPage> {
           .where((el) =>
               (el.day == dateList[i] //&& el.memo == null
                   &&
-                  el.url != '') ||
+                  el.url != '' &&
+                  el.url != 'https://www.bloomberg.co.jp/' &&
+                  el.url != 'https://www.traders.co.jp/' &&
+                  el.url != 'https://finance.yahoo.co.jp/' &&
+                  el.url != 'https://nikkei225jp.com/cme/' &&
+                  el.url != 'https://www.jpx.co.jp/' &&
+                  el.url != 'https://newspicks.com/' &&
+                  el.url != 'https://www.reuters.com/' &&
+                  el.url != 'https://www.nikkei.com/') ||
               (el.day == dateList[i] && el.memo != null && el.url == ''))
           .toList()
 
@@ -400,7 +408,12 @@ class ShowCardsState extends State<ShowCards> {
                     child: Column(
                       children: [
                         Text(
-                            '${wc.mostImportantUrls[index].day}'), //('${dailyRecords[index].day}'),
+                          '${wc.mostImportantUrls[index].day}',
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ), //('${dailyRecords[index].day}'),
                         // Text('${nikkei[index]}'),
                         Column(
                           children: [
@@ -567,11 +580,16 @@ class ShowCardsState extends State<ShowCards> {
                                       width: deviceWidth * 0.85,
                                       height: 150,
                                       child: Text(
-                                          '${wc.mostImportantUrls[index].memo}'),
+                                        '${wc.mostImportantUrls[index].memo}',
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
                                 )
-                              : Card(
+                              : Container(
                                   child: SimpleUrlPreview(
                                     url: wc.mostImportantUrls[index].url,
                                     bgColor: Colors.white,
