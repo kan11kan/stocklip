@@ -65,8 +65,15 @@ class WebContentPageState extends State<WebContentPage> {
             _controller = controller;
       },
       ///ページの読み込み開始時の処理
-      onPageStarted: (url) {
-        print('---------------------onPageStarted---------------------');
+      onPageStarted: (url) async {
+         ///boxにrecordsを保存する処理を記載
+        void saveUrl() async {
+          await Hive.openBox('recordsGeneratedByUrl');
+          final box = await Hive.openBox('recordsGeneratedByUrl');
+
+          box.put('records', jsonEncode(wc.records));
+        }
+        // print('---------------------onPageStarted---------------------');
         // print(url);
 
         ///登録するデータ（url,dayを準備）
@@ -75,8 +82,11 @@ class WebContentPageState extends State<WebContentPage> {
             DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
         String day = outputFormatDay.format(now);
 
+        final title = await _controller.getTitle();
+        // wc.records.last.newsTitle = title;
+
         ///一回一回の履歴に対してインスタンスを作成する
-        Record tmpRecord = Record(url: url, day: day, startTime: now);
+        Record tmpRecord = Record(url: url, day: day, startTime: now, newsTitle:title);
         wc.records.add(tmpRecord);
 
         ///wc.recordsを監視し、変更（新しいURLの追加）のタイミングで
@@ -89,33 +99,24 @@ class WebContentPageState extends State<WebContentPage> {
             wc.records[wc.records.length - 2].endTime = endTime;
           },
         );
+        ///関数を実行してboxに保存する処理
+        saveUrl();
       },
 
       ///ここの処理が不安、、、URLはrecordsの最後に追加でいいのか？
       ///ページの読み込みが終わった段階で、URLのタイトルを取得
-      onPageFinished: (String url) async {
-        print('---------------------onPageFinished---------------------');
-
-        final title = await _controller.getTitle();
-        wc.records.last.newsTitle = title;
+      // onPageFinished: (String url) async {
+        // print('---------------------onPageFinished---------------------');
 
 // ここでもエラー起きてるくさい
 // [ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: MissingPluginException(No implementation found for method getTitle on channel plugins.flutter.io/webview_15)
 // ERROR:page_load_metrics_update_dispatcher.cc(170)] Invalid first_paint 0.275 s for first_image_paint 0.242 s
 
-        print('---------------------onPageFinished gotTitle maybe... ---------------------');
+        // print('---------------------onPageFinished gotTitle maybe... ---------------------');
 
-        ///boxにrecordsを保存する処理を記載
-        void saveUrl() async {
-          await Hive.openBox('recordsGeneratedByUrl');
-          final box = await Hive.openBox('recordsGeneratedByUrl');
 
-          box.put('records', jsonEncode(wc.records));
-        }
 
-        ///関数を実行してboxに保存する処理
-        saveUrl();
-      },
+      // },
     );
   }
 }

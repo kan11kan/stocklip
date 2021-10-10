@@ -84,7 +84,7 @@ class _DailyPageState extends State<DailyPage> {
             el.url != 'https://newspicks.com/' &&
             el.url != 'https://www.reuters.com/' &&
             el.url != 'https://www.nikkei.com/' &&
-            el.url != 'https://www.google.com/' &&
+            !el.url.contains('https://www.google.com/') &&
             el.url != '')
         .toList()
       ..sort((a, b) => b.readTime.compareTo(a.readTime)));

@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: '',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: MyHomePage(),
     );

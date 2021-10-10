@@ -285,15 +285,27 @@ class BookmarkWidget extends StatelessWidget {
                   //   ),
                   // ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.73,
-                    child: ElevatedButton(
+                    width: MediaQuery.of(context).size.width * 0.90,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          side: const BorderSide(color: Colors.black54, width:1),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
+                            ),
+                          )
+                        ),
                         onPressed: () {
                           ///仮で記載
                           tvc.selectedTabIndex.value = 3;
                           tvc.selectedUrl.value = 'https://www.google.com/';
                           WebContentPage();
                         },
-                        child: Text('Google検索')),
+                        child: 
+                          const Text('Google検索',
+                            style: TextStyle(color: Colors.grey)
+                          ),
+                    ),
                   )
                 ],
               ),
@@ -315,8 +327,8 @@ class BookmarkWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/bloomberg.png'),
                       ),
                       Text('Bloomberg')
@@ -335,8 +347,8 @@ class BookmarkWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/traders_web.png'),
                       ),
                       Text('Traders\n   web')
@@ -355,8 +367,8 @@ class BookmarkWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/yahoofinance_logo.jpeg'),
                       ),
                       Text('  Yahoo\n Finance!')
@@ -375,8 +387,8 @@ class BookmarkWidget extends StatelessWidget {
                         WebContentPage();
                       },
                       child: Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/cme_logo.jpeg'),
                       ),
                     ),
@@ -400,8 +412,8 @@ class BookmarkWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/jpx.png'),
                       ),
                       Text('日本取引所G'),
@@ -420,8 +432,8 @@ class BookmarkWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/news_picks.png'),
                       ),
                       Text('News Picks')
@@ -440,8 +452,8 @@ class BookmarkWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/ruiters.jpeg'),
                       ),
                       Text('ruiters'),
@@ -460,8 +472,8 @@ class BookmarkWidget extends StatelessWidget {
                         WebContentPage();
                       },
                       child: Image(
-                        width: MediaQuery.of(context).size.width * 0.18,
-                        height: MediaQuery.of(context).size.width * 0.18,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.width * 0.15,
                         image: AssetImage('images/nikkei.jpeg'),
                       ),
                     ),
