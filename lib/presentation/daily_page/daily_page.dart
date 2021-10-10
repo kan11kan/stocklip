@@ -58,6 +58,9 @@ class _DailyPageState extends State<DailyPage> {
 
   @override
   Widget build(BuildContext context) {
+    ///test
+    final double deviceWidth = MediaQuery.of(context).size.width;
+
     ///Recordクラスの全てのrecordsを取得し、url,day,hideをurlsに格納。
     getUrls();
 
@@ -110,7 +113,7 @@ class _DailyPageState extends State<DailyPage> {
           Row(
             children: [
               SizedBox(
-                width: 320,
+                width: deviceWidth * 0.83,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 4.0, left: 16.0),
                   child: TextField(
@@ -209,7 +212,7 @@ class _DailyPageState extends State<DailyPage> {
                                           child: Obx(() => Row(
                                                 children: [
                                                   Container(
-                                                    width: 345,
+                                                    width: deviceWidth * 0.85,
                                                     // ----------------------- SimpleUrlPreview -----------------------
                                                     child: SimpleUrlPreview(
                                                       url: todayUrls[

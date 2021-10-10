@@ -255,34 +255,38 @@ class BookmarkWidget extends StatelessWidget {
             child: SizedBox(
               height: 45,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Google検索',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(
-                            color: Colors.grey,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        ///仮で記載
-                        tvc.selectedTabIndex.value = 3;
-                        tvc.selectedUrl.value = 'https://www.google.com/';
-                        WebContentPage();
-                      },
-                      child: Text('検索'))
+                  // Expanded(
+                  //   child: TextField(
+                  //     decoration: InputDecoration(
+                  //       hintText: 'Google検索',
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(50),
+                  //         borderSide: const BorderSide(
+                  //           color: Colors.grey,
+                  //         ),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(50),
+                  //         borderSide: const BorderSide(
+                  //           color: Colors.grey,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.73,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          ///仮で記載
+                          tvc.selectedTabIndex.value = 3;
+                          tvc.selectedUrl.value = 'https://www.google.com/';
+                          WebContentPage();
+                        },
+                        child: Text('Google検索')),
+                  )
                 ],
               ),
             ),
