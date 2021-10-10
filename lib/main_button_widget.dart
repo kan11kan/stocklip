@@ -259,7 +259,7 @@ class BookmarkWidget extends StatelessWidget {
 
           ///検索フォーム
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 75),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 64),
             child: SizedBox(
               height: 45,
               child: Row(

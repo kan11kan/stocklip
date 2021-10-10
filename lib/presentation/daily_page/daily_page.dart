@@ -107,7 +107,13 @@ class _DailyPageState extends State<DailyPage> {
             padding: const EdgeInsets.only(top: 12.0),
             child: SizedBox(
               height: 30,
-              child: Text('$todayの履歴'),
+              child: Text(
+                '$todayの履歴',
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           Row(

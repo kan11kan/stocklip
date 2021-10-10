@@ -91,65 +91,68 @@ class _ArchivesPageState extends State<ArchivesPage> {
     wc.mostImportantUrls = importantInfoList;
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Card(
-            shadowColor: Colors.black54,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-                  child: SizedBox(
-                    height: 45,
-                    child: TextField(
-                      ///検索ボタン押下でフィールドをリセット
-                      controller: searchKeywords,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: Column(
+          children: [
+            Card(
+              shadowColor: Colors.black54,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+                    child: SizedBox(
+                      height: 45,
+                      child: TextField(
+                        ///検索ボタン押下でフィールドをリセット
+                        controller: searchKeywords,
 
-                      decoration: InputDecoration(
-                        hintText: 'キーワード検索',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(
-                            color: Colors.grey,
+                        decoration: InputDecoration(
+                          hintText: 'キーワード検索',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: const BorderSide(
-                            color: Colors.grey,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: const BorderSide(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const DateRangePickerWidget(),
-                ElevatedButton(
-                  onPressed: () {
-                    ///SearchResultに検索キーワード、検索期間を渡す
-                    ///String　→　DateTimeへの変換処理
-                    DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
-                    DateTime tmpStartTime =
-                        outputFormatDay.parse(skc.startDay.value);
-                    DateTime tmpEndTime =
-                        outputFormatDay.parse(skc.endDay.value);
-                    skc.searchKeywords.value = searchKeywords.text;
+                  const DateRangePickerWidget(),
+                  ElevatedButton(
+                    onPressed: () {
+                      ///SearchResultに検索キーワード、検索期間を渡す
+                      ///String　→　DateTimeへの変換処理
+                      DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
+                      DateTime tmpStartTime =
+                          outputFormatDay.parse(skc.startDay.value);
+                      DateTime tmpEndTime =
+                          outputFormatDay.parse(skc.endDay.value);
+                      skc.searchKeywords.value = searchKeywords.text;
 
-                    ///日付の差分を計算（型はint）
-                    var duration = tmpEndTime.difference(tmpStartTime).inDays;
-                    skc.duration.value = duration;
-                    searchKeywords.clear();
+                      ///日付の差分を計算（型はint）
+                      var duration = tmpEndTime.difference(tmpStartTime).inDays;
+                      skc.duration.value = duration;
+                      searchKeywords.clear();
 
-                    ///検索の開始と終了取得成功！！！
-                    Get.to(const SearchResultTop());
-                  },
-                  child: const Text('検索'),
-                ),
-              ],
+                      ///検索の開始と終了取得成功！！！
+                      Get.to(const SearchResultTop());
+                    },
+                    child: const Text('検索'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const ShowCards(),
-        ],
+            const ShowCards(),
+          ],
+        ),
       ),
     );
   }
@@ -674,50 +677,69 @@ class SearchResultTopState extends State<SearchResultTop> {
         title: const Text('search result'),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('検索期間：${skc.startDay}~${skc.endDay}'),
-            Text('検索ワード:${skc.searchKeywords}'),
-            SizedBox(
-              width: deviceWidth * 0.9,
-              child: Column(
-                children: [
-                  searchResultArray.isEmpty
-                      ? const Text('該当する履歴がありません')
-                      : const Visibility(visible: false, child: Text('')),
-                  for (int index = 1;
-                      index < searchResultArray.length + 1;
-                      index++)
-                    SimpleUrlPreview(
-                      url: searchResultArray[index - 1].url,
-                      bgColor: Colors.white,
-                      titleLines: 1,
-                      descriptionLines: 2,
-                      imageLoaderColor: Colors.white,
-                      previewHeight: 150,
-                      previewContainerPadding: const EdgeInsets.all(5),
-                      onTap: () {
-                        // Get.to(WebContentPage());
-                      },
-                      titleStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      descriptionStyle: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                      siteNameStyle: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                ],
+        child: Padding(
+          padding: EdgeInsets.only(left: 15, top: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '検索期間：${skc.startDay}~${skc.endDay}',
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              Text(
+                '検索ワード:${skc.searchKeywords}',
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                width: deviceWidth * 0.9,
+                child: Column(
+                  children: [
+                    searchResultArray.isEmpty
+                        ? const Text('該当する履歴がありません',
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 20))
+                        : const Visibility(visible: false, child: Text('')),
+                    for (int index = 1;
+                        index < searchResultArray.length + 1;
+                        index++)
+                      SimpleUrlPreview(
+                        url: searchResultArray[index - 1].url,
+                        bgColor: Colors.white,
+                        titleLines: 1,
+                        descriptionLines: 2,
+                        imageLoaderColor: Colors.white,
+                        previewHeight: 150,
+                        previewContainerPadding: const EdgeInsets.all(5),
+                        onTap: () {
+                          // Get.to(WebContentPage());
+                        },
+                        titleStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        descriptionStyle: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                        siteNameStyle: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
