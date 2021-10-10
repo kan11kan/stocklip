@@ -245,9 +245,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
 
 ///ここからStatefullWidgetでリストビュー　＋　カードを試す
 class ShowCards extends StatefulWidget {
-  const ShowCards({
-    Key? key,
-  }) : super(key: key);
+  const ShowCards({Key? key}) : super(key: key);
   @override
   ShowCardsState createState() => ShowCardsState();
 }
@@ -581,7 +579,7 @@ class ShowCardsState extends State<ShowCards> {
                                       height: 150,
                                       child: Text(
                                         '${wc.mostImportantUrls[index].memo}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             color: Colors.black54,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),

@@ -114,7 +114,7 @@ class _DailyPageState extends State<DailyPage> {
               height: 30,
               child: Text(
                 '$todayの履歴',
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
