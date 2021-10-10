@@ -249,9 +249,17 @@ class BookmarkWidget extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          ///ロゴ
+          Padding(
+            padding: const EdgeInsets.only(top: 65.0, bottom: 0),
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.55,
+                child: Image.asset('images/main_logo.png')),
+          ),
+
           ///検索フォーム
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 85, 10, 70),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 75),
             child: SizedBox(
               height: 45,
               child: Row(
@@ -297,27 +305,7 @@ class BookmarkWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: GestureDetector(
-                  onTap: () {
-                    tvc.selectedTabIndex.value = 3;
-                    tvc.selectedUrl.value = 'https://www.reuters.com/';
-                    WebContentPage();
-                  },
-                  child: Column(
-                    children: const [
-                      Image(
-                        width: 80,
-                        height: 80,
-                        image: AssetImage('images/ruiters.jpeg'),
-                      ),
-                      Text('ruiters'),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
@@ -325,10 +313,10 @@ class BookmarkWidget extends StatelessWidget {
                     WebContentPage();
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Image(
-                        width: 80,
-                        height: 80,
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
                         image: AssetImage('images/bloomberg.png'),
                       ),
                       Text('Bloomberg')
@@ -337,7 +325,27 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 21),
+                child: GestureDetector(
+                  onTap: () {
+                    tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
+                    tvc.selectedUrl.value = 'https://www.traders.co.jp/';
+                    WebContentPage();
+                  },
+                  child: Column(
+                    children: [
+                      Image(
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
+                        image: AssetImage('images/traders_web.png'),
+                      ),
+                      Text('Traders\n   web')
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
@@ -345,19 +353,19 @@ class BookmarkWidget extends StatelessWidget {
                     WebContentPage();
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Image(
-                        width: 80,
-                        height: 80,
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
                         image: AssetImage('images/yahoofinance_logo.jpeg'),
                       ),
-                      Text('Yahoo Finance!')
+                      Text('  Yahoo\n Finance!')
                     ],
                   ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: EdgeInsets.only(bottom: 21),
                 child: Column(
                   children: [
                     GestureDetector(
@@ -366,9 +374,9 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
                         WebContentPage();
                       },
-                      child: const Image(
-                        width: 80,
-                        height: 80,
+                      child: Image(
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
                         image: AssetImage('images/cme_logo.jpeg'),
                       ),
                     ),
@@ -382,18 +390,58 @@ class BookmarkWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3;
-                    tvc.selectedUrl.value = 'https://jp.reuters.com/';
+                    tvc.selectedUrl.value = 'https://www.jpx.co.jp/';
                     WebContentPage();
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Image(
-                        width: 80,
-                        height: 80,
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
+                        image: AssetImage('images/jpx.png'),
+                      ),
+                      Text('日本取引所G'),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(bottom: 21),
+                child: GestureDetector(
+                  onTap: () {
+                    tvc.selectedTabIndex.value = 3;
+                    tvc.selectedUrl.value = 'https://newspicks.com/';
+                    WebContentPage();
+                  },
+                  child: Column(
+                    children: [
+                      Image(
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
+                        image: AssetImage('images/news_picks.png'),
+                      ),
+                      Text('News Picks')
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(bottom: 21),
+                child: GestureDetector(
+                  onTap: () {
+                    tvc.selectedTabIndex.value = 3;
+                    tvc.selectedUrl.value = 'https://www.reuters.com/';
+                    WebContentPage();
+                  },
+                  child: Column(
+                    children: [
+                      Image(
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
                         image: AssetImage('images/ruiters.jpeg'),
                       ),
                       Text('ruiters'),
@@ -402,62 +450,22 @@ class BookmarkWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: GestureDetector(
-                  onTap: () {
-                    tvc.selectedTabIndex.value = 3;
-                    tvc.selectedUrl.value = 'https://www.bloomberg.co.jp/';
-                    WebContentPage();
-                  },
-                  child: Column(
-                    children: const [
-                      Image(
-                        width: 80,
-                        height: 80,
-                        image: AssetImage('images/bloomberg.png'),
-                      ),
-                      Text('Bloomberg')
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: GestureDetector(
-                  onTap: () {
-                    tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
-                    tvc.selectedUrl.value = 'https://finance.yahoo.co.jp/';
-                    WebContentPage();
-                  },
-                  child: Column(
-                    children: const [
-                      Image(
-                        width: 80,
-                        height: 80,
-                        image: AssetImage('images/yahoofinance_logo.jpeg'),
-                      ),
-                      Text('Yahoo Finance!')
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: const EdgeInsets.only(bottom: 21),
                 child: Column(
                   children: [
                     GestureDetector(
                       onTap: () {
                         tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
-                        tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
+                        tvc.selectedUrl.value = 'https://www.nikkei.com/';
                         WebContentPage();
                       },
-                      child: const Image(
-                        width: 80,
-                        height: 80,
-                        image: AssetImage('images/cme_logo.jpeg'),
+                      child: Image(
+                        width: MediaQuery.of(context).size.width * 0.18,
+                        height: MediaQuery.of(context).size.width * 0.18,
+                        image: AssetImage('images/nikkei.jpeg'),
                       ),
                     ),
-                    const Text('CME日経平均')
+                    const Text('日本経済新聞')
                   ],
                 ),
               ),
