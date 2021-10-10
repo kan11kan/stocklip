@@ -94,13 +94,14 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Obx(
           () => navBarNameList[tvc.selectedTabIndex.value],
         ),
-        leading: const Icon(Icons.arrow_back),
-        actions: <Widget>[
-          IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
-        ],
+        // leading: const Icon(Icons.arrow_back),
+        // actions: <Widget>[
+        //   IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
+        // ],
       ),
 
       ///ここからTabBar

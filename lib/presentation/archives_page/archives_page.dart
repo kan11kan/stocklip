@@ -300,6 +300,7 @@ class ShowCardsState extends State<ShowCards> {
   ///ここからリストビュー
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
     for (int i = 0; i < wc.mostImportantUrls.length; i++) {
       int tmp = wc.records
           .where(
@@ -560,7 +561,7 @@ class ShowCardsState extends State<ShowCards> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(bottom: 2.0),
                                     child: SizedBox(
-                                      width: 270,
+                                      width: deviceWidth * 0.85,
                                       height: 150,
                                       child: Text(
                                           '${wc.mostImportantUrls[index].memo}'),
@@ -622,6 +623,8 @@ class SearchResultTopState extends State<SearchResultTop> {
   final wc = Get.put(WebController());
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+
     ///⓪検索結果を表示するページを記載
     ///①startDayをDateTime型に変換
     DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
@@ -677,7 +680,7 @@ class SearchResultTopState extends State<SearchResultTop> {
             Text('検索期間：${skc.startDay}~${skc.endDay}'),
             Text('検索ワード:${skc.searchKeywords}'),
             SizedBox(
-              width: 345,
+              width: deviceWidth * 0.9,
               child: Column(
                 children: [
                   searchResultArray.isEmpty
