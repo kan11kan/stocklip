@@ -427,8 +427,8 @@ class ShowCardsState extends State<ShowCards> {
                                       child: Text('${tags[0]}',
                                           style: TextStyle(fontSize: 12)),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black,
+                                        primary: Colors.blueAccent,
+                                        onPrimary: Colors.white,
                                         shape: const StadiumBorder(),
                                       ),
                                       onPressed: () {},
@@ -443,8 +443,8 @@ class ShowCardsState extends State<ShowCards> {
                                       child: Text('${tags[1]}',
                                           style: TextStyle(fontSize: 12)),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black,
+                                        primary: Colors.blueAccent,
+                                        onPrimary: Colors.white,
                                         shape: const StadiumBorder(),
                                       ),
                                       onPressed: () {},
@@ -459,8 +459,8 @@ class ShowCardsState extends State<ShowCards> {
                                       child: Text('${tags[2]}',
                                           style: TextStyle(fontSize: 12)),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black,
+                                        primary: Colors.blueAccent,
+                                        onPrimary: Colors.white,
                                         shape: const StadiumBorder(),
                                       ),
                                       onPressed: () {},
@@ -475,8 +475,8 @@ class ShowCardsState extends State<ShowCards> {
                                       child: Text('${tags[3]}',
                                           style: TextStyle(fontSize: 12)),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black,
+                                        primary: Colors.blueAccent,
+                                        onPrimary: Colors.white,
                                         shape: const StadiumBorder(),
                                       ),
                                       onPressed: () {},
@@ -491,8 +491,8 @@ class ShowCardsState extends State<ShowCards> {
                                       child: Text('${tags[4]}',
                                           style: TextStyle(fontSize: 12)),
                                       style: ElevatedButton.styleFrom(
-                                        primary: Colors.white,
-                                        onPrimary: Colors.black,
+                                        primary: Colors.blueAccent,
+                                        onPrimary: Colors.white,
                                         shape: const StadiumBorder(),
                                       ),
                                       onPressed: () {},
@@ -662,7 +662,8 @@ class SearchResultTopState extends State<SearchResultTop> {
       researchDateArray.add(tmp);
     }
 
-    final searchResultArray = []; //これは<Record>型
+    final searchResultArray =
+        [].map((e) => e.url).toSet().toList(); //これは<Record>型
 
     //検索元はyyyy-MM-dd
     ///④日付と一致するものをrecordsから取得
@@ -678,15 +679,21 @@ class SearchResultTopState extends State<SearchResultTop> {
       var tmpStringDay = '${researchDateArray[i].year}-${tmpMonth}-${tmpDay}';
       print(tmpStringDay);
       wc.records
-          .where((el) =>
-              el.day == tmpStringDay &&
-              el.hide == false &&
-              el.url != '' &&
-              el.newsTitle!.contains('${skc.searchKeywords}'))
+          .where(
+            (el) =>
+                el.day == tmpStringDay &&
+                el.hide == false &&
+                el.url != '' &&
+                searchResultArray.map((x) => x.url).contains(el.url) == false &&
+                el.newsTitle!.contains('${skc.searchKeywords}'),
+          )
           // // .toList()
-          .forEach((el) => searchResultArray.add(el));
+          .forEach((el) => searchResultArray.contains(el)
+              ? print(el)
+              : searchResultArray.add(el));
       // print(tmpStringDay);
     }
+    // var finalSearchResultArray = searchResultArray.toSet().toList();
 
     ///⑤キーワードと一致するものを表示
 
