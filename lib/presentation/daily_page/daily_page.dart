@@ -221,9 +221,7 @@ class _DailyPageState extends State<DailyPage> {
                                                     width: deviceWidth * 0.85,
                                                     // ----------------------- SimpleUrlPreview -----------------------
                                                     child: SimpleUrlPreview(
-                                                      url: todayUrls[
-                                                              muc.items[index]]
-                                                          .url,
+                                                      url: todayUrls[muc.items[index]].url,
                                                       bgColor: Colors.white,
                                                       titleLines: 1,
                                                       descriptionLines: 2,
@@ -288,25 +286,24 @@ class _DailyPageState extends State<DailyPage> {
                                   }
                                   // final int item = items.removeAt(oldIndex);//元のコード
                                   // urls.value = urls..removeAt(oldIndex); //山村さんのコード
-                                  print(
-                                      ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
-                                  print(muc.items);
-                                  print(
-                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  // print(
+                                  //     ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
+                                  // print(muc.items);
+                                  // print(
+                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
-                                  final int item =
-                                      muc.items.removeAt(oldIndex); //試してみる
+                                  final int item = muc.items.removeAt(oldIndex); //試してみる
 
-                                  print(muc.items);
-                                  print(
-                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  // print(muc.items);
+                                  // print(
+                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
                                   // items.value = items..insert(newIndex, item);//元のコード
                                   // urls.value = urls
                                   //   ..insert(newIndex, urls[oldIndex]); //山村さんのコード
                                   muc.items.insert(newIndex, item); //自分のコード
-                                  print(muc.items);
-                                  print(
-                                      '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                                  // print(muc.items);
+                                  // print(
+                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
                                   //ここがリストが入れ替わらないエラーの原因かも
                                 },
