@@ -12,6 +12,7 @@ import 'package:one_app_everyday921/presentation/daily_page/daily_controller.dar
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_page.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../main_button_widget.dart';
 
@@ -44,10 +45,7 @@ class _DailyPageState extends State<DailyPage> {
     final box = await Hive.openBox('recordsGeneratedByUrl');
 
     ///ここで空の配列に入れ直している。
-    urls.value = jsonDecode(box.get('records'))
-        .map((el) => Record.fromJson(el))
-        .toList()
-        .cast<Record>() as List<Record>;
+    urls.value = jsonDecode(box.get('records')).map((el) => Record.fromJson(el)).toList().cast<Record>() as List<Record>;
     // print(urls.value[0].url);
     // print(urls.value[1].url);
     // print(urls.value[2].url);
@@ -95,8 +93,7 @@ class _DailyPageState extends State<DailyPage> {
     if (muc.items.isEmpty) {
       muc.items.value = tmpList;
     } else {
-      tmpList.asMap().forEach((el, idx) =>
-          idx >= muc.items.length ? muc.items.add(el) : print('stay'));
+      tmpList.asMap().forEach((el, idx) => idx >= muc.items.length ? muc.items.add(el) : print('stay'));
       // for (int i = 0; i < tmpList.length; i++) {
       //   if (i > muc.items.length) {
       //     muc.items.add(tmpList[i]);
@@ -114,10 +111,7 @@ class _DailyPageState extends State<DailyPage> {
               height: 30,
               child: Text(
                 '$todayの履歴',
-                style: const TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+                style: const TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -156,16 +150,21 @@ class _DailyPageState extends State<DailyPage> {
 
                     ///Recordクラスのインスタンスを作成
 
-                    Record dailyTmpRecord = Record(
-                        memo: dc.memoContent.value,
-                        day: day,
-                        url: '',
-                        startTime: now,
-                        endTime: now.add((Duration(days: 1) * 10)));
+                    Record dailyTmpRecord = Record(memo: dc.memoContent.value, day: day, url: '', startTime: now, endTime: now.add((Duration(days: 1) * 10)));
                     wc.records.add(dailyTmpRecord);
 
                     ///boxにput
                     box.put('records', jsonEncode(wc.records));
+
+                    Fluttertoast.showToast(
+                      msg: "メモを保存しました",
+                      toastLength: Toast.LENGTH_SHORT,
+                      // gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 2,
+                      backgroundColor: Colors.grey[300]!.withOpacity(0.8),
+                      textColor: Colors.black87,
+                      // fontSize: 16.0
+                    );
                   }
 
                   saveDailyData();
@@ -197,24 +196,19 @@ class _DailyPageState extends State<DailyPage> {
                             onTap: () {},
                             child: Obx(
                               () => ReorderableListView(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 0),
+                                padding: const EdgeInsets.symmetric(horizontal: 0),
                                 shrinkWrap: true,
                                 // physics: NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  for (int index = 0;
-                                      index < todayUrls.length;
-                                      index++)
+                                  for (int index = 0; index < todayUrls.length; index++)
                                     Slidable(
                                       key: Key('$index'),
-                                      actionPane:
-                                          const SlidableDrawerActionPane(),
+                                      actionPane: const SlidableDrawerActionPane(),
                                       actionExtentRatio: 0.25,
                                       child: GestureDetector(
                                         onDoubleTap: () {
                                           tvc.selectedTabIndex.value = 3;
-                                          tvc.selectedUrl.value =
-                                              todayUrls[muc.items[index]].url;
+                                          tvc.selectedUrl.value = todayUrls[muc.items[index]].url;
                                           WebContentPage();
                                         },
                                         child: Container(
@@ -226,35 +220,26 @@ class _DailyPageState extends State<DailyPage> {
                                                     width: deviceWidth * 0.85,
                                                     // ----------------------- SimpleUrlPreview -----------------------
                                                     child: SimpleUrlPreview(
-                                                      url: todayUrls[
-                                                              muc.items[index]]
-                                                          .url,
+                                                      url: todayUrls[muc.items[index]].url,
                                                       bgColor: Colors.white,
                                                       titleLines: 1,
                                                       descriptionLines: 2,
-                                                      imageLoaderColor:
-                                                          Colors.white,
+                                                      imageLoaderColor: Colors.white,
                                                       previewHeight: 150,
-                                                      previewContainerPadding:
-                                                          const EdgeInsets.all(
-                                                              5),
+                                                      previewContainerPadding: const EdgeInsets.all(5),
                                                       onTap: () {
                                                         // Get.to(WebContentPage());
                                                       },
-                                                      titleStyle:
-                                                          const TextStyle(
+                                                      titleStyle: const TextStyle(
                                                         fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        fontWeight: FontWeight.bold,
                                                         color: Colors.black,
                                                       ),
-                                                      descriptionStyle:
-                                                          const TextStyle(
+                                                      descriptionStyle: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.black,
                                                       ),
-                                                      siteNameStyle:
-                                                          const TextStyle(
+                                                      siteNameStyle: const TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.black,
                                                       ),
@@ -262,8 +247,7 @@ class _DailyPageState extends State<DailyPage> {
                                                   ),
                                                   ReorderableDragStartListener(
                                                     index: muc.items[index],
-                                                    child: const Icon(
-                                                        Icons.drag_handle),
+                                                    child: const Icon(Icons.drag_handle),
                                                   ),
                                                 ],
                                               )),
@@ -299,8 +283,7 @@ class _DailyPageState extends State<DailyPage> {
                                   // print(
                                   //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
 
-                                  final int item =
-                                      muc.items.removeAt(oldIndex); //試してみる
+                                  final int item = muc.items.removeAt(oldIndex); //試してみる
 
                                   // print(muc.items);
                                   // print(

@@ -135,6 +135,7 @@ class MyHomePage extends StatelessWidget {
       floatingActionButton: Obx(
         () => Visibility(
           child: FloatingActionButton(
+            
             onPressed: () {
               showModalBottomSheet<void>(
                 context: context,
@@ -144,7 +145,7 @@ class MyHomePage extends StatelessWidget {
               );
             },
             child: const Icon(Icons.star_purple500_outlined),
-            backgroundColor: Colors.blue,
+            backgroundColor: Theme.of(context).primaryColor,
           ),
           visible: floatingButtonList[tvc.selectedTabIndex.value],
         ),

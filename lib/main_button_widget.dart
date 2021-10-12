@@ -24,9 +24,8 @@ class MainUrlsController extends GetxController {
 
 ///ここからfloatingActionButton押下時のモーダル表示部分
 class showModalWidget extends StatelessWidget {
-  showModalWidget({
-    Key? key,
-  }) : super(key: key);
+  showModalWidget({Key? key}) : super(key: key);
+  
   @override
 
   ///ここでタグの状態を管理
