@@ -409,7 +409,7 @@ class ShowCardsState extends State<ShowCards> {
                       child: Column(
                         children: [
                           Text(
-                            '${wc.mostImportantUrls[index].day}',
+                            '${wc.mostImportantUrls[wc.mostImportantUrls.length - index - 1].day}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 16,
@@ -421,7 +421,10 @@ class ShowCardsState extends State<ShowCards> {
                               Row(
                                 children: [
                                   Visibility(
-                                    visible: selectedTagList[index],
+                                    visible: selectedTagList[
+                                        wc.mostImportantUrls.length -
+                                            index -
+                                            1],
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: 5),
                                       child: ElevatedButton(
@@ -437,7 +440,10 @@ class ShowCardsState extends State<ShowCards> {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: selectedTagList1[index],
+                                    visible: selectedTagList1[
+                                        wc.mostImportantUrls.length -
+                                            index -
+                                            1],
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: 5),
                                       child: ElevatedButton(
@@ -453,7 +459,10 @@ class ShowCardsState extends State<ShowCards> {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: selectedTagList2[index],
+                                    visible: selectedTagList2[
+                                        wc.mostImportantUrls.length -
+                                            index -
+                                            1],
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: 5),
                                       child: ElevatedButton(
@@ -469,7 +478,10 @@ class ShowCardsState extends State<ShowCards> {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: selectedTagList3[index],
+                                    visible: selectedTagList3[
+                                        wc.mostImportantUrls.length -
+                                            index -
+                                            1],
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: 5),
                                       child: ElevatedButton(
@@ -485,7 +497,10 @@ class ShowCardsState extends State<ShowCards> {
                                     ),
                                   ),
                                   Visibility(
-                                    visible: selectedTagList4[index],
+                                    visible: selectedTagList4[
+                                        wc.mostImportantUrls.length -
+                                            index -
+                                            1],
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(minWidth: 5),
                                       child: ElevatedButton(
@@ -573,7 +588,13 @@ class ShowCardsState extends State<ShowCards> {
                             ],
                           ),
                           Container(
-                            child: wc.mostImportantUrls[index].url == ''
+                            child: wc
+                                        .mostImportantUrls[
+                                            wc.mostImportantUrls.length -
+                                                index -
+                                                1]
+                                        .url ==
+                                    ''
                                 ? Card(
                                     child: Padding(
                                       padding:
@@ -582,7 +603,7 @@ class ShowCardsState extends State<ShowCards> {
                                         width: deviceWidth * 0.85,
                                         height: 150,
                                         child: Text(
-                                          '${wc.mostImportantUrls[index].memo}',
+                                          '${wc.mostImportantUrls[wc.mostImportantUrls.length - index - 1].memo}',
                                           style: const TextStyle(
                                               color: Colors.black54,
                                               fontSize: 16,
@@ -593,7 +614,12 @@ class ShowCardsState extends State<ShowCards> {
                                   )
                                 : Container(
                                     child: SimpleUrlPreview(
-                                      url: wc.mostImportantUrls[index].url,
+                                      url: wc
+                                          .mostImportantUrls[
+                                              wc.mostImportantUrls.length -
+                                                  index -
+                                                  1]
+                                          .url,
                                       bgColor: Colors.white,
                                       titleLines: 1,
                                       descriptionLines: 2,
