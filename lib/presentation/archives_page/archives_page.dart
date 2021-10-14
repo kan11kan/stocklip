@@ -100,7 +100,7 @@ class _ArchivesPageState extends State<ArchivesPage> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(top: 30),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(
           children: [
             Card(
@@ -110,7 +110,7 @@ class _ArchivesPageState extends State<ArchivesPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
                     child: SizedBox(
-                      height: 45,
+                      height: 40,
                       child: TextField(
                         ///検索ボタン押下でフィールドをリセット
                         controller: searchKeywords,
@@ -393,235 +393,240 @@ class ShowCardsState extends State<ShowCards> {
 
     ///リストビュービルダー
     return Container(
+      height: MediaQuery.of(context).size.height * 0.6,
       padding: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 800,
-            child: ListView.builder(
-              itemCount: wc.mostImportantUrls.length,
-              itemBuilder: (BuildContext context, int index) {
-                return SizedBox(
-                  child: Card(
-                    child: Column(
-                      children: [
-                        Text(
-                          '${wc.mostImportantUrls[index].day}',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ), //('${dailyRecords[index].day}'),
-                        // Text('${nikkei[index]}'),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Visibility(
-                                  visible: selectedTagList[index],
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(minWidth: 5),
-                                    child: ElevatedButton(
-                                      child: Text('${tags[0]}',
-                                          style: TextStyle(fontSize: 12)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.blueAccent,
-                                        onPrimary: Colors.white,
-                                        shape: const StadiumBorder(),
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: selectedTagList1[index],
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(minWidth: 5),
-                                    child: ElevatedButton(
-                                      child: Text('${tags[1]}',
-                                          style: TextStyle(fontSize: 12)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.blueAccent,
-                                        onPrimary: Colors.white,
-                                        shape: const StadiumBorder(),
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: selectedTagList2[index],
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(minWidth: 5),
-                                    child: ElevatedButton(
-                                      child: Text('${tags[2]}',
-                                          style: TextStyle(fontSize: 12)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.blueAccent,
-                                        onPrimary: Colors.white,
-                                        shape: const StadiumBorder(),
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: selectedTagList3[index],
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(minWidth: 5),
-                                    child: ElevatedButton(
-                                      child: Text('${tags[3]}',
-                                          style: TextStyle(fontSize: 12)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.blueAccent,
-                                        onPrimary: Colors.white,
-                                        shape: const StadiumBorder(),
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: selectedTagList4[index],
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(minWidth: 5),
-                                    child: ElevatedButton(
-                                      child: Text('${tags[4]}',
-                                          style: TextStyle(fontSize: 12)),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.blueAccent,
-                                        onPrimary: Colors.white,
-                                        shape: const StadiumBorder(),
-                                      ),
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Row(
-                            //   children: [
-                            //     Visibility(
-                            //       visible: selectedTagList5[index],
-                            //       child: ConstrainedBox(
-                            //         constraints: BoxConstraints(minWidth: 5),
-                            //         child: ElevatedButton(
-                            //           child: Text('${tags[5]}',
-                            //               style: TextStyle(fontSize: 12)),
-                            //           style: ElevatedButton.styleFrom(
-                            //             primary: Colors.white,
-                            //             onPrimary: Colors.black,
-                            //             shape: const StadiumBorder(),
-                            //           ),
-                            //           onPressed: () {},
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     Visibility(
-                            //       visible: selectedTagList6[index],
-                            //       child: ConstrainedBox(
-                            //         constraints: BoxConstraints(minWidth: 5),
-                            //         child: ElevatedButton(
-                            //           child: Text('${tags[6]}',
-                            //               style: TextStyle(fontSize: 12)),
-                            //           style: ElevatedButton.styleFrom(
-                            //             primary: Colors.white,
-                            //             onPrimary: Colors.black,
-                            //             shape: const StadiumBorder(),
-                            //           ),
-                            //           onPressed: () {},
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     Visibility(
-                            //       visible: selectedTagList7[index],
-                            //       child: ConstrainedBox(
-                            //         constraints: BoxConstraints(minWidth: 5),
-                            //         child: ElevatedButton(
-                            //           child: Text('${tags[7]}',
-                            //               style: TextStyle(fontSize: 12)),
-                            //           style: ElevatedButton.styleFrom(
-                            //             primary: Colors.white,
-                            //             onPrimary: Colors.black,
-                            //             shape: const StadiumBorder(),
-                            //           ),
-                            //           onPressed: () {},
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     Visibility(
-                            //       visible: selectedTagList8[index],
-                            //       child: ConstrainedBox(
-                            //         constraints: BoxConstraints(minWidth: 5),
-                            //         child: ElevatedButton(
-                            //           child: Text('${tags[8]}',
-                            //               style: TextStyle(fontSize: 12)),
-                            //           style: ElevatedButton.styleFrom(
-                            //             primary: Colors.white,
-                            //             onPrimary: Colors.black,
-                            //             shape: const StadiumBorder(),
-                            //           ),
-                            //           onPressed: () {},
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                          ],
-                        ),
-                        Container(
-                          child: wc.mostImportantUrls[index].url == ''
-                              ? Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 2.0),
-                                    child: SizedBox(
-                                      width: deviceWidth * 0.85,
-                                      height: 150,
-                                      child: Text(
-                                        '${wc.mostImportantUrls[index].memo}',
-                                        style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: wc.mostImportantUrls.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Text(
+                            '${wc.mostImportantUrls[index].day}',
+                            style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ), //('${dailyRecords[index].day}'),
+                          // Text('${nikkei[index]}'),
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Visibility(
+                                    visible: selectedTagList[index],
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(minWidth: 5),
+                                      child: ElevatedButton(
+                                        child: Text('${tags[0]}',
+                                            style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent,
+                                          onPrimary: Colors.white,
+                                          shape: const StadiumBorder(),
+                                        ),
+                                        onPressed: () {},
                                       ),
                                     ),
                                   ),
-                                )
-                              : Container(
-                                  child: SimpleUrlPreview(
-                                    url: wc.mostImportantUrls[index].url,
-                                    bgColor: Colors.white,
-                                    titleLines: 1,
-                                    descriptionLines: 2,
-                                    imageLoaderColor: Colors.white,
-                                    previewHeight: 150,
-                                    previewContainerPadding:
-                                        const EdgeInsets.all(5),
-                                    onTap: () {},
-                                    titleStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    descriptionStyle: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
-                                    siteNameStyle: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black,
+                                  Visibility(
+                                    visible: selectedTagList1[index],
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(minWidth: 5),
+                                      child: ElevatedButton(
+                                        child: Text('${tags[1]}',
+                                            style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent,
+                                          onPrimary: Colors.white,
+                                          shape: const StadiumBorder(),
+                                        ),
+                                        onPressed: () {},
+                                      ),
                                     ),
                                   ),
-                                ),
-                        ),
-                      ],
+                                  Visibility(
+                                    visible: selectedTagList2[index],
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(minWidth: 5),
+                                      child: ElevatedButton(
+                                        child: Text('${tags[2]}',
+                                            style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent,
+                                          onPrimary: Colors.white,
+                                          shape: const StadiumBorder(),
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: selectedTagList3[index],
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(minWidth: 5),
+                                      child: ElevatedButton(
+                                        child: Text('${tags[3]}',
+                                            style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent,
+                                          onPrimary: Colors.white,
+                                          shape: const StadiumBorder(),
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: selectedTagList4[index],
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(minWidth: 5),
+                                      child: ElevatedButton(
+                                        child: Text('${tags[4]}',
+                                            style: TextStyle(fontSize: 12)),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blueAccent,
+                                          onPrimary: Colors.white,
+                                          shape: const StadiumBorder(),
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // Row(
+                              //   children: [
+                              //     Visibility(
+                              //       visible: selectedTagList5[index],
+                              //       child: ConstrainedBox(
+                              //         constraints: BoxConstraints(minWidth: 5),
+                              //         child: ElevatedButton(
+                              //           child: Text('${tags[5]}',
+                              //               style: TextStyle(fontSize: 12)),
+                              //           style: ElevatedButton.styleFrom(
+                              //             primary: Colors.white,
+                              //             onPrimary: Colors.black,
+                              //             shape: const StadiumBorder(),
+                              //           ),
+                              //           onPressed: () {},
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Visibility(
+                              //       visible: selectedTagList6[index],
+                              //       child: ConstrainedBox(
+                              //         constraints: BoxConstraints(minWidth: 5),
+                              //         child: ElevatedButton(
+                              //           child: Text('${tags[6]}',
+                              //               style: TextStyle(fontSize: 12)),
+                              //           style: ElevatedButton.styleFrom(
+                              //             primary: Colors.white,
+                              //             onPrimary: Colors.black,
+                              //             shape: const StadiumBorder(),
+                              //           ),
+                              //           onPressed: () {},
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Visibility(
+                              //       visible: selectedTagList7[index],
+                              //       child: ConstrainedBox(
+                              //         constraints: BoxConstraints(minWidth: 5),
+                              //         child: ElevatedButton(
+                              //           child: Text('${tags[7]}',
+                              //               style: TextStyle(fontSize: 12)),
+                              //           style: ElevatedButton.styleFrom(
+                              //             primary: Colors.white,
+                              //             onPrimary: Colors.black,
+                              //             shape: const StadiumBorder(),
+                              //           ),
+                              //           onPressed: () {},
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     Visibility(
+                              //       visible: selectedTagList8[index],
+                              //       child: ConstrainedBox(
+                              //         constraints: BoxConstraints(minWidth: 5),
+                              //         child: ElevatedButton(
+                              //           child: Text('${tags[8]}',
+                              //               style: TextStyle(fontSize: 12)),
+                              //           style: ElevatedButton.styleFrom(
+                              //             primary: Colors.white,
+                              //             onPrimary: Colors.black,
+                              //             shape: const StadiumBorder(),
+                              //           ),
+                              //           onPressed: () {},
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
+                          Container(
+                            child: wc.mostImportantUrls[index].url == ''
+                                ? Card(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 2.0),
+                                      child: SizedBox(
+                                        width: deviceWidth * 0.85,
+                                        height: 150,
+                                        child: Text(
+                                          '${wc.mostImportantUrls[index].memo}',
+                                          style: const TextStyle(
+                                              color: Colors.black54,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    child: SimpleUrlPreview(
+                                      url: wc.mostImportantUrls[index].url,
+                                      bgColor: Colors.white,
+                                      titleLines: 1,
+                                      descriptionLines: 2,
+                                      imageLoaderColor: Colors.white,
+                                      previewHeight: 150,
+                                      previewContainerPadding:
+                                          const EdgeInsets.all(5),
+                                      onTap: () {},
+                                      titleStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                      descriptionStyle: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                      siteNameStyle: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
