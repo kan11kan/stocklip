@@ -114,11 +114,13 @@ class MyHomePage extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.article_outlined),
-              label: 'archives',
+              icon: Icon(Icons.library_books_outlined),
+              // icon: Icon(Icons.source_outlined),
+              label: 'Archives',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.text_format),
+              icon: Icon(Icons.history_edu_outlined),
+              // icon: Icon(Icons.article_outlined),
               label: 'Daily news',
             ),
             BottomNavigationBarItem(

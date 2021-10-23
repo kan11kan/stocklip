@@ -114,87 +114,13 @@ class _DailyPageState extends State<DailyPage> {
             child: SizedBox(
               height: 30,
               child: Text(
-                '$todayの履歴',
+                'Browsed in $today',
                 style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 16,
                     fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: deviceWidth * 0.83,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 4.0, left: 16.0),
-                  child: TextField(
-                    controller: widget.memoContent,
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white60,
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  ///クリックでメモ内容を'recordsGeneratedByUrl'の'records'に保存する
-                  ///url=''、day='String'で保存する。
-
-                  dc.memoContent.value = widget.memoContent.text;
-                  void saveDailyData() async {
-                    final box = await Hive.openBox('recordsGeneratedByUrl');
-                    final DateTime now = DateTime.now();
-                    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
-                    String day = outputFormatDay.format(now);
-
-                    ///Recordクラスのインスタンスを作成
-
-                    Record dailyTmpRecord = Record(
-                        memo: dc.memoContent.value,
-                        day: day,
-                        url: '',
-                        startTime: now,
-                        endTime: now.add((Duration(days: 1) * 10)));
-                    wc.records.add(dailyTmpRecord);
-
-                    ///boxにput
-                    box.put('records', jsonEncode(wc.records));
-
-                    Fluttertoast.showToast(
-                      msg: "メモを保存しました",
-                      toastLength: Toast.LENGTH_SHORT,
-                      // gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 2,
-                      backgroundColor: Colors.grey[300]!.withOpacity(0.8),
-                      textColor: Colors.black87,
-                      // fontSize: 16.0
-                    );
-                  }
-
-                  saveDailyData();
-
-                  ///テキストフィールド初期化　→保存しましたへ今後変更
-                  // widget.memoContent.clear();
-                },
-                child: const Text(
-                  '保\n' '存',
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(5, 95),
-                ),
-              )
-            ],
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -203,7 +129,7 @@ class _DailyPageState extends State<DailyPage> {
                 : SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: muc.items.isEmpty
-                        ? const Text('今日の履歴はありません')
+                        ? const Text('No history')
                         : GestureDetector(
                             onTap: () {},
                             child: Obx(
@@ -330,6 +256,82 @@ class _DailyPageState extends State<DailyPage> {
                             ),
                           ),
                   ),
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: deviceWidth * 0.83,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 4.0, left: 16.0),
+                  child: TextField(
+                    controller: widget.memoContent,
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white60,
+                      hintText: 'Fill in your notes of the day !',
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 3,
+                    
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  ///クリックでメモ内容を'recordsGeneratedByUrl'の'records'に保存する
+                  ///url=''、day='String'で保存する。
+
+                  dc.memoContent.value = widget.memoContent.text;
+                  void saveDailyData() async {
+                    final box = await Hive.openBox('recordsGeneratedByUrl');
+                    final DateTime now = DateTime.now();
+                    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+                    String day = outputFormatDay.format(now);
+
+                    ///Recordクラスのインスタンスを作成
+
+                    Record dailyTmpRecord = Record(
+                        memo: dc.memoContent.value,
+                        day: day,
+                        url: '',
+                        startTime: now,
+                        endTime: now.add((Duration(days: 1) * 10)));
+                    wc.records.add(dailyTmpRecord);
+
+                    ///boxにput
+                    box.put('records', jsonEncode(wc.records));
+
+                    Fluttertoast.showToast(
+                      msg: "メモを保存しました",
+                      toastLength: Toast.LENGTH_SHORT,
+                      // gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 2,
+                      backgroundColor: Colors.grey[300]!.withOpacity(0.8),
+                      textColor: Colors.black87,
+                      // fontSize: 16.0
+                    );
+                  }
+
+                  saveDailyData();
+
+                  ///テキストフィールド初期化　→保存しましたへ今後変更
+                  // widget.memoContent.clear();
+                },
+                child: const Text(
+                  '保\n' '存',
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(5, 95),
+                ),
+              )
+            ],
           ),
         ],
       ),
