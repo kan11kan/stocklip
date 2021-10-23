@@ -107,6 +107,8 @@ class _ArchivesPageState extends State<ArchivesPage> {
               shadowColor: Colors.black54,
               child: Column(
                 children: [
+            const ShowCards(),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
                     child: SizedBox(
@@ -114,6 +116,7 @@ class _ArchivesPageState extends State<ArchivesPage> {
                       child: TextField(
                         ///検索ボタン押下でフィールドをリセット
                         controller: searchKeywords,
+                        textAlign: TextAlign.center,
 
                         decoration: InputDecoration(
                           hintText: 'キーワード検索',
@@ -158,7 +161,6 @@ class _ArchivesPageState extends State<ArchivesPage> {
                 ],
               ),
             ),
-            const ShowCards(),
           ],
         ),
       ),
