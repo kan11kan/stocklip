@@ -12,12 +12,7 @@ import 'main.dart';
 
 ///URLの配列を定義（Dailyの非表示URL選択でも使いたいのでコントローラー作成）
 class MainUrlsController extends GetxController {
-  var mainUrls = [
-    'https://www.reuters.com/',
-    'https://www.bloomberg.co.jp/',
-    'https://finance.yahoo.co.jp/',
-    'https://nikkei225jp.com/cme/'
-  ].obs;
+  var mainUrls = ['https://www.reuters.com/', 'https://www.bloomberg.co.jp/', 'https://finance.yahoo.co.jp/', 'https://nikkei225jp.com/cme/'].obs;
 
   RxList<int> items = <int>[].obs;
 }
@@ -25,7 +20,7 @@ class MainUrlsController extends GetxController {
 ///ここからfloatingActionButton押下時のモーダル表示部分
 class showModalWidget extends StatelessWidget {
   showModalWidget({Key? key}) : super(key: key);
-  
+
   @override
 
   ///ここでタグの状態を管理
@@ -41,6 +36,7 @@ class showModalWidget extends StatelessWidget {
   var tag9 = false.obs;
 
   final wc = Get.put(WebController());
+  final double tagWidth = 120;
 
   Widget build(BuildContext context) => Container(
         height: 320,
@@ -51,10 +47,20 @@ class showModalWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    child: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
+                  SizedBox(
+                    width:50,
+                    child: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    
+                    
+                    // ElevatedButton(
+                    //   child: const Icon(Icons.close),
+                    //   onPressed: () => Navigator.pop(context),
+                    // ),
                   ),
+                  // const SizedBox(width:8),
                 ],
               ),
               Container(
@@ -63,95 +69,54 @@ class showModalWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Obx(
-                      () => ElevatedButton(
-                        child: const Text('金利'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('金利'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag.value) ? tag.value = false : tag.value = true;
+                            wc.records.last.tag = tag.value;
+                          },
                         ),
-                        onPressed: () {
-                          (tag.value) ? tag.value = false : tag.value = true;
-                          wc.records.last.tag = tag.value;
-                        },
                       ),
                     ),
                     Obx(
-                      () => ElevatedButton(
-                        child: const Text('債券'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag1.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('債券'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag1.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag1.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag1.value) ? tag1.value = false : tag1.value = true;
+                            wc.records.last.tag1 = tag1.value;
+                          },
                         ),
-                        onPressed: () {
-                          (tag1.value) ? tag1.value = false : tag1.value = true;
-                          wc.records.last.tag1 = tag1.value;
-                        },
                       ),
                     ),
                     Obx(
-                      () => ElevatedButton(
-                        child: const Text('米国株'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag2.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('米国株'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag2.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag2.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag2.value) ? tag2.value = false : tag2.value = true;
+                            wc.records.last.tag2 = tag2.value;
+                          },
                         ),
-                        onPressed: () {
-                          (tag2.value) ? tag2.value = false : tag2.value = true;
-                          wc.records.last.tag2 = tag2.value;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Obx(
-                      () => ElevatedButton(
-                        child: const Text('日本株'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag3.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
-                        ),
-                        onPressed: () {
-                          (tag3.value) ? tag3.value = false : tag3.value = true;
-                          wc.records.last.tag3 = tag3.value;
-                        },
-                      ),
-                    ),
-                    Obx(
-                      () => ElevatedButton(
-                        child: const Text('中国株'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag4.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
-                        ),
-                        onPressed: () {
-                          (tag4.value) ? tag4.value = false : tag4.value = true;
-                          wc.records.last.tag4 = tag4.value;
-                        },
-                      ),
-                    ),
-                    Obx(
-                      () => ElevatedButton(
-                        child: const Text('FRB'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag5.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
-                        ),
-                        onPressed: () {
-                          (tag5.value) ? tag5.value = false : tag5.value = true;
-                          wc.records.last.tag5 = tag5.value;
-                        },
                       ),
                     ),
                   ],
@@ -163,45 +128,115 @@ class showModalWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Obx(
-                      () => ElevatedButton(
-                        child: const Text('テクニカル'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag6.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('日本株'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag3.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag3.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag3.value) ? tag3.value = false : tag3.value = true;
+                            wc.records.last.tag3 = tag3.value;
+                          },
                         ),
-                        onPressed: () {
-                          (tag6.value) ? tag6.value = false : tag6.value = true;
-                          wc.records.last.tag6 = tag6.value;
-                        },
                       ),
                     ),
                     Obx(
-                      () => ElevatedButton(
-                        child: const Text('REIT'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag7.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('中国株'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag4.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag4.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag4.value) ? tag4.value = false : tag4.value = true;
+                            wc.records.last.tag4 = tag4.value;
+                          },
                         ),
-                        onPressed: () {
-                          (tag7.value) ? tag7.value = false : tag7.value = true;
-                          wc.records.last.tag7 = tag7.value;
-                        },
                       ),
                     ),
                     Obx(
-                      () => ElevatedButton(
-                        child: const Text('その他'),
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag8.value) ? Colors.blue : Colors.white,
-                          onPrimary: Colors.black,
-                          shape: const StadiumBorder(),
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('FRB'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag5.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag5.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag5.value) ? tag5.value = false : tag5.value = true;
+                            wc.records.last.tag5 = tag5.value;
+                          },
                         ),
-                        onPressed: () {
-                          (tag8.value) ? tag8.value = false : tag8.value = true;
-                          wc.records.last.tag8 = tag8.value;
-                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Obx(
+                      () => SizedBox(
+                        width: tagWidth,
+                        
+                        child: ElevatedButton(
+                          child: const Text('テクニカル'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag6.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag6.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+
+                          ),
+                          onPressed: () {
+                            (tag6.value) ? tag6.value = false : tag6.value = true;
+                            wc.records.last.tag6 = tag6.value;
+                          },
+                        ),
+                      ),
+                    ),
+                    Obx(
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('REIT'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag7.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag7.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag7.value) ? tag7.value = false : tag7.value = true;
+                            wc.records.last.tag7 = tag7.value;
+                          },
+                        ),
+                      ),
+                    ),
+                    Obx(
+                      () => SizedBox(
+                        width: tagWidth,
+                        child: ElevatedButton(
+                          child: const Text('その他'),
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag8.value) ? Colors.indigo : Colors.indigo[50],
+                            onPrimary: (tag8.value) ? Colors.white : Colors.black,
+                            shape: const StadiumBorder(),
+                          ),
+                          onPressed: () {
+                            (tag8.value) ? tag8.value = false : tag8.value = true;
+                            wc.records.last.tag8 = tag8.value;
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -212,17 +247,18 @@ class showModalWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Obx(
-                      () => ElevatedButton(
-                        child: const Icon(Icons.stars),
-                        onPressed: () {
-                          (tag9.value) ? tag9.value = false : tag9.value = true;
-                          wc.records.last.tag9 = tag9.value;
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: (tag9.value) ? Colors.blue : Colors.white,
-                          onPrimary: (tag9.value)
-                              ? Colors.white
-                              : Colors.blue, //ボタンの背景色
+                      () => SizedBox(
+                        width: 120,
+                        child: ElevatedButton(
+                          child: const Icon(Icons.stars),
+                          onPressed: () {
+                            (tag9.value) ? tag9.value = false : tag9.value = true;
+                            wc.records.last.tag9 = tag9.value;
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: (tag9.value) ? Colors.blue : Colors.white,
+                            onPrimary: (tag9.value) ? Colors.white : Colors.blue, //ボタンの背景色
+                          ),
                         ),
                       ),
                     ),
@@ -239,10 +275,8 @@ class showModalWidget extends StatelessWidget {
 ///後でGoogle検索実装
 ///一度URLを飛ばしてonloadのタイミングで入力されたワードを検索？？わからん
 class BookmarkWidget extends StatelessWidget {
-  BookmarkWidget({
-    Key? key,
-  }) : super(key: key);
-
+  BookmarkWidget({Key? key}) : super(key: key);
+  final double txtsize = 12;
   @override
   final tvc = Get.put(TabViewController());
   Widget build(BuildContext context) => Column(
@@ -251,9 +285,7 @@ class BookmarkWidget extends StatelessWidget {
           ///ロゴ
           Padding(
             padding: const EdgeInsets.only(top: 65.0, bottom: 0),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.55,
-                child: Image.asset('images/main_logo.png')),
+            child: SizedBox(width: MediaQuery.of(context).size.width * 0.55, child: Image.asset('images/main_logo.png')),
           ),
 
           ///検索フォーム
@@ -286,24 +318,20 @@ class BookmarkWidget extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.90,
                     child: TextButton(
-                        style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.black54, width:1),
+                      style: TextButton.styleFrom(
+                          side: const BorderSide(color: Colors.black54, width: 1),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(100),
                             ),
-                          )
-                        ),
-                        onPressed: () {
-                          ///仮で記載
-                          tvc.selectedTabIndex.value = 3;
-                          tvc.selectedUrl.value = 'https://www.google.com/';
-                          WebContentPage();
-                        },
-                        child: 
-                          const Text('Google検索',
-                            style: TextStyle(color: Colors.grey)
-                          ),
+                          )),
+                      onPressed: () {
+                        ///仮で記載
+                        tvc.selectedTabIndex.value = 3;
+                        tvc.selectedUrl.value = 'https://www.google.com/';
+                        WebContentPage();
+                      },
+                      child: const Text('Google検索', style: TextStyle(color: Colors.grey)),
                     ),
                   )
                 ],
@@ -313,9 +341,10 @@ class BookmarkWidget extends StatelessWidget {
 
           ///それぞれの画像がタップされた時にURLを渡してWebViewへ遷移
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
+                width: MediaQuery.of(context).size.width * 0.18,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -325,17 +354,43 @@ class BookmarkWidget extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/bloomberg.png'),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/bloomberg.png'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
                       ),
-                      Text('Bloomberg')
+                      // CircleAvatar(
+                      //   radius: MediaQuery.of(context).size.width * 0.07,
+                      //   backgroundColor: Colors.indigo[900],
+                      //   child: CircleAvatar(
+                      //     backgroundImage: const AssetImage('images/bloomberg.png'),
+                      //     radius: MediaQuery.of(context).size.width * 0.068,
+                      //   ),
+                      // ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Bloomberg',
+                        style: TextStyle(
+                          fontSize: txtsize,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * 0.18,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -345,18 +400,36 @@ class BookmarkWidget extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/traders_web.png'),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/traders_web.png'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
                       ),
-                      Text('Traders\n   web')
+                      const SizedBox(height: 8),
+                      Text(
+                        'Traders web',
+                        style: TextStyle(
+                          fontSize: txtsize,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 21),
+                width: MediaQuery.of(context).size.width * 0.18,
+                padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
                     tvc.selectedTabIndex.value = 3; //タップされたらTabBarの位置も変更する
@@ -365,18 +438,36 @@ class BookmarkWidget extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/yahoofinance_logo.jpeg'),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/yahoofinance_logo.jpeg'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
                       ),
-                      Text('  Yahoo\n Finance!')
+                      const SizedBox(height: 8),
+                      Text(
+                        'Y! Finance',
+                        style: TextStyle(
+                          fontSize: txtsize,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(bottom: 21),
+                width: MediaQuery.of(context).size.width * 0.18,
+                padding: const EdgeInsets.only(bottom: 21),
                 child: Column(
                   children: [
                     GestureDetector(
@@ -385,22 +476,47 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
                         WebContentPage();
                       },
-                      child: Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/cme_logo.jpeg'),
+                      child: 
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/cme_logo.jpeg'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
+                      ),
+                      
+                      // Image(
+                      //   width: MediaQuery.of(context).size.width * 0.15,
+                      //   height: MediaQuery.of(context).size.width * 0.15,
+                      //   image: const AssetImage('images/cme_logo.jpeg'),
+                      // ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'CME日経平均',
+                      style: TextStyle(
+                        fontSize: txtsize,
                       ),
                     ),
-                    Text('CME日経平均')
                   ],
                 ),
               ),
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
+                width: MediaQuery.of(context).size.width * 0.18,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -410,17 +526,40 @@ class BookmarkWidget extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/jpx.png'),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/jpx.png'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
                       ),
-                      Text('日本取引所G'),
+                      // Image(
+                      //   width: MediaQuery.of(context).size.width * 0.15,
+                      //   height: MediaQuery.of(context).size.width * 0.15,
+                      //   image: AssetImage('images/jpx.png'),
+                      // ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '日本取引所G',
+                        style: TextStyle(
+                          fontSize: txtsize,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * 0.18,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -430,17 +569,40 @@ class BookmarkWidget extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/news_picks.png'),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/news_picks.png'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
                       ),
-                      Text('News Picks')
+                      // Image(
+                      //   width: MediaQuery.of(context).size.width * 0.15,
+                      //   height: MediaQuery.of(context).size.width * 0.15,
+                      //   image: AssetImage('images/news_picks.png'),
+                      // ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'News Picks',
+                        style: TextStyle(
+                          fontSize: txtsize,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * 0.18,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -450,17 +612,40 @@ class BookmarkWidget extends StatelessWidget {
                   },
                   child: Column(
                     children: [
-                      Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/ruiters.jpeg'),
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/ruiters.jpeg'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
                       ),
-                      Text('ruiters'),
+                      // Image(
+                      //   width: MediaQuery.of(context).size.width * 0.15,
+                      //   height: MediaQuery.of(context).size.width * 0.15,
+                      //   image: AssetImage('images/ruiters.jpeg'),
+                      // ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Ruiter',
+                        style: TextStyle(
+                          fontSize: txtsize,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * 0.18,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: Column(
                   children: [
@@ -470,13 +655,36 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://www.nikkei.com/';
                         WebContentPage();
                       },
-                      child: Image(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        image: AssetImage('images/nikkei.jpeg'),
+                      child: 
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 5, 
+                              color: Colors.black54,
+                              offset: Offset(2, 4),
+                              spreadRadius: 1)
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: const AssetImage('images/nikkei.jpeg'),
+                          radius: MediaQuery.of(context).size.width * 0.07,
+                        ),
+                      ),
+                      // Image(
+                      //   width: MediaQuery.of(context).size.width * 0.15,
+                      //   height: MediaQuery.of(context).size.width * 0.15,
+                      //   image: AssetImage('images/nikkei.jpeg'),
+                      // ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '日本経済新聞',
+                      style: TextStyle(
+                        fontSize: txtsize,
                       ),
                     ),
-                    const Text('日本経済新聞')
                   ],
                 ),
               ),
