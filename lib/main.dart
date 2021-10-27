@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: '',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
+      theme: ThemeData(primarySwatch: Colors.indigo),
       home: MyHomePage(),
     );
   }
@@ -129,7 +127,7 @@ class MyHomePage extends StatelessWidget {
             ),
           ],
           currentIndex: tvc.selectedTabIndex.value,
-          selectedItemColor: Colors.blueAccent,
+          selectedItemColor: Colors.indigo,
           onTap: tvc.onItemTapped,
         ),
       ),
@@ -137,7 +135,6 @@ class MyHomePage extends StatelessWidget {
       floatingActionButton: Obx(
         () => Visibility(
           child: FloatingActionButton(
-            
             onPressed: () {
               showModalBottomSheet<void>(
                 context: context,

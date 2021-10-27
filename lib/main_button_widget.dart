@@ -12,7 +12,12 @@ import 'main.dart';
 
 ///URLの配列を定義（Dailyの非表示URL選択でも使いたいのでコントローラー作成）
 class MainUrlsController extends GetxController {
-  var mainUrls = ['https://www.reuters.com/', 'https://www.bloomberg.co.jp/', 'https://finance.yahoo.co.jp/', 'https://nikkei225jp.com/cme/'].obs;
+  var mainUrls = [
+    'https://www.reuters.com/',
+    'https://www.bloomberg.co.jp/',
+    'https://finance.yahoo.co.jp/',
+    'https://nikkei225jp.com/cme/'
+  ].obs;
 
   RxList<int> items = <int>[].obs;
 }
@@ -48,13 +53,12 @@ class showModalWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(
-                    width:50,
+                    width: 50,
                     child: IconButton(
                       icon: Icon(Icons.close),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    
-                    
+
                     // ElevatedButton(
                     //   child: const Icon(Icons.close),
                     //   onPressed: () => Navigator.pop(context),
@@ -74,8 +78,10 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('金利'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
@@ -91,12 +97,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('債券'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag1.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag1.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag1.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag1.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag1.value) ? tag1.value = false : tag1.value = true;
+                            (tag1.value)
+                                ? tag1.value = false
+                                : tag1.value = true;
                             wc.records.last.tag1 = tag1.value;
                           },
                         ),
@@ -108,12 +118,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('米国株'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag2.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag2.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag2.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag2.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag2.value) ? tag2.value = false : tag2.value = true;
+                            (tag2.value)
+                                ? tag2.value = false
+                                : tag2.value = true;
                             wc.records.last.tag2 = tag2.value;
                           },
                         ),
@@ -133,12 +147,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('日本株'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag3.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag3.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag3.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag3.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag3.value) ? tag3.value = false : tag3.value = true;
+                            (tag3.value)
+                                ? tag3.value = false
+                                : tag3.value = true;
                             wc.records.last.tag3 = tag3.value;
                           },
                         ),
@@ -150,12 +168,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('中国株'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag4.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag4.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag4.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag4.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag4.value) ? tag4.value = false : tag4.value = true;
+                            (tag4.value)
+                                ? tag4.value = false
+                                : tag4.value = true;
                             wc.records.last.tag4 = tag4.value;
                           },
                         ),
@@ -167,12 +189,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('FRB'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag5.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag5.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag5.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag5.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag5.value) ? tag5.value = false : tag5.value = true;
+                            (tag5.value)
+                                ? tag5.value = false
+                                : tag5.value = true;
                             wc.records.last.tag5 = tag5.value;
                           },
                         ),
@@ -189,17 +215,19 @@ class showModalWidget extends StatelessWidget {
                     Obx(
                       () => SizedBox(
                         width: tagWidth,
-                        
                         child: ElevatedButton(
                           child: const Text('テクニカル'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag6.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag6.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag6.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag6.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
-
                           ),
                           onPressed: () {
-                            (tag6.value) ? tag6.value = false : tag6.value = true;
+                            (tag6.value)
+                                ? tag6.value = false
+                                : tag6.value = true;
                             wc.records.last.tag6 = tag6.value;
                           },
                         ),
@@ -211,12 +239,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('REIT'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag7.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag7.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag7.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag7.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag7.value) ? tag7.value = false : tag7.value = true;
+                            (tag7.value)
+                                ? tag7.value = false
+                                : tag7.value = true;
                             wc.records.last.tag7 = tag7.value;
                           },
                         ),
@@ -228,12 +260,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('その他'),
                           style: ElevatedButton.styleFrom(
-                            primary: (tag8.value) ? Colors.indigo : Colors.indigo[50],
-                            onPrimary: (tag8.value) ? Colors.white : Colors.black,
+                            primary:
+                                (tag8.value) ? Colors.brown : Colors.brown[50],
+                            onPrimary:
+                                (tag8.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
                           ),
                           onPressed: () {
-                            (tag8.value) ? tag8.value = false : tag8.value = true;
+                            (tag8.value)
+                                ? tag8.value = false
+                                : tag8.value = true;
                             wc.records.last.tag8 = tag8.value;
                           },
                         ),
@@ -252,12 +288,16 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Icon(Icons.stars),
                           onPressed: () {
-                            (tag9.value) ? tag9.value = false : tag9.value = true;
+                            (tag9.value)
+                                ? tag9.value = false
+                                : tag9.value = true;
                             wc.records.last.tag9 = tag9.value;
                           },
                           style: ElevatedButton.styleFrom(
                             primary: (tag9.value) ? Colors.blue : Colors.white,
-                            onPrimary: (tag9.value) ? Colors.white : Colors.blue, //ボタンの背景色
+                            onPrimary: (tag9.value)
+                                ? Colors.white
+                                : Colors.blue, //ボタンの背景色
                           ),
                         ),
                       ),
@@ -284,8 +324,11 @@ class BookmarkWidget extends StatelessWidget {
         children: [
           ///ロゴ
           Padding(
-            padding: const EdgeInsets.only(top: 65.0, bottom: 0),
-            child: SizedBox(width: MediaQuery.of(context).size.width * 0.55, child: Image.asset('images/main_logo.png')),
+            padding: const EdgeInsets.only(top: 65.0, left: 15.0, bottom: 0),
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.55,
+                child: Image.asset('images/katsutojiLogo_main.'
+                    'png')),
           ),
 
           ///検索フォーム
@@ -319,7 +362,8 @@ class BookmarkWidget extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.90,
                     child: TextButton(
                       style: TextButton.styleFrom(
-                          side: const BorderSide(color: Colors.black54, width: 1),
+                          side:
+                              const BorderSide(color: Colors.black54, width: 1),
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(100),
@@ -331,7 +375,8 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://www.google.com/';
                         WebContentPage();
                       },
-                      child: const Text('Google検索', style: TextStyle(color: Colors.grey)),
+                      child: const Text('Google検索',
+                          style: TextStyle(color: Colors.grey)),
                     ),
                   )
                 ],
@@ -359,14 +404,16 @@ class BookmarkWidget extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/bloomberg.png'),
+                          backgroundImage:
+                              const AssetImage('images/bloomberg.png'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
@@ -405,14 +452,16 @@ class BookmarkWidget extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/traders_web.png'),
+                          backgroundImage:
+                              const AssetImage('images/traders_web.png'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
@@ -443,14 +492,16 @@ class BookmarkWidget extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/yahoofinance_logo.jpeg'),
+                          backgroundImage:
+                              const AssetImage('images/yahoofinance_logo.jpeg'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
@@ -476,24 +527,25 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://nikkei225jp.com/cme/';
                         WebContentPage();
                       },
-                      child: 
-                      Container(
+                      child: Container(
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/cme_logo.jpeg'),
+                          backgroundImage:
+                              const AssetImage('images/cme_logo.jpeg'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
-                      
+
                       // Image(
                       //   width: MediaQuery.of(context).size.width * 0.15,
                       //   height: MediaQuery.of(context).size.width * 0.15,
@@ -531,10 +583,11 @@ class BookmarkWidget extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
@@ -574,14 +627,16 @@ class BookmarkWidget extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/news_picks.png'),
+                          backgroundImage:
+                              const AssetImage('images/news_picks.png'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
@@ -617,14 +672,16 @@ class BookmarkWidget extends StatelessWidget {
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/ruiters.jpeg'),
+                          backgroundImage:
+                              const AssetImage('images/ruiters.jpeg'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
@@ -655,20 +712,21 @@ class BookmarkWidget extends StatelessWidget {
                         tvc.selectedUrl.value = 'https://www.nikkei.com/';
                         WebContentPage();
                       },
-                      child: 
-                      Container(
+                      child: Container(
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(blurRadius: 5, 
-                              color: Colors.black54,
-                              offset: Offset(2, 4),
-                              spreadRadius: 1)
+                            BoxShadow(
+                                blurRadius: 5,
+                                color: Colors.black54,
+                                offset: Offset(2, 4),
+                                spreadRadius: 1)
                           ],
                         ),
                         child: CircleAvatar(
-                          backgroundImage: const AssetImage('images/nikkei.jpeg'),
+                          backgroundImage:
+                              const AssetImage('images/nikkei.jpeg'),
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
