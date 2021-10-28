@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -79,7 +80,7 @@ class showModalWidget extends StatelessWidget {
                           child: const Text('金利'),
                           style: ElevatedButton.styleFrom(
                             primary:
-                                (tag.value) ? Colors.brown : Colors.brown[50],
+                                (tag.value) ? Colors.indigo : Colors.indigo[50],
                             onPrimary:
                                 (tag.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -97,8 +98,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('債券'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag1.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag1.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag1.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -118,8 +120,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('米国株'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag2.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag2.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag2.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -147,8 +150,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('日本株'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag3.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag3.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag3.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -168,8 +172,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('中国株'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag4.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag4.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag4.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -189,8 +194,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('FRB'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag5.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag5.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag5.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -218,8 +224,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('テクニカル'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag6.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag6.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag6.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -239,8 +246,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('REIT'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag7.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag7.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag7.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -260,8 +268,9 @@ class showModalWidget extends StatelessWidget {
                         child: ElevatedButton(
                           child: const Text('その他'),
                           style: ElevatedButton.styleFrom(
-                            primary:
-                                (tag8.value) ? Colors.brown : Colors.brown[50],
+                            primary: (tag8.value)
+                                ? Colors.indigo
+                                : Colors.indigo[50],
                             onPrimary:
                                 (tag8.value) ? Colors.white : Colors.black,
                             shape: const StadiumBorder(),
@@ -294,10 +303,11 @@ class showModalWidget extends StatelessWidget {
                             wc.records.last.tag9 = tag9.value;
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: (tag9.value) ? Colors.blue : Colors.white,
+                            primary:
+                                (tag9.value) ? Colors.indigo : Colors.white,
                             onPrimary: (tag9.value)
                                 ? Colors.white
-                                : Colors.blue, //ボタンの背景色
+                                : Colors.indigo, //ボタンの背景色
                           ),
                         ),
                       ),
@@ -324,16 +334,16 @@ class BookmarkWidget extends StatelessWidget {
         children: [
           ///ロゴ
           Padding(
-            padding: const EdgeInsets.only(top: 65.0, left: 15.0, bottom: 0),
+            padding: const EdgeInsets.only(top: 35.0, left: 15.0, bottom: 0),
             child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.55,
+                width: MediaQuery.of(context).size.width * 0.45,
                 child: Image.asset('images/katsutojiLogo_main.'
                     'png')),
           ),
 
           ///検索フォーム
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 64),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 45),
             child: SizedBox(
               height: 45,
               child: Row(
@@ -389,7 +399,7 @@ class BookmarkWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -426,18 +436,17 @@ class BookmarkWidget extends StatelessWidget {
                       //   ),
                       // ),
                       const SizedBox(height: 8),
-                      Text(
+                      AutoSizeText(
                         'Bloomberg',
-                        style: TextStyle(
-                          fontSize: txtsize,
-                        ),
+                        style: TextStyle(fontSize: 10),
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -465,19 +474,18 @@ class BookmarkWidget extends StatelessWidget {
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Traders web',
-                        style: TextStyle(
-                          fontSize: txtsize,
-                        ),
+                      SizedBox(height: 8),
+                      AutoSizeText(
+                        'TradersWeb',
+                        style: TextStyle(fontSize: 10),
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -506,18 +514,17 @@ class BookmarkWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        'Y! Finance',
-                        style: TextStyle(
-                          fontSize: txtsize,
-                        ),
+                      AutoSizeText(
+                        'Y!Finance',
+                        style: TextStyle(fontSize: 10),
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: Column(
                   children: [
@@ -545,19 +552,12 @@ class BookmarkWidget extends StatelessWidget {
                           radius: MediaQuery.of(context).size.width * 0.07,
                         ),
                       ),
-
-                      // Image(
-                      //   width: MediaQuery.of(context).size.width * 0.15,
-                      //   height: MediaQuery.of(context).size.width * 0.15,
-                      //   image: const AssetImage('images/cme_logo.jpeg'),
-                      // ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
+                    AutoSizeText(
                       'CME日経平均',
-                      style: TextStyle(
-                        fontSize: txtsize,
-                      ),
+                      style: TextStyle(fontSize: 10),
+                      maxLines: 1,
                     ),
                   ],
                 ),
@@ -568,7 +568,7 @@ class BookmarkWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -601,18 +601,17 @@ class BookmarkWidget extends StatelessWidget {
                       //   image: AssetImage('images/jpx.png'),
                       // ),
                       const SizedBox(height: 8),
-                      Text(
-                        '日本取引所G',
-                        style: TextStyle(
-                          fontSize: txtsize,
-                        ),
+                      AutoSizeText(
+                        '日本取引所',
+                        style: TextStyle(fontSize: 10),
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -646,18 +645,17 @@ class BookmarkWidget extends StatelessWidget {
                       //   image: AssetImage('images/news_picks.png'),
                       // ),
                       const SizedBox(height: 8),
-                      Text(
+                      AutoSizeText(
                         'News Picks',
-                        style: TextStyle(
-                          fontSize: txtsize,
-                        ),
+                        style: TextStyle(fontSize: 10),
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: GestureDetector(
                   onTap: () {
@@ -691,18 +689,17 @@ class BookmarkWidget extends StatelessWidget {
                       //   image: AssetImage('images/ruiters.jpeg'),
                       // ),
                       const SizedBox(height: 8),
-                      Text(
+                      AutoSizeText(
                         'Ruiter',
-                        style: TextStyle(
-                          fontSize: txtsize,
-                        ),
+                        style: TextStyle(fontSize: 10),
+                        maxLines: 1,
                       ),
                     ],
                   ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.18,
+                width: MediaQuery.of(context).size.width * 0.20,
                 padding: const EdgeInsets.only(bottom: 21),
                 child: Column(
                   children: [
@@ -737,11 +734,10 @@ class BookmarkWidget extends StatelessWidget {
                       // ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
+                    AutoSizeText(
                       '日本経済新聞',
-                      style: TextStyle(
-                        fontSize: txtsize,
-                      ),
+                      style: TextStyle(fontSize: 10),
+                      maxLines: 1,
                     ),
                   ],
                 ),

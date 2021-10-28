@@ -110,9 +110,9 @@ class _DailyPageState extends State<DailyPage> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 12.0),
+            padding: const EdgeInsets.only(top: 4.0),
             child: SizedBox(
-              height: 30,
+              height: 20,
               child: Text(
                 'Browsed in $today',
                 style: const TextStyle(
@@ -123,7 +123,8 @@ class _DailyPageState extends State<DailyPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            //padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
             child: muc.items.isEmpty
                 ? const Text('今日の履歴はありません')
                 : SizedBox(
@@ -260,12 +261,17 @@ class _DailyPageState extends State<DailyPage> {
           Row(
             children: [
               SizedBox(
-                width: deviceWidth * 0.83,
+                width: deviceWidth * 0.85,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 4.0, left: 16.0),
+                  padding: const EdgeInsets.only(right: 2.0, left: 18.0),
                   child: TextField(
                     controller: widget.memoContent,
                     decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black12,
+                        ),
+                      ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -276,7 +282,6 @@ class _DailyPageState extends State<DailyPage> {
                     ),
                     keyboardType: TextInputType.multiline,
                     maxLines: 3,
-                    
                   ),
                 ),
               ),
@@ -328,7 +333,7 @@ class _DailyPageState extends State<DailyPage> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(5, 95),
+                  minimumSize: const Size(4, 95),
                 ),
               )
             ],
