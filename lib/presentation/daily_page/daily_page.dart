@@ -106,239 +106,234 @@ class _DailyPageState extends State<DailyPage> {
     }
 
     ///ここからページ内容
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 4.0),
-            child: SizedBox(
-              height: 20,
-              child: Text(
-                'Browsed in $today',
-                style: const TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: SizedBox(
+                height: 20,
+                child: Text(
+                  'Browsed in $today',
+                  style: const TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-          ),
-          Padding(
-            //padding: const EdgeInsets.all(8.0),
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
-            child: muc.items.isEmpty
-                ? const Text('今日の履歴はありません')
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    child: muc.items.isEmpty
-                        ? const Text('No history')
-                        : GestureDetector(
-                            onTap: () {},
-                            child: Obx(
-                              () => ReorderableListView(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 0),
-                                shrinkWrap: true,
-                                // physics: NeverScrollableScrollPhysics(),
-                                children: <Widget>[
-                                  for (int index = 0;
-                                      index < todayUrls.length;
-                                      index++)
-                                    Slidable(
-                                      key: Key('$index'),
-                                      actionPane:
-                                          const SlidableDrawerActionPane(),
-                                      actionExtentRatio: 0.25,
-                                      child: GestureDetector(
-                                        onDoubleTap: () {
-                                          tvc.selectedTabIndex.value = 3;
-                                          tvc.selectedUrl.value =
-                                              todayUrls[muc.items[index]].url;
-                                          WebContentPage();
-                                        },
-                                        child: Container(
-                                          height: 150,
-                                          width: double.infinity,
-                                          child: Obx(() => Row(
-                                                children: [
-                                                  Container(
-                                                    width: deviceWidth * 0.85,
-                                                    // ----------------------- SimpleUrlPreview -----------------------
-                                                    child: SimpleUrlPreview(
-                                                      url: todayUrls[
-                                                              muc.items[index]]
-                                                          .url,
-                                                      bgColor: Colors.white,
-                                                      titleLines: 1,
-                                                      descriptionLines: 2,
-                                                      imageLoaderColor:
-                                                          Colors.white,
-                                                      previewHeight: 150,
-                                                      previewContainerPadding:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      onTap: () {
-                                                        // Get.to(WebContentPage());
-                                                      },
-                                                      titleStyle:
-                                                          const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black,
-                                                      ),
-                                                      descriptionStyle:
-                                                          const TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                      ),
-                                                      siteNameStyle:
-                                                          const TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  ReorderableDragStartListener(
-                                                    index: muc.items[index],
-                                                    child: const Icon(
-                                                        Icons.drag_handle),
-                                                  ),
-                                                ],
-                                              )),
-                                        ),
-                                      ),
-                                      secondaryActions: <Widget>[
-                                        IconSlideAction(
-                                          caption: 'Delete',
-                                          color: Colors.red,
-                                          icon: Icons.delete,
-                                          onTap: () {
-                                            wc.records[index].hide = true;
-                                            // setState(() {
-                                            //   todayData[index].hide = true;
-                                            // },
-                                            // );
-                                          },
-                                        ),
-                                      ],
-                                    ),
+            Padding(
+              //padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 4),
+              child: //muc.items.isEmpty
+                  // ? const Text('今日の履歴はありません')
+                  SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: muc.items.isEmpty
+                    ? const Center(child: Text('今日の履歴はありません'))
+                    : Obx(
+                        () => ReorderableListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          shrinkWrap: true,
+                          // physics: NeverScrollableScrollPhysics(),
+                          children: <Widget>[
+                            for (int index = 0;
+                                index < todayUrls.length;
+                                index++)
+                              Slidable(
+                                key: Key('$index'),
+                                actionPane: const SlidableDrawerActionPane(),
+                                actionExtentRatio: 0.25,
+                                child: GestureDetector(
+                                  onDoubleTap: () {
+                                    tvc.selectedTabIndex.value = 3;
+                                    tvc.selectedUrl.value =
+                                        todayUrls[muc.items[index]].url;
+                                    WebContentPage();
+                                  },
+                                  child: Container(
+                                    height: 150,
+                                    width: double.infinity,
+                                    child: Obx(() => Row(
+                                          children: [
+                                            Container(
+                                              width: deviceWidth * 0.85,
+                                              // ----------------------- SimpleUrlPreview -----------------------
+                                              child: SimpleUrlPreview(
+                                                url: todayUrls[muc.items[index]]
+                                                    .url,
+                                                bgColor: Colors.white,
+                                                titleLines: 1,
+                                                descriptionLines: 2,
+                                                imageLoaderColor: Colors.white,
+                                                previewHeight: 150,
+                                                previewContainerPadding:
+                                                    const EdgeInsets.all(5),
+                                                onTap: () {
+                                                  // Get.to(WebContentPage());
+                                                },
+                                                titleStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                                descriptionStyle:
+                                                    const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                                siteNameStyle: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            ReorderableDragStartListener(
+                                              index: muc.items[index],
+                                              child:
+                                                  const Icon(Icons.drag_handle),
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ),
+                                secondaryActions: <Widget>[
+                                  IconSlideAction(
+                                    caption: 'Delete',
+                                    color: Colors.red,
+                                    icon: Icons.delete,
+                                    onTap: () {
+                                      wc.records[index].hide = true;
+                                      // setState(() {
+                                      //   todayData[index].hide = true;
+                                      // },
+                                      // );
+                                    },
+                                  ),
                                 ],
-
-                                //ここのエラーはsetstate()ができていないことが原因かも
-                                onReorder: (int oldIndex, int newIndex) {
-                                  if (oldIndex < newIndex) {
-                                    newIndex -= 1;
-                                  }
-                                  // final int item = items.removeAt(oldIndex);//元のコード
-                                  // urls.value = urls..removeAt(oldIndex); //山村さんのコード
-                                  // print(
-                                  //     ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
-                                  // print(muc.items);
-                                  // print(
-                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
-
-                                  final int item =
-                                      muc.items.removeAt(oldIndex); //試してみる
-
-                                  // print(muc.items);
-                                  // print(
-                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
-                                  // items.value = items..insert(newIndex, item);//元のコード
-                                  // urls.value = urls
-                                  //   ..insert(newIndex, urls[oldIndex]); //山村さんのコード
-                                  muc.items.insert(newIndex, item); //自分のコード
-                                  // print(muc.items);
-                                  // print(
-                                  //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
-
-                                  //ここがリストが入れ替わらないエラーの原因かも
-                                },
                               ),
-                            ),
-                          ),
-                  ),
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: deviceWidth * 0.85,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 2.0, left: 18.0),
-                  child: TextField(
-                    controller: widget.memoContent,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.black12,
+                          ],
+
+                          //ここのエラーはsetstate()ができていないことが原因かも
+                          onReorder: (int oldIndex, int newIndex) {
+                            if (oldIndex < newIndex) {
+                              newIndex -= 1;
+                            }
+                            // final int item = items.removeAt(oldIndex);//元のコード
+                            // urls.value = urls..removeAt(oldIndex); //山村さんのコード
+                            // print(
+                            //     ' --------------------- oldIndex:$oldIndex , newIndex:$newIndex --------------------- ');
+                            // print(muc.items);
+                            // print(
+                            //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+
+                            final int item =
+                                muc.items.removeAt(oldIndex); //試してみる
+
+                            // print(muc.items);
+                            // print(
+                            //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+                            // items.value = items..insert(newIndex, item);//元のコード
+                            // urls.value = urls
+                            //   ..insert(newIndex, urls[oldIndex]); //山村さんのコード
+                            muc.items.insert(newIndex, item); //自分のコード
+                            // print(muc.items);
+                            // print(
+                            //     '${todayUrls[muc.items[0]].url},\n ${todayUrls[muc.items[1]].url},\n${todayUrls[muc.items[2]].url},\n${todayUrls[muc.items[3]].url}');
+
+                            //ここがリストが入れ替わらないエラーの原因かも
+                          },
                         ),
                       ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white60,
-                      hintText: 'Fill in your notes of the day !',
-                    ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 3,
-                  ),
-                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  ///クリックでメモ内容を'recordsGeneratedByUrl'の'records'に保存する
-                  ///url=''、day='String'で保存する。
-
-                  dc.memoContent.value = widget.memoContent.text;
-                  void saveDailyData() async {
-                    final box = await Hive.openBox('recordsGeneratedByUrl');
-                    final DateTime now = DateTime.now();
-                    DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
-                    String day = outputFormatDay.format(now);
-
-                    ///Recordクラスのインスタンスを作成
-
-                    Record dailyTmpRecord = Record(
-                        memo: dc.memoContent.value,
-                        day: day,
-                        url: '',
-                        startTime: now,
-                        endTime: now.add((Duration(days: 1) * 10)));
-                    wc.records.add(dailyTmpRecord);
-
-                    ///boxにput
-                    box.put('records', jsonEncode(wc.records));
-
-                    Fluttertoast.showToast(
-                      msg: "メモを保存しました",
-                      toastLength: Toast.LENGTH_SHORT,
-                      // gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 2,
-                      backgroundColor: Colors.grey[300]!.withOpacity(0.8),
-                      textColor: Colors.black87,
-                      // fontSize: 16.0
-                    );
-                  }
-
-                  saveDailyData();
-
-                  ///テキストフィールド初期化　→保存しましたへ今後変更
-                  // widget.memoContent.clear();
-                },
-                child: const Text(
-                  '保\n' '存',
-                  style: TextStyle(
-                    fontSize: 12,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: deviceWidth * 0.85,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 2.0, left: 18.0),
+                    child: TextField(
+                      controller: widget.memoContent,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black12,
+                          ),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white60,
+                        hintText: 'Fill in your notes of the day !',
+                      ),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 3,
+                    ),
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(4, 95),
-                ),
-              )
-            ],
-          ),
-        ],
+                ElevatedButton(
+                  onPressed: () {
+                    ///クリックでメモ内容を'recordsGeneratedByUrl'の'records'に保存する
+                    ///url=''、day='String'で保存する。
+
+                    dc.memoContent.value = widget.memoContent.text;
+                    void saveDailyData() async {
+                      final box = await Hive.openBox('recordsGeneratedByUrl');
+                      final DateTime now = DateTime.now();
+                      DateFormat outputFormatDay = DateFormat('yyyy-MM-dd');
+                      String day = outputFormatDay.format(now);
+
+                      ///Recordクラスのインスタンスを作成
+
+                      Record dailyTmpRecord = Record(
+                          memo: dc.memoContent.value,
+                          day: day,
+                          url: '',
+                          startTime: now,
+                          endTime: now.add((Duration(days: 1) * 10)));
+                      wc.records.add(dailyTmpRecord);
+
+                      ///boxにput
+                      box.put('records', jsonEncode(wc.records));
+
+                      ///unFocus
+                      FocusScope.of(context).unfocus();
+
+                      Fluttertoast.showToast(
+                        msg: "メモを保存しました",
+                        toastLength: Toast.LENGTH_SHORT,
+                        // gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.grey[300]!.withOpacity(0.8),
+                        textColor: Colors.black87,
+                        // fontSize: 16.0
+                      );
+                    }
+
+                    saveDailyData();
+
+                    ///テキストフィールド初期化　→保存しましたへ今後変更
+                    // widget.memoContent.clear();
+                  },
+                  child: const Text(
+                    '保\n' '存',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(4, 95),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
