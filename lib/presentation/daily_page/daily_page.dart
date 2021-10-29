@@ -132,7 +132,7 @@ class _DailyPageState extends State<DailyPage> {
                   SizedBox(
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: muc.items.isEmpty
-                    ? const Center(child: Text('今日の履歴はありません'))
+                    ? const Center(child: Text('no history'))
                     : Obx(
                         () => ReorderableListView(
                           padding: const EdgeInsets.symmetric(horizontal: 0),

@@ -11,6 +11,7 @@ import 'package:one_app_everyday921/domain/record_class.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
+import '../../main.dart';
 import 'archives_button_widget.dart';
 import 'archives_controller.dart';
 
@@ -727,7 +728,7 @@ class SearchResultTopState extends State<SearchResultTop> {
     // var finalSearchResultArray = searchResultArray.toSet().toList();
 
     ///⑤キーワードと一致するものを表示
-
+    final tvc = Get.put(TabViewController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('search result'),
@@ -766,29 +767,39 @@ class SearchResultTopState extends State<SearchResultTop> {
                     for (int index = 1;
                         index < searchResultArray.length + 1;
                         index++)
-                      SimpleUrlPreview(
-                        url: searchResultArray[index - 1].url,
-                        bgColor: Colors.white,
-                        titleLines: 1,
-                        descriptionLines: 2,
-                        imageLoaderColor: Colors.white,
-                        previewHeight: 150,
-                        previewContainerPadding: const EdgeInsets.all(5),
-                        onTap: () {
-                          // Get.to(WebContentPage());
-                        },
-                        titleStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        descriptionStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                        ),
-                        siteNameStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
+                      Container(
+                        child: GestureDetector(
+                          onDoubleTap: () {
+                            tvc.selectedTabIndex.value = 3;
+                            tvc.selectedUrl.value =
+                                searchResultArray[index - 1].url;
+                            Get.to(MyHomePage());
+                          },
+                          child: SimpleUrlPreview(
+                            url: searchResultArray[index - 1].url,
+                            bgColor: Colors.white,
+                            titleLines: 1,
+                            descriptionLines: 2,
+                            imageLoaderColor: Colors.white,
+                            previewHeight: 150,
+                            previewContainerPadding: const EdgeInsets.all(5),
+                            onTap: () {
+                              // Get.to(WebContentPage());
+                            },
+                            titleStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            descriptionStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                            siteNameStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
                   ],
