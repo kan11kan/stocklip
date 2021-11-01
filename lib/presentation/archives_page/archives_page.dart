@@ -11,6 +11,7 @@ import 'package:one_app_everyday921/domain/record_class.dart';
 import 'package:one_app_everyday921/presentation/web_page/web_controller.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 
+import '../../main.dart';
 import 'archives_button_widget.dart';
 import 'archives_controller.dart';
 
@@ -100,63 +101,87 @@ class _ArchivesPageState extends State<ArchivesPage> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 0),
         child: Column(
           children: [
             Card(
               shadowColor: Colors.black54,
               child: Column(
                 children: [
-            const ShowCards(),
+                  const ShowCards(),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.15),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                          child: SizedBox(
+                            height: 40,
+                            child: TextField(
+                              ///検索ボタン押下でフィールドをリセット
+                              controller: searchKeywords,
+                              textAlign: TextAlign.center,
 
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
-                    child: SizedBox(
-                      height: 40,
-                      child: TextField(
-                        ///検索ボタン押下でフィールドをリセット
-                        controller: searchKeywords,
-                        textAlign: TextAlign.center,
-
-                        decoration: InputDecoration(
-                          hintText: 'キーワード検索',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(
-                              color: Colors.grey,
+                              decoration: InputDecoration(
+                                hintText: 'search word',
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        const DateRangePickerWidget(),
+                        ElevatedButton(
+                          onPressed: () {
+                            ///SearchResultに検索キーワード、検索期間を渡す
+                            ///String　→　DateTimeへの変換処理
+                            DateFormat outputFormatDay =
+                                DateFormat('dd-MM-yyyy');
+                            DateTime tmpStartTime =
+                                outputFormatDay.parse(skc.startDay.value);
+                            DateTime tmpEndTime =
+                                outputFormatDay.parse(skc.endDay.value);
+                            skc.searchKeywords.value = searchKeywords.text;
+
+                            ///日付の差分を計算（型はint）
+                            var duration =
+                                tmpEndTime.difference(tmpStartTime).inDays;
+                            skc.duration.value = duration;
+                            searchKeywords.clear();
+
+                            ///検索の開始と終了取得成功！！！
+                            Get.to(const SearchResultTop());
+                          },
+                          child: const Text('検索'),
+                        ),
+                      ],
                     ),
-                  ),
-                  const DateRangePickerWidget(),
-                  ElevatedButton(
-                    onPressed: () {
-                      ///SearchResultに検索キーワード、検索期間を渡す
-                      ///String　→　DateTimeへの変換処理
-                      DateFormat outputFormatDay = DateFormat('dd-MM-yyyy');
-                      DateTime tmpStartTime =
-                          outputFormatDay.parse(skc.startDay.value);
-                      DateTime tmpEndTime =
-                          outputFormatDay.parse(skc.endDay.value);
-                      skc.searchKeywords.value = searchKeywords.text;
-
-                      ///日付の差分を計算（型はint）
-                      var duration = tmpEndTime.difference(tmpStartTime).inDays;
-                      skc.duration.value = duration;
-                      searchKeywords.clear();
-
-                      ///検索の開始と終了取得成功！！！
-                      Get.to(const SearchResultTop());
-                    },
-                    child: const Text('検索'),
                   ),
                 ],
               ),
@@ -203,7 +228,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 150,
+              width: MediaQuery.of(context).size.width * 0.35,
               child: ButtonWidget(
                 ///ここで開始の日付を表示！！！
                 text: getFrom(),
@@ -214,7 +239,7 @@ class _DateRangePickerWidgetState extends State<DateRangePickerWidget> {
             const Icon(Icons.arrow_forward, color: Colors.blueGrey),
             const SizedBox(width: 8),
             SizedBox(
-              width: 150,
+              width: MediaQuery.of(context).size.width * 0.35,
               child: ButtonWidget(
                 ///ここで終了の日付を表示！！！
                 text: getUntil(),
@@ -259,30 +284,6 @@ class ShowCardsState extends State<ShowCards> {
     30000,
     29000,
     35000,
-    399,
-    333,
-    444444,
-    4442,
-    2,
-    3333,
-    333,
-    3333,
-    22,
-    4,
-    4,
-    5,
-    5,
-    6,
-    6,
-    7,
-    78,
-    8,
-    86,
-    5,
-    43,
-    3,
-    2,
-    2
   ];
 
   ///tagsの配列を作成（タグ　→　◯月◯日のタグNumber[1,2,5,6]など）
@@ -395,7 +396,7 @@ class ShowCardsState extends State<ShowCards> {
 
     ///リストビュービルダー
     return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 0.54,
       padding: const EdgeInsets.all(8),
       child: SingleChildScrollView(
         child: Container(
@@ -727,7 +728,7 @@ class SearchResultTopState extends State<SearchResultTop> {
     // var finalSearchResultArray = searchResultArray.toSet().toList();
 
     ///⑤キーワードと一致するものを表示
-
+    final tvc = Get.put(TabViewController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('search result'),
@@ -766,29 +767,39 @@ class SearchResultTopState extends State<SearchResultTop> {
                     for (int index = 1;
                         index < searchResultArray.length + 1;
                         index++)
-                      SimpleUrlPreview(
-                        url: searchResultArray[index - 1].url,
-                        bgColor: Colors.white,
-                        titleLines: 1,
-                        descriptionLines: 2,
-                        imageLoaderColor: Colors.white,
-                        previewHeight: 150,
-                        previewContainerPadding: const EdgeInsets.all(5),
-                        onTap: () {
-                          // Get.to(WebContentPage());
-                        },
-                        titleStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        descriptionStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                        ),
-                        siteNameStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
+                      Container(
+                        child: GestureDetector(
+                          onDoubleTap: () {
+                            tvc.selectedTabIndex.value = 3;
+                            tvc.selectedUrl.value =
+                                searchResultArray[index - 1].url;
+                            Get.to(MyHomePage());
+                          },
+                          child: SimpleUrlPreview(
+                            url: searchResultArray[index - 1].url,
+                            bgColor: Colors.white,
+                            titleLines: 1,
+                            descriptionLines: 2,
+                            imageLoaderColor: Colors.white,
+                            previewHeight: 150,
+                            previewContainerPadding: const EdgeInsets.all(5),
+                            onTap: () {
+                              // Get.to(WebContentPage());
+                            },
+                            titleStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            descriptionStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                            siteNameStyle: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
                   ],

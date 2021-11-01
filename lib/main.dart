@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: '',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-      ),
+      theme: ThemeData(primarySwatch: Colors.indigo),
       home: MyHomePage(),
     );
   }
@@ -70,14 +68,14 @@ class MyHomePage extends StatelessWidget {
   ///childListでどのページを表示するのか（Tabは共通でそれ以外の中身部分）を管理
   final List<Widget> contentsList = [
     MyHomePageContent(),
-    ArchivesPage(),
     DailyPage(),
+    ArchivesPage(),
     WebContentPage(),
   ];
   final List<Widget> navBarNameList = [
     const Text('Home'),
-    const Text('Archives'),
     const Text('Daily News'),
+    const Text('Archives'),
     const Text('Web Page')
   ];
   final List<bool> floatingButtonList = [
@@ -114,14 +112,14 @@ class MyHomePage extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.library_books_outlined),
-              // icon: Icon(Icons.source_outlined),
-              label: 'Archives',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.history_edu_outlined),
               // icon: Icon(Icons.article_outlined),
               label: 'Daily news',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.library_books_outlined),
+              // icon: Icon(Icons.source_outlined),
+              label: 'Archives',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.public),
@@ -129,7 +127,7 @@ class MyHomePage extends StatelessWidget {
             ),
           ],
           currentIndex: tvc.selectedTabIndex.value,
-          selectedItemColor: Colors.blueAccent,
+          selectedItemColor: Colors.indigo,
           onTap: tvc.onItemTapped,
         ),
       ),
@@ -137,7 +135,6 @@ class MyHomePage extends StatelessWidget {
       floatingActionButton: Obx(
         () => Visibility(
           child: FloatingActionButton(
-            
             onPressed: () {
               showModalBottomSheet<void>(
                 context: context,
