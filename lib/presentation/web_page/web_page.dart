@@ -77,12 +77,14 @@ class WebContentPageState extends State<WebContentPage> {
 
         ///登録するデータ（url, now, day, titleを準備）
         final DateTime now = DateTime.now(); //現在時刻を取得（DateTime型）
-        final DateFormat outputFormatDay = DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
+        final DateFormat outputFormatDay =
+            DateFormat('yyyy-MM-dd'); //DateTime→Stringへの変換方法を記載
         final String day = outputFormatDay.format(now);
         final title = await _controller.getTitle();
 
         ///一回一回の履歴に対してインスタンスを作成する
-        Record tmpRecord = Record(url: url, day: day, startTime: now, newsTitle: title);
+        Record tmpRecord =
+            Record(url: url, day: day, startTime: now, newsTitle: title);
         wc.records.add(tmpRecord);
 
         saveUrl();
